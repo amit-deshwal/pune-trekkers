@@ -6,7 +6,7 @@ import Lightbox from 'react-awesome-lightbox'
 // You need to import the CSS only once
 import 'react-awesome-lightbox/build/style.css'
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const supabaseAdmin = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL || '',
     process.env.SUPABASE_SERVICE_ROLE_KEY || ''
@@ -35,6 +35,7 @@ type Image = {
 }
 
 export default function Gallery({ images }: { images: Image[] }) {
+  console.log(images)
   return (
     <>
       <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-4">
