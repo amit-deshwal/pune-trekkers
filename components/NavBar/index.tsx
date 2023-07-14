@@ -16,22 +16,22 @@ const Navbar: React.FC = () => {
                 <div className="inline-flex">
                   <img
                     src="./hiking.png"
-                    className="mr-4 inline-block h-8"
+                    className="mr-4 inline-block h-6 sm:h-8 sm:mr-2"
                     alt="Pune Trekker Logo"
                   />
-                  <h1 className="inline-block text-3xl font-extrabold text-gray-900 dark:text-white md:text-3xl lg:text-4xl">
+                  <h1 className="inline-block text-2xl font-extrabold text-gray-900 dark:text-white md:text-3xl lg:text-4xl">
                     <span className="bg-gradient-to-r from-sky-400 to-emerald-600 bg-clip-text text-transparent">
                       Pune Trekkers
                     </span>
                   </h1>
                 </div>
-                <div className="ml-8 flex flex-row items-center">
+                <div className="ml-10 sm:ml-8 flex flex-row items-center">
                     <a className="inline-block animate-border rounded-md bg-white bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 bg-[length:400%_400%] p-1" target='_blank' href='https://pune-trekkers.notion.site/pune-trekkers/Pune-Trekkers-Events-ac0739549832414a8d59a3dca62417d1'>
                       <span className="block rounded-md bg-slate-900 font-bold text-white px-3 py-1">
-                        Upcoming Treks
+                        <span className='text-sm sm:text-md lg:text-md'>Upcoming Treks</span>
                         <span className="inline-block">
                           <svg
-                            className="ml-2 pt-1 h-4 w-6"
+                            className="ml-2 pt-1 h-3 w-5 sm:h-4 sm:w-6"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -39,9 +39,9 @@ const Navbar: React.FC = () => {
                           >
                             <path
                               stroke="currentColor"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
                               d="M1 5h12m0 0L9 1m4 4L9 9"
                             />
                           </svg>

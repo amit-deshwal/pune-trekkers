@@ -75,7 +75,7 @@ function BlurImage({ image }: { image: Image }) {
     <>
       {image.image_src && (
         <>
-          <a className="group rounded-md shadow px-4 pb-8">
+          <div className="group rounded-md shadow px-4 pb-8">
             <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
               <Image
                 onClick={() => handleOnClick()}
@@ -104,15 +104,15 @@ function BlurImage({ image }: { image: Image }) {
               </h3>
             )}
             {image.profile_url && (
-              <p className="mt-2 text-sm font-medium text-gray-800 truncate mr-4">
+              <div className="mt-2 text-sm font-medium text-gray-800 truncate mr-4">
                 <span>Profile - </span>
                 <a href={image.profile_url} target="_blank" >
                   {getUserHandleIcon()}
                   {image.profile_url}
                 </a>
-              </p>
+              </div>
             )}
-          </a>
+          </div>
           {showModal && (
             <Lightbox
               image={image.image_src}
