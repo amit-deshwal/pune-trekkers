@@ -33,6 +33,11 @@ const Footer: React.FC = () => {
               </a>
               . All Rights Reserved.
             </span>
+            <span className="block text-sm text-gray-500 dark:text-gray-400 sm:text-center">
+              <a href="https://amitdeshwal.com" target='_blank' className="hover:underline font-semibold">
+              Made by Amit
+              </a>
+            </span>
           </div>
         </div>
       </div>
