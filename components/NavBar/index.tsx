@@ -85,6 +85,7 @@ const Navbar: React.FC = () => {
                     onClick={() => router.push('/about')}
                   >
                     <span className="ml-2">About</span>
+                    <span className="ml-2">Contact</span>
                   </a>
                 </li>
               </ul>
