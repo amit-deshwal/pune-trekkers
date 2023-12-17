@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import TrekData from 'next/image'
 import { useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 // @ts-ignore
@@ -6,7 +6,10 @@ import Lightbox from 'react-awesome-lightbox'
 import 'react-awesome-lightbox/build/style.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGlobeAsia } from '@fortawesome/free-solid-svg-icons'
-import { faSquareTwitter, faInstagram } from '@fortawesome/free-brands-svg-icons'
+import {
+  faSquareTwitter,
+  faInstagram,
+} from '@fortawesome/free-brands-svg-icons'
 
 export async function getServerSideProps() {
   const supabaseAdmin = createClient(
@@ -17,7 +20,7 @@ export async function getServerSideProps() {
   const { data } = await supabaseAdmin.from('images').select('*').order('id')
   return {
     props: {
-      images: data,
+      trekData: data,
     },
   }
 }
@@ -26,7 +29,7 @@ function cn(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-type Image = {
+type TrekData = {
   id: number
   image_src: string
   name: string
@@ -34,21 +37,37 @@ type Image = {
   place: string
   profile_type: string
   profile_url: string
+  created_at: any
+  date: string
 }
 
-export default function Gallery({ images }: { images: Image[] }) {
+export default function Gallery({ trekData }: { trekData: TrekData[] }) {
+  trekData.sort((a: any, b: any) => b.id - a.id)
+  const data = trekData.map((el: TrekData) => {
+    el.created_at = new Date(el.created_at)
+    const options = {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    } as Intl.DateTimeFormatOptions
+    const formattedDate = new Intl.DateTimeFormat('en-US', options).format(
+      el.created_at
+    )
+    el.date = formattedDate
+    return el
+  })
   return (
     <>
       <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-4">
-        {images.map((image) => (
-          <BlurImage key={image.id} image={image} />
+        {data.map((el: TrekData) => (
+          <BlurImage key={el.id} trek={el} />
         ))}
       </div>
     </>
   )
 }
 
-function BlurImage({ image }: { image: Image }) {
+function BlurImage({ trek }: { trek: TrekData }) {
   const [isLoading, setLoading] = useState(true)
   const [showModal, showShowModal] = useState(false)
   const handleOnClick = () => {
@@ -58,13 +77,13 @@ function BlurImage({ image }: { image: Image }) {
   const getUserHandleIcon = () => {
     return (
       <>
-        {image.profile_type === 'website' && (
+        {trek.profile_type === 'website' && (
           <FontAwesomeIcon icon={faGlobeAsia} className="mr-1 text-xl" />
         )}
-        {image.profile_type === 'twitter' && (
-          <FontAwesomeIcon icon={faSquareTwitter} className="mr-1 text-xl"  />
+        {trek.profile_type === 'twitter' && (
+          <FontAwesomeIcon icon={faSquareTwitter} className="mr-1 text-xl" />
         )}
-        {image.profile_type === 'instagram' && (
+        {trek.profile_type === 'instagram' && (
           <FontAwesomeIcon icon={faInstagram} className="mr-1 text-xl" />
         )}
       </>
@@ -73,14 +92,14 @@ function BlurImage({ image }: { image: Image }) {
 
   return (
     <>
-      {image.image_src && (
+      {trek.image_src && (
         <>
-          <div className="group rounded-md shadow px-4 pb-8">
+          <div className="group rounded-md px-4 pb-8 shadow">
             <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
-              <Image
+              <TrekData
                 onClick={() => handleOnClick()}
-                alt={image.place}
-                src={image.image_src}
+                alt={trek.place}
+                src={trek.image_src}
                 layout="fill"
                 objectFit="cover"
                 className={cn(
@@ -92,31 +111,34 @@ function BlurImage({ image }: { image: Image }) {
                 onLoadingComplete={() => setLoading(false)}
               />
             </div>
-            {image.name && (
+            {trek.name && (
               <h3 className="text-md mt-4 text-gray-900">
-                Submitted by - {image.name}
+                Submitted by - {trek.name}
               </h3>
             )}
 
-            {image.place && (
+            {trek.place && (
               <h3 className="text-md mt-2 text-gray-900">
-                Place - {image.place}
+                Place - {trek.place}
               </h3>
             )}
-            {image.profile_url && (
-              <div className="mt-2 text-sm font-medium text-gray-800 truncate mr-4">
+            {trek.profile_url && (
+              <div className="mt-2 mr-4 truncate text-sm font-medium text-gray-800">
                 <span>Profile - </span>
-                <a href={image.profile_url} target="_blank" >
+                <a href={trek.profile_url} target="_blank">
                   {getUserHandleIcon()}
-                  {image.profile_url}
+                  {trek.profile_url}
                 </a>
               </div>
+            )}
+            {trek.created_at && (
+              <h3 className="text-md mt-4 text-gray-900">{trek.date}</h3>
             )}
           </div>
           {showModal && (
             <Lightbox
-              image={image.image_src}
-              title={image.place}
+              image={trek.image_src}
+              title={trek.place}
               onClose={() => showShowModal(false)}
             />
           )}
