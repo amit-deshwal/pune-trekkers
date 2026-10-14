@@ -1,63 +1,8 @@
-import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft, faBars } from '@fortawesome/free-solid-svg-icons'
-import { useRouter } from 'next/router'
-
-function AboutUs() {
-  const router = useRouter()
-
-  return (
-    <div className="mx-auto max-w-4xl lg:max-w-screen-lg lg:px-32 lg:pt-16">
-      <a
-        className="text-md flex items-center px-3 py-2 font-bold uppercase leading-snug"
-        onClick={() => router.push('/')}
-      >
-        <FontAwesomeIcon
-          icon={faArrowLeft}
-          className="mb-4 lg:mb-8 scale-100 cursor-pointer text-2xl duration-200 ease-in hover:scale-90 hover:opacity-80"
-        />
-      </a>
-      <h1 className="mb-4 px-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-3xl lg:text-5xl">
-        <span className="bg-gradient-to-r from-sky-400 to-emerald-600 bg-clip-text text-transparent">
-          About Us
-        </span>
-      </h1>
-      <p className="px-4 text-md lg:text-lg text-gray-900">
-        🌄 Welcome to Pune Trekkers! 🏞️ We are a vibrant community of outdoor
-        enthusiasts passionate about exploring the breathtaking landscapes
-        surrounding Pune. 🏔️
-        <br></br> <br></br>
-        At Pune Trekkers, we believe in immersing ourselves in nature to truly
-        experience its beauty. Join us on our regular treks to serene mountains,
-        dense forests, picturesque valleys, and cascading waterfalls. 🌳🌊 Our
-        treks cater to all levels of experience, ensuring everyone can
-        participate and enjoy the journey.
-        <br></br>
-        <br></br>
-        What sets Pune Trekkers apart is our strong sense of community. 🤝 We
-        foster an inclusive and supportive environment, where members from all
-        walks of life come together as a close-knit family. Our treks not only
-        connect you with nature but also forge lasting friendships, where you
-        can share stories and create cherished memories. 😊
-        <br></br> <br></br>
-        Whether you're an avid hiker or a beginner, Pune Trekkers welcomes you
-        to join us on our exciting journeys! 🎉 Come, let's explore breathtaking
-        trails, conquer new heights, and create unforgettable moments together.
-        🥾🌟
-      </p>
-      <p className="mt-8 px-4 text-md lg:text-lg text-black truncate">
-        Group link -{' '}
-        <a
-          href="https://chat.whatsapp.com/LhZRnE30sWG5uTGEvGRghH"
-          target="_blank"
-        >
-          <span className="font-semibold ">
-            https://chat.whatsapp.com/LhZRnE30sWG5uTGEvGRghH
-          </span>
-        </a>
-      </p>
-    </div>
-  )
-}
-
-export default AboutUs
+import Link from 'next/link'
+import Seo from '../../components/Seo'
+import { PageIntro, Value, JoinBanner, Note } from '../../components/Shared'
+import { getContent } from '../../lib/content'
+import type { SiteContent } from '../../lib/content-schema'
+import { formatDate } from '../../lib/site'
+export async function getServerSideProps(){return {props:await getContent()}}
+export default function About({content}: {content:SiteContent}){return <><Seo title="Our story"/><PageIntro eyebrow="PEOPLE FIRST. PEAKS SECOND." title="A shared trail starts with a simple hello.">Born from a need on Reddit. Built by people who wanted to get outdoors, together.</PageIntro><div className="container editorial"><div className="editorial-main"><h2>From an online conversation to the outdoors.</h2><p>Pune Trekkers began with a community need: finding people around Pune to go trekking with. The idea was simple—bring people together, make a plan, and share the actual cost of getting there.</p><p>Today, approximately 2,300 members connect across three WhatsApp groups. We’re students, working people, first-timers and experienced hikers, brought together by a love of the outdoors.</p><h2>Community over commerce.</h2><p>Current community treks are not organized for profit. This is a community initiative; we do not claim registered NGO, charity or company status. We want participation to be welcoming, expenses to be understandable, and respect to be non-negotiable.</p><h2>How a trek comes together.</h2><ol className="steps"><li><strong>A route and a responsible plan.</strong><p>Coordinators check the route, expected conditions, access requirements, transport and the group’s abilities.</p></li><li><strong>A clear briefing before you commit.</strong><p>The organizer shares the difficulty, meeting point, equipment, capacity, cancellation terms and estimated cost. A proposal becomes confirmed only when the organizer says so.</p></li><li><strong>Actual expenses, divided openly.</strong><p>Participants agree which costs are shared. Transport, fees, food and other agreed expenses are divided among participants; estimates may change with group size. The coordinator should provide the final breakdown and settle any balance.</p></li></ol><h2>Our trail so far.</h2>{content.timeline.length?<ol className="timeline">{content.timeline.map(t=><li key={t.date+t.title}><time>{formatDate(t.date)}</time><h3>{t.title}</h3><p>{t.detail}</p></li>)}</ol>:<Note>Our original gallery contains uploads from 2023, including Rajgad, Ratangad and Jivdhan. We’re checking the actual trek dates before publishing a dated timeline.</Note>}<p><Link href="/past-treks" className="text-link">Explore the original archive →</Link></p><h2>The people who make it happen.</h2>{content.people.length?content.people.map(p=><article key={p.name}><h3>{p.name} · {p.role}</h3><p>{p.bio}</p></article>):<p>Admins, coordinators and volunteers keep the community moving. We’ll introduce them here once their roles and permission to publish are confirmed. You can also <Link href="/volunteer">express interest in volunteering</Link>.</p>}<h2>Our community and any future ventures.</h2><p>Any future paid venture would need its own clearly identified operator, prices, terms and relationship to this community. Participation in this community does not imply agreement to a future commercial service. No such service is offered here.</p></div><aside className="editorial-aside"><Value icon="people" title="Approximately 2,300">Members across three WhatsApp groups, as shared by the community.</Value><Value icon="rupee" title="Actual expenses">No profit on current community treks.</Value><Value icon="heart" title="Everyone deserves respect">Our conduct, inclusion and photo-consent rules apply to all members.</Value><Link href="/safety" className="text-link">Read our guidelines →</Link></aside></div><JoinBanner/></>}

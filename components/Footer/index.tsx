@@ -1,48 +1,5 @@
-import React from 'react'
-
-const Footer: React.FC = () => {
-  return (
-    <footer className="sticky top-[100vh]">
-      <div className="mx-auto w-full p-4 px-10 md:px-36 md:py-8 lg:px-72">
-        <div className="flex flex-col items-baseline justify-between md:flex-row md:items-center">
-          <a
-            href="#"
-            className="mb-4 flex items-baseline sm:mb-0 md:items-center"
-          >
-            <div className="flex items-center">
-              <div>
-                {' '}
-                <img
-                  src="./hiking.png"
-                  className="mr-3 h-8"
-                  alt="Pune Trekker Logo"
-                />
-              </div>
-              <div>
-                <span className="self-center whitespace-nowrap text-2xl font-semibold ">
-                  Pune Trekkers
-                </span>
-              </div>
-            </div>
-          </a>
-          <div className="md:mt-2">
-            <span className="block text-sm text-gray-500 dark:text-gray-400 sm:text-center">
-              © 2023{' '}
-              <a href="#" className="hover:underline">
-                Pune Trekkers™
-              </a>
-              . All Rights Reserved.
-            </span>
-            <span className="block text-sm text-gray-500 dark:text-gray-400 sm:text-center">
-              <a href="https://amitdeshwal.com" target='_blank' className="hover:underline font-semibold">
-              Made by Amit
-              </a>
-            </span>
-          </div>
-        </div>
-      </div>
-    </footer>
-  )
-}
-
-export default Footer
+import Link from 'next/link'
+import { Brand } from '../NavBar'
+import { site } from '../../lib/site'
+import Icon from '../Icon'
+export default function Footer() { return <footer className="site-footer"><div className="container footer-grid"><div className="footer-intro"><Brand/><p>A little less scrolling.<br/>A little more exploring. Together.</p><span className="location"><Icon name="pin" size={16}/> Rooted in Pune. At home outdoors.</span></div><div><h3>Hit the trail</h3><Link href="/treks">Upcoming treks</Link><Link href="/explore-maharashtra">Explore Maharashtra</Link><Link href="/past-treks">Past treks & gallery</Link><Link href="/join">Join the community</Link><Link href="/faq">Your questions, answered</Link></div><div><h3>Our community</h3><Link href="/about">Our story</Link><Link href="/safety">Safety & inclusion</Link><Link href="/conservation">Conservation</Link><Link href="/volunteer">Volunteer with us</Link></div><div><h3>Say hello</h3><a href={`mailto:${site.email}`} className="email-link">{site.email}</a><p className="small">A volunteer-run inbox.<br/>Replies may take a few days.</p><Link href="/contact">Contact & photo requests <span aria-hidden="true">↗</span></Link></div></div><div className="container footer-bottom"><span>© {new Date().getFullYear()} Pune Trekkers · Community over commerce.</span><div><Link href="/terms">Community rules</Link><Link href="/privacy">Privacy & photo consent</Link></div><span>Made for the way outdoors.</span></div></footer> }

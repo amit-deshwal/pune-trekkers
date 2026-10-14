@@ -1,149 +1,22 @@
-import TrekData from 'next/image'
-import { useState } from 'react'
-import { createClient } from '@supabase/supabase-js'
-// @ts-ignore
-import Lightbox from 'react-awesome-lightbox'
-import 'react-awesome-lightbox/build/style.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGlobeAsia } from '@fortawesome/free-solid-svg-icons'
-import {
-  faSquareTwitter,
-  faInstagram,
-} from '@fortawesome/free-brands-svg-icons'
-
-export async function getServerSideProps() {
-  const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-    process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-  )
-
-  const { data } = await supabaseAdmin.from('images').select('*').order('id')
-  return {
-    props: {
-      trekData: data,
-    },
-  }
-}
-
-function cn(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}
-
-type TrekData = {
-  id: number
-  image_src: string
-  name: string
-  userName: string
-  place: string
-  profile_type: string
-  profile_url: string
-  created_at: any
-  date: string
-}
-
-export default function Gallery({ trekData }: { trekData: TrekData[] }) {
-  trekData.sort((a: any, b: any) => b.id - a.id)
-  const data = trekData.map((el: TrekData) => {
-    el.created_at = new Date(el.created_at)
-    const options = {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    } as Intl.DateTimeFormatOptions
-    const formattedDate = new Intl.DateTimeFormat('en-US', options).format(
-      el.created_at
-    )
-    el.date = formattedDate
-    return el
-  })
-  return (
-    <>
-      <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-4">
-        {data.map((el: TrekData) => (
-          <BlurImage key={el.id} trek={el} />
-        ))}
-      </div>
-    </>
-  )
-}
-
-function BlurImage({ trek }: { trek: TrekData }) {
-  const [isLoading, setLoading] = useState(true)
-  const [showModal, showShowModal] = useState(false)
-  const handleOnClick = () => {
-    showShowModal(true)
-  }
-
-  const getUserHandleIcon = () => {
-    return (
-      <>
-        {trek.profile_type === 'website' && (
-          <FontAwesomeIcon icon={faGlobeAsia} className="mr-1 text-xl" />
-        )}
-        {trek.profile_type === 'twitter' && (
-          <FontAwesomeIcon icon={faSquareTwitter} className="mr-1 text-xl" />
-        )}
-        {trek.profile_type === 'instagram' && (
-          <FontAwesomeIcon icon={faInstagram} className="mr-1 text-xl" />
-        )}
-      </>
-    )
-  }
-
-  return (
-    <>
-      {trek.image_src && (
-        <>
-          <div className="group rounded-md px-4 pb-8 shadow">
-            <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
-              <TrekData
-                onClick={() => handleOnClick()}
-                alt={trek.place}
-                src={trek.image_src}
-                layout="fill"
-                objectFit="cover"
-                className={cn(
-                  'cursor-pointer duration-700 ease-in-out group-hover:opacity-75',
-                  isLoading
-                    ? 'scale-110 blur-2xl grayscale'
-                    : 'scale-100 blur-0 grayscale-0'
-                )}
-                onLoadingComplete={() => setLoading(false)}
-              />
-            </div>
-            {trek.name && (
-              <h3 className="text-md mt-4 text-gray-900">
-                Submitted by - {trek.name}
-              </h3>
-            )}
-
-            {trek.place && (
-              <h3 className="text-md mt-2 text-gray-900">
-                Place - {trek.place}
-              </h3>
-            )}
-            {trek.profile_url && (
-              <div className="mt-2 mr-4 truncate text-sm font-medium text-gray-800">
-                <span>Profile - </span>
-                <a href={trek.profile_url} target="_blank">
-                  {getUserHandleIcon()}
-                  {trek.profile_url}
-                </a>
-              </div>
-            )}
-            {trek.created_at && (
-              <h3 className="text-md mt-4 text-gray-900">{trek.date}</h3>
-            )}
-          </div>
-          {showModal && (
-            <Lightbox
-              image={trek.image_src}
-              title={trek.place}
-              onClose={() => showShowModal(false)}
-            />
-          )}
-        </>
-      )}
-    </>
-  )
+import Link from 'next/link'
+import { getContent } from '../lib/content'
+import { upcomingTreks, type SiteContent } from '../lib/content-schema'
+import Seo from '../components/Seo'
+import Icon from '../components/Icon'
+import { ButtonLink, SectionHeading, TrekCard, Value, JoinBanner, FAQList, PhotoImage } from '../components/Shared'
+export async function getServerSideProps(){return {props:await getContent()}}
+export default function Home({content,preview,contentUnavailable}: {content:SiteContent;preview:boolean;contentUnavailable:boolean}) {
+ const upcoming=contentUnavailable?[]:upcomingTreks(content.treks); const past=content.treks.filter(t=>t.status==='completed');
+ return <><Seo title="Good trails. Better company."/>
+ <section className="hero wide-container"><div className="hero-image">{content.hero?<PhotoImage photo={content.hero} priority/>:preview?<img src="/api/preview-photo/1" alt="Pune Trekkers together on a green forest trail; original archive photo awaiting consent review" fetchPriority="high"/>:<div className="hero-placeholder"><Icon name="mountain" size={350}/></div>}</div><div className="hero-shade"/><div className="hero-content"><span className="hero-kicker"><span/> YOUR PEOPLE ARE OUT THERE</span><h1>The trail feels better<br/>when you go <em>together.</em></h1><p>A friendly Pune community for anyone who wants<br className="desktop-break"/> to get outside—whether it’s your first trek<br className="desktop-break"/> or your fiftieth.</p><div className="hero-actions"><ButtonLink href="/join">Join the community</ButtonLink><Link href="/treks" className="hero-story">See upcoming treks <Icon name="arrow" size={17}/></Link></div><div className="hero-proof"><Icon name="heart" size={22}/><span><strong>New to trekking? You belong here.</strong><small>Community-led. Shared actual costs. No profit.</small></span></div></div><div className="hero-caption"><Icon name="pin" size={15}/>{content.hero?content.hero.caption:preview?'Rajgad archive · photo permission review pending':'Real community photographs coming soon'}</div><span className="hero-side-note">COME AS YOU ARE</span></section>
+ <div className="trust-strip container"><span><Icon name="people"/>About 2,300 community members</span><span><Icon name="chat"/>3 WhatsApp groups</span><span><Icon name="rupee"/>Actual expenses, shared fairly</span><span><Icon name="heart"/>New faces always welcome</span></div>
+ <section className="container welcome-path" aria-label="How Pune Trekkers works"><div className="welcome-title"><span className="eyebrow">FIRST TIME? START HERE.</span><h2>No gear knowledge.<br/>No group of friends.<br/><em>No problem.</em></h2><p>You do not have to arrive as an expert. Start with the right trek, ask questions, and meet people who are figuring it out too.</p></div><div className="welcome-steps"><article><span>01</span><Icon name="chat" size={26}/><h3>Join the community</h3><p>Read the rules and meet a group of people who also want to get outdoors.</p></article><article><span>02</span><Icon name="compass" size={26}/><h3>Choose your pace</h3><p>Look for a trek that matches your experience, fitness and comfort level.</p></article><article><span>03</span><Icon name="people" size={26}/><h3>Find your people</h3><p>Show up, say hello and take the trail one step at a time—together.</p></article></div><Link href="/join" className="text-link">Your first step is simple <Icon name="arrow" size={18}/></Link></section>
+ <section className="container story-section"><div><span className="eyebrow">A COMMUNITY. A COMMON CALLING.</span><h2>You don’t need to be<br/>a trekker to start.</h2></div><div><p>It started with a simple need on Reddit: finding people in Pune to get outdoors with. Today, Pune Trekkers brings together curious beginners, regular hikers, and people who simply needed a reason to step outside.</p><p>No tour packages. No profit on community treks. Just a shared plan, shared actual expenses, and a trail ahead.</p><Link href="/about" className="text-link">A little more about us <Icon name="arrow" size={18}/></Link></div></section>
+ <section className="section-tinted"><div className="container section-space"><SectionHeading eyebrow="MAKE ROOM FOR A LITTLE ADVENTURE" title="Your next weekend looks different." href="/treks" link="Explore upcoming treks">A new trail. A few new faces. Something to look forward to.</SectionHeading>{upcoming.length?<div className="card-grid">{upcoming.slice(0,3).map(t=><TrekCard key={t.slug} trek={t}/>)}</div>:<div className="upcoming-empty"><div className="empty-art"><Icon name="mountain" size={80}/><span className="sun-dot"/><span className="trail-line"/></div><div><span className="status-pill"><span/>{contentUnavailable?'SCHEDULE TEMPORARILY UNAVAILABLE':'THE NEXT ADVENTURE IS TAKING SHAPE'}</span><h3>{contentUnavailable?'Let’s check with the coordinators.':'Good things are on the horizon.'}</h3><p>{contentUnavailable?'We couldn’t load the latest schedule. Please check back or email us before making plans.':'No upcoming treks are confirmed here yet. Join the community to hear when the next plan is ready.'}</p><ButtonLink href="/join">Be part of the next one</ButtonLink></div><div className="empty-side"><Icon name="compass" size={29}/><p>A date on this website means the organizers have confirmed it.</p><Link href="/safety">Know before you go ↗</Link></div></div>}<div className="section-footnote"><Icon name="shield" size={16}/> Plans depend on weather, permissions, and group readiness. Always check the latest organizer briefing.</div></div></section>
+ <section className="container independent-callout"><div><span className="eyebrow">GO ON YOUR OWN, WITH A PLAN</span><h2>Explore Maharashtra at your pace.</h2><p>Choose a self-guided route idea by difficulty, then read the original planning notes before you decide whether it fits your day.</p></div><div><span>7 original guides</span><p>Fort walks, peak days and bigger Sahyadri outings. These are independent ideas, never Pune Trekkers events.</p><ButtonLink href="/explore-maharashtra">Explore Maharashtra trails</ButtonLink></div></section>
+ <section className="container section-space"><SectionHeading eyebrow="A FEW PAGES FROM OUR TRAIL DIARY" title="Muddy shoes. Lasting memories." href="/past-treks" link="Browse the archive">A look back at the places and people in our original community gallery.</SectionHeading><div className="card-grid">{[past.find(t=>t.slug==='rajgad-fort'),past.find(t=>t.slug==='ratangad'),past.find(t=>t.slug==='jivdhan-night-camping')].filter(Boolean).map(t=><TrekCard key={t!.slug} trek={t!} preview={preview}/>)}</div>{preview&&<p className="subtle-note">Local design preview: legacy photos await renewed website permission. Public pages show only approved images.</p>}</section>
+ <section className="container values-section"><SectionHeading eyebrow="THE WAY WE WALK" title="Different people. Shared values."/><div className="values-grid"><Value icon="rupee" title="Shared costs. Zero markup.">We split the actual agreed expenses. Current community treks are not organized for profit.</Value><Value icon="people" title="A place to belong.">Women, solo trekkers and first-timers are welcome on treks that suit their ability.</Value><Value icon="shield" title="Look out for each other.">Respect, preparation, consent, and a helping hand are part of every good adventure.</Value><Value icon="leaf" title="Leave it better.">Carry back your waste. Respect local communities. Care for the places that bring us together.</Value></div><Link href="/safety" className="text-link">Read our community guidelines <Icon name="arrow" size={18}/></Link></section>
+ <section className="conservation-banner wide-container"><div className="contour-art" aria-hidden="true"><Icon name="leaf" size={150}/></div><div><span className="eyebrow">BEYOND THE SUMMIT</span><h2>The outdoors gives us a lot.<br/>Let’s give a little back.</h2><p>Our next chapter is about caring for these landscapes, too. We’re exploring trail cleanups, habitat restoration, and outdoor education—with the right people and local guidance.</p><div className="inline-actions"><ButtonLink href="/conservation">Explore our vision</ButtonLink><span className="planned-label">A vision we’re growing into</span></div></div></section>
+ <section className="container faq-home"><div><span className="eyebrow">FIRST TREK? START HERE.</span><h2>A few things<br/>you might wonder.</h2><Link href="/faq" className="text-link">All your questions <Icon name="arrow" size={18}/></Link></div><FAQList limit={4}/></section><JoinBanner/>
+ </>
 }
