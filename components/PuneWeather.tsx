@@ -22,13 +22,10 @@ export default function PuneWeather() {
   if (failed) return null
   const band = temp === null ? null : temp < 18 ? 'Cold' : temp <= 28 ? 'Mild' : 'Hot'
   return (
-    <aside className="weather" aria-label="Current temperature in Pune">
-      <div className="weather-head"><span>Pune right now</span><Icon name="sun" size={18}/></div>
-      <div className="weather-dial" style={{ ['--p' as string]: temp === null ? 0 : Math.max(0.08, Math.min(1, (temp - 5) / 40)) }}>
-        <strong>{temp === null ? '–' : `${temp}°C`}</strong>
-      </div>
-      <ul className="weather-bands">{['Cold', 'Mild', 'Hot'].map(label => <li key={label} className={label === band ? 'is-active' : undefined}>{label}</li>)}</ul>
-      <p>City temperature. Always check the forecast for the trail itself.</p>
+    <aside className="weather" aria-label="Current city temperature in Pune. Always check the forecast for the trail itself." title="City temperature, not trail weather">
+      <Icon name="sun" size={18}/>
+      <strong>{temp === null ? '–' : `${temp}°C`}</strong>
+      <span>Pune now{band ? ` · ${band}` : ''}</span>
     </aside>
   )
 }

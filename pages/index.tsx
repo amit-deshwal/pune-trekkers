@@ -34,14 +34,12 @@ export default function Home({content,preview,contentUnavailable}: {content:Site
           <Link href="/join" className="cta-pill"><span className="cta-dot"><Icon name="arrow" size={20}/></span>Join the community</Link>
           <Link href="/treks" className="quiet-link">See upcoming treks</Link>
         </div>
-        <PuneWeather/>
       </div>
       <div className="scene-panel">
         <div className="scene-bg">
           <svg className="scene-poster" viewBox="0 0 800 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="M0 420 160 300l90 70 150-190 140 170 90-60 170 150v200H0Z" className="ridge-far"/><path d="M400 180 372 222l16-8 12 16 12-16 16 8Z" fill="#fff" opacity=".9"/><path d="M0 500c140-90 260-60 380-120s250-20 420 70v190H0Z" className="ridge-mid"/><path d="M0 590c180-60 300-20 440-60s240-10 360 30v80H0Z" className="ridge-near"/></svg>
           {content.hero?<PhotoImage photo={content.hero} priority/>:<HeroScene phase={phase}/>}
         </div>
-        <div className="scene-notch" aria-hidden="true"/>
         <div className="scene-phases" role="group" aria-label="Time of day. The scene follows your local time; choose one to preview.">
           {phases.map(p=><button key={p.id} type="button" aria-pressed={p.id===phase} onClick={()=>{setManual(true);setPhase(p.id)}}>{p.label}</button>)}
         </div>
@@ -54,6 +52,7 @@ export default function Home({content,preview,contentUnavailable}: {content:Site
           <span className="stat-faces" aria-hidden="true"><i><Icon name="people" size={18}/></i><i><Icon name="heart" size={18}/></i><i><Icon name="mountain" size={18}/></i></span>
           <p><strong>~2,300</strong><span>members across 3 groups</span></p>
         </div>
+        <PuneWeather/>
         {content.hero&&<p className="scene-caption">{content.hero.caption}</p>}
       </div>
       <ul className="hero2-pills">
