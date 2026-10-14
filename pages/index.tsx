@@ -126,7 +126,7 @@ export default function Home({content,preview,contentUnavailable}: {content:Site
       <div className="values-grid">
         <Value icon="rupee" title="Shared costs, no profit">We split the actual agreed expenses. Current community treks are not organized for profit.</Value>
         <Value icon="people" title="Everyone belongs">Women, solo trekkers and first-timers are welcome on treks that suit their ability.</Value>
-        <Value icon="shield" title="Safety and consent">Preparation, respect and consent are part of every trek. Photos are published only with permission.</Value>
+        <Value icon="shield" title="Safety and consent">Preparation and respect are part of every trek. Gallery uploads are managed by admins.</Value>
         <Value icon="leaf" title="Leave it better">Carry back your waste, respect local communities and care for the places we walk.</Value>
       </div>
       <p style={{marginTop:24}}><Link href="/safety" className="text-link">Read our safety and community guidelines <Icon name="arrow" size={18}/></Link></p>

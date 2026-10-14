@@ -31,7 +31,8 @@ for (const e of load('osm.json').elements) {
   const name = [t['name:en'], t.name].find(n => n && latin(n))
   if (!name || lat == null) continue
   const ele = parseFloat(t.ele)
-  cands.push({ name, alt: [t.alt_name, t.name].filter(Boolean), lat, lon, kind: t.historic || t.fort_type ? 'fort' : 'peak', elevationM: Number.isFinite(ele) ? Math.round(ele) : null, sources: ['OpenStreetMap'] })
+  const isFort = t.historic === 'fort' || !!t.fort_type || t.castle_type === 'fortress' || (t.historic === 'castle' && /\b(fort|killa|durg|gad|garh)\b/i.test(name))
+  cands.push({ name, alt: [t.alt_name, t.name].filter(Boolean), lat, lon, kind: isFort ? 'fort' : 'peak', elevationM: Number.isFinite(ele) ? Math.round(ele) : null, sources: ['OpenStreetMap'] })
 }
 for (const b of load('wd.json').results.bindings) {
   const m = /Point\(([-\d.]+) ([-\d.]+)\)/.exec(b.c.value)
@@ -56,7 +57,7 @@ for (const c of cands) {
 // Keep Maharashtra-ish box and drop obvious city hills/viewpoints with no fort signal or elevation.
 const inMH = (c: Cand) => c.lat > 15.5 && c.lat < 22.1 && c.lon > 72.5 && c.lon < 80.95
 // Wikidata has some descriptive labels ("Remains of an old fort", "Palace of …") that are not hikes.
-const descriptive = (c: Cand) => /^(old|remains|ruins|palace)\b/i.test(c.name)
+const descriptive = (c: Cand) => /^(old|remains|ruins|palace)\b|\bpalace\b|\bwall remnant\b|^fort ruins$/i.test(c.name)
 const kept = merged.filter(c => inMH(c) && !descriptive(c))
 
 const places: Pt[] = []
@@ -152,8 +153,9 @@ const hikes = linked.map(c => {
   const range = c.ts?.taluka && !/^(nil|none|-)$/i.test(c.ts.taluka) && c.ts.taluka !== c.ts.district ? c.ts.taluka : null
   const region = o?.region ?? (c.ts ? [range, c.ts.district].filter(Boolean).join(' · ') : null)
   return {
-    slug, name: o?.name ?? titleCase(c.name), kind: c.kind, lat: +c.lat.toFixed(5), lon: +c.lon.toFixed(5),
-    elevationM: ele && ele > 0 ? ele : null, difficulty: o?.difficulty ?? grade(c.ts?.difficulty), region,
+    slug, name: o?.name ?? titleCase(c.name), kind: o?.kind ?? c.kind, lat: +c.lat.toFixed(5), lon: +c.lon.toFixed(5),
+    // OSM/Wikidata heights sometimes contain feet entered as metres. Values above Kalsubai (1646 m) are withheld.
+    elevationM: ele && ele > 0 && ele <= 1646 ? ele : null, difficulty: o?.difficulty ?? grade(c.ts?.difficulty), region,
     hidden: o?.hidden ?? (!o && (c.sources.length === 1 || (!c.sources.includes('Wikidata') && !c.sources.includes('Maharashtra Tourism')))),
     // Popular = well documented (official page, curated, or in both Trekshitiz and Wikidata). Curated "hidden" wins.
     popular: !(o?.hidden) && (!!o || c.sources.includes('Maharashtra Tourism') || (c.sources.includes('Trekshitiz') && c.sources.includes('Wikidata'))),

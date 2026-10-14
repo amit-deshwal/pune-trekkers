@@ -1,21 +1,6 @@
 {
   "_add": [
     {
-      "name": "Kalsubai Peak",
-      "kind": "peak",
-      "lat": 19.6011,
-      "lon": 73.7095,
-      "elevationM": 1646,
-      "difficulty": "Challenging",
-      "region": "Akole · Ahmednagar",
-      "starts": [
-        {
-          "name": "Bari",
-          "note": "Main route, with ladders on the steep sections."
-        }
-      ]
-    },
-    {
       "name": "Dhak Bahiri",
       "kind": "fort",
       "lat": 18.8723,
@@ -66,11 +51,19 @@
     "starts": [
       {
         "name": "Gunjavane",
-        "note": "Chor Darwaja route; steeper."
+        "note": "Common route to Padmavati Machi; Maharashtra Tourism describes it as moderate."
       },
       {
         "name": "Pali",
-        "note": "Pali Darwaja route; longer but gentler."
+        "note": "Route to Sanjivani Machi; Maharashtra Tourism describes this option as more challenging."
+      }
+    ]
+  },
+  "torna": {
+    "starts": [
+      {
+        "name": "Velhe",
+        "note": "Maharashtra Tourism describes the main trail from Velhe."
       }
     ]
   },
@@ -144,6 +137,7 @@
   },
   "tikona-peak": {
     "name": "Tikona Fort",
+    "kind": "fort",
     "difficulty": "Easy",
     "region": "Maval · Pune",
     "starts": [
@@ -175,6 +169,16 @@
       {
         "name": "Waghambe",
         "note": "Common route from the Salota side."
+      }
+    ]
+  },
+  "kalasubai-peak": {
+    "name": "Kalsubai Peak",
+    "region": "Akole · Ahmednagar",
+    "starts": [
+      {
+        "name": "Bari",
+        "note": "Base village identified by Maharashtra Tourism for the main route."
       }
     ]
   }
