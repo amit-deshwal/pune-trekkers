@@ -11,15 +11,19 @@ function contrast(foreground:string,background:string){
 }
 test('theme text and focus colours retain WCAG contrast targets',()=>{
   const normalText:[string,string][]=[
-    ['#465346','#f8f7f2'],
-    ['#456045','#f8f7f2'],
-    ['#4b554d','#f0f0e8'],
-    ['#7a4628','#fffaf3'],
-    ['#873e21','#f3e7d9'],
-    ['#ffffff','#173222'],
-    ['#f1f4ea','#173222'],
-    ['#253c2e','#f3c48f'],
+    ['#141916','#e3e9e5'],
+    ['#3d4843','#e3e9e5'],
+    ['#3d4843','#f2f6f3'],
+    ['#536059','#e3e9e5'],
+    ['#536059','#f2f6f3'],
+    ['#17594c','#e3e9e5'],
+    ['#17594c','#f2f6f3'],
+    ['#ffffff','#141916'],
+    ['#ffffff','#17594c'],
+    ['#ffffff','#b84d14'],
+    ['#141916','#f6e6b8'],
+    ['#b84d14','#f2f6f3'],
   ]
   for(const [foreground,background] of normalText)assert.ok(contrast(foreground,background)>=4.5,`${foreground} on ${background}`)
-  assert.ok(contrast('#7a3b1f','#f8f7f2')>=3,'keyboard focus indicator')
+  assert.ok(contrast('#7a3b1f','#e3e9e5')>=3,'keyboard focus indicator')
 })

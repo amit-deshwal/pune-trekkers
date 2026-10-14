@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import Icon, { type IconName } from './Icon'
 import { formatDate } from '../lib/site'
@@ -12,7 +12,13 @@ export function Note({children}: {children:ReactNode}) {return <div className="n
 export function JoinBanner() {return <section className="join-banner container"><div className="join-icon"><Icon name="mountain" size={58}/></div><div><span className="eyebrow">YOUR NEXT CHAPTER STARTS OUTSIDE</span><h2>Come for the trail. Stay for the people.</h2><p>You don’t need a group of friends to start. You’ll find one here.</p></div><ButtonLink href="/join">Find your community</ButtonLink></section>}
 export function PhotoImage({photo,priority=false, className=''}: {photo:Photo;priority?:boolean;className?:string}) {const [failed,setFailed]=useState(false);return failed?<div className={`photo-fallback ${className}`}><Icon name="mountain" size={40}/><span>Photo unavailable</span></div>:<Image className={className} src={photo.src} alt={photo.alt} fill sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" priority={priority} onError={()=>setFailed(true)} style={{objectFit:'cover'}}/>}
 const previews:Record<string,number>={'jivdhan-night-camping':13,'devkund-waterfall':11,'ratangad':10,'tarsar-marsar-trek':9,'rohida-fort':7,'goradeshwar':6,'kalavantin-and-prabalgad':5,'rajgad-fort':1}
-export function ArchiveImage({trek,preview=false}: {trek:Trek;preview?:boolean}) {return trek.photos[0]?<PhotoImage photo={trek.photos[0]}/>:preview&&previews[trek.slug]?<img src={`/api/preview-photo/${previews[trek.slug]}`} alt={`Original ${trek.name} archive photograph, pending permission review`} loading="lazy"/>:<div className="photo-fallback"><Icon name="mountain" size={42}/><span>Photos being curated</span></div>}
+export function ArchiveImage({trek,preview=false}: {trek:Trek;preview?:boolean}) {
+  const [missing,setMissing]=useState(false);const ref=useRef<HTMLImageElement>(null)
+  useEffect(()=>{const el=ref.current;if(el&&el.complete&&el.naturalWidth===0)setMissing(true)},[])
+  if(trek.photos[0])return <PhotoImage photo={trek.photos[0]}/>
+  if(preview&&previews[trek.slug]&&!missing)return <img ref={ref} src={`/api/preview-photo/${previews[trek.slug]}`} alt={`Original ${trek.name} archive photograph, pending permission review`} loading="lazy" onError={()=>setMissing(true)}/>
+  return <div className="photo-fallback"><Icon name="mountain" size={42}/><span>Photos being curated</span></div>
+}
 export function TrekCard({trek,preview=false}: {trek:Trek;preview?:boolean}) {const past=trek.status==='completed';return <article className="trek-card"><Link href={`${past?'/past-treks':'/treks'}/${trek.slug}`} className="card-picture" tabIndex={-1} aria-hidden="true"><ArchiveImage trek={trek} preview={preview}/><span className="image-tag">{past?'FROM THE ARCHIVE':trek.status==='confirmed'?'CONFIRMED':'PROPOSED · NOT CONFIRMED'}</span></Link><div className="card-body"><span className="card-meta"><Icon name="pin" size={14}/>{trek.destination}</span><h3><Link href={`${past?'/past-treks':'/treks'}/${trek.slug}`}>{trek.name}</Link></h3><p>{past?'Small moments. Shared adventures. Stories worth keeping.':trek.summary}</p><div className="card-bottom"><span>{trek.date?formatDate(trek.date):past?'Trek date being verified':'Date to be confirmed'}</span><Link href={`${past?'/past-treks':'/treks'}/${trek.slug}`} aria-label={`Explore ${trek.name}`}><Icon name="arrow" size={19}/></Link></div></div></article>}
 export function Value({icon,title,children}: {icon:IconName;title:string;children:ReactNode}) {return <div className="value"><span className="icon-box"><Icon name={icon} size={25}/></span><h3>{title}</h3><p>{children}</p></div>}
 export const faqs = [
