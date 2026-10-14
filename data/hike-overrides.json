@@ -1,0 +1,181 @@
+{
+  "_add": [
+    {
+      "name": "Kalsubai Peak",
+      "kind": "peak",
+      "lat": 19.6011,
+      "lon": 73.7095,
+      "elevationM": 1646,
+      "difficulty": "Challenging",
+      "region": "Akole · Ahmednagar",
+      "starts": [
+        {
+          "name": "Bari",
+          "note": "Main route, with ladders on the steep sections."
+        }
+      ]
+    },
+    {
+      "name": "Dhak Bahiri",
+      "kind": "fort",
+      "lat": 18.8723,
+      "lon": 73.4021,
+      "approx": true,
+      "elevationM": 823,
+      "difficulty": "Challenging",
+      "region": "Karjat · Raigad",
+      "starts": [
+        {
+          "name": "Sandshi",
+          "note": "Base village listed by Trekshitiz (as Sandashi). The final climb to the cave is exposed; go with someone who knows the route."
+        }
+      ],
+      "links": [
+        {
+          "label": "Trekshitiz",
+          "url": "https://trekshitiz.com/fort/index.php?slug=Dhak-Bahiri-fort"
+        }
+      ]
+    }
+  ],
+  "lohagad-fort": {
+    "difficulty": "Easy",
+    "region": "Maval · Pune",
+    "starts": [
+      {
+        "name": "Lohagadwadi",
+        "note": "Road reaches this hamlet below the fort; most walkers start here."
+      },
+      {
+        "name": "Malavli",
+        "note": "Railway station for local trains; walk via Bhaje to Lohagadwadi."
+      }
+    ]
+  },
+  "visapur": {
+    "difficulty": "Moderate",
+    "region": "Maval · Pune",
+    "starts": [
+      {
+        "name": "Malavli",
+        "note": "Railway station; the trail goes via Bhaje village."
+      }
+    ]
+  },
+  "rajgad": {
+    "starts": [
+      {
+        "name": "Gunjavane",
+        "note": "Chor Darwaja route; steeper."
+      },
+      {
+        "name": "Pali",
+        "note": "Pali Darwaja route; longer but gentler."
+      }
+    ]
+  },
+  "sinhagad": {
+    "difficulty": "Moderate",
+    "region": "Haveli · Pune"
+  },
+  "ratangad": {
+    "difficulty": "Moderate",
+    "region": "Akole · Ahmednagar",
+    "starts": [
+      {
+        "name": "Ratanwadi",
+        "note": "Common start near the Amruteshwar temple."
+      }
+    ]
+  },
+  "harishchandragad-fort": {
+    "difficulty": "Challenging",
+    "region": "Akole · Ahmednagar",
+    "starts": [
+      {
+        "name": "Pachnai",
+        "note": "Shortest and most popular route."
+      },
+      {
+        "name": "Khireshwar",
+        "note": "Tolar Khind route; longer."
+      }
+    ]
+  },
+  "irshalgad": {
+    "difficulty": "Challenging",
+    "region": "Khalapur · Raigad",
+    "starts": [
+      {
+        "name": "Irshalwadi",
+        "note": "Hamlet below the pinnacle."
+      }
+    ]
+  },
+  "kalavantin-durg": {
+    "difficulty": "Challenging",
+    "region": "Panvel · Raigad",
+    "starts": [
+      {
+        "name": "Prabalgad Machi",
+        "note": "Reached from Thakurwadi; the climb has exposed rock-cut steps."
+      }
+    ]
+  },
+  "prabalgad": {
+    "difficulty": "Moderate",
+    "region": "Panvel · Raigad",
+    "starts": [
+      {
+        "name": "Prabalgad Machi",
+        "note": "Reached from Thakurwadi."
+      }
+    ]
+  },
+  "korigad": {
+    "difficulty": "Easy",
+    "region": "Mulshi · Pune",
+    "starts": [
+      {
+        "name": "Peth Shahpur",
+        "note": "Road head near Aamby Valley."
+      }
+    ]
+  },
+  "tikona-peak": {
+    "name": "Tikona Fort",
+    "difficulty": "Easy",
+    "region": "Maval · Pune",
+    "starts": [
+      {
+        "name": "Tikona Peth",
+        "note": "Village at the base."
+      }
+    ]
+  },
+  "rajmachi-fort": {
+    "difficulty": "Moderate",
+    "region": "Maval · Pune",
+    "starts": [
+      {
+        "name": "Rajmachi village",
+        "note": "Reached by the long jeep track from Lonavala, or by the climb from Kondivade."
+      }
+    ]
+  },
+  "ghoradeshwar": {
+    "difficulty": "Easy",
+    "region": "Maval · Pune",
+    "hidden": true
+  },
+  "salher": {
+    "difficulty": "Challenging",
+    "region": "Baglan · Nashik",
+    "starts": [
+      {
+        "name": "Waghambe",
+        "note": "Common route from the Salota side."
+      }
+    ]
+  }
+}
