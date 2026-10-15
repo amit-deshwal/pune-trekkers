@@ -1,0 +1,11 @@
+/* Gallery admin: media previews and destructive actions */
+.gallery-admin-item{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:start}
+.gallery-admin-thumb{width:120px;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:#0d1411}
+.gallery-admin-fields{display:flex;flex-direction:column;gap:10px;min-width:0}
+.admin-remove{align-self:flex-start;background:none;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-weight:700;color:#a3311d;cursor:pointer}
+.admin-remove:hover{border-color:#a3311d;background:#fbe9e5}
+.admin-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.button.admin-danger{background:transparent;color:#a3311d;border-color:#a3311d}
+.button.admin-danger:hover{background:#a3311d;color:#fff}
+@media (max-width:520px){.gallery-admin-item{grid-template-columns:1fr}.gallery-admin-thumb{width:100%}}
+

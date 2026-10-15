@@ -1,0 +1,80 @@
+/* Pune Trekkers — calm community design system.
+   Principles: mission first, one primary action, plain language, real photos when approved,
+   high contrast, no decorative motion. Palette is taken from the community's own logo. */
+
+@font-face{font-family:Manrope;src:url('/fonts/manrope.ttf') format('truetype');font-weight:200 800;font-style:normal;font-display:swap}
+
+:root{
+  --bg:#e3e9e5;--surface:#f2f6f3;--tint:#d6e0da;--sun:#f6e6b8;--sky:#d4e7ea;
+  --ink:#141916;--text:#3d4843;--muted:#536059;
+  --green:#17594c;--green-dark:#0f3f35;--orange:#b84d14;--orange-soft:#f6dcc8;--teal:#2fa58f;
+  --line:#c6d1ca;--radius:16px;--radius-lg:28px;
+  --shadow:inset 0 1px 0 rgba(255,255,255,.75),0 14px 34px rgba(32,56,48,.09);
+  --font:Manrope,'Avenir Next',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  --focus:#7a3b1f;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:100px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}button:disabled{cursor:wait;opacity:.7}
+img,svg{display:block}img{max-width:100%}
+h1,h2,h3,h4,p,ul,ol,dl,dd,figure,blockquote{margin:0}
+h1,h2,h3,h4{font-family:var(--font);color:var(--ink);font-weight:800;line-height:1.15;letter-spacing:-.02em;text-wrap:balance}
+h1{font-size:clamp(34px,5vw,64px);letter-spacing:-.025em;text-transform:uppercase;line-height:1.02}
+h2{font-size:clamp(26px,3.2vw,38px)}
+h3{font-size:20px;letter-spacing:-.01em}
+p{text-wrap:pretty}
+a,button{transition:background-color .15s,color .15s,border-color .15s}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:4px}
+::selection{background:var(--sun);color:var(--ink)}
+em{font-style:normal}
+
+/* ---------- Layout ---------- */
+.container{width:min(1180px,calc(100% - 48px));margin-inline:auto}
+.wide-container{width:min(1280px,calc(100% - 32px));margin-inline:auto}
+.section-space{padding-block:clamp(48px,7vw,88px)}
+.section-tinted{background:var(--tint);border-block:1px solid var(--line)}
+.skip-link{position:fixed;left:16px;top:-100px;z-index:100;background:var(--surface);padding:14px 18px;border:2px solid var(--ink);border-radius:8px}
+.skip-link:focus{top:12px}
+.desktop-break{display:inline}
+.small{font-size:14px;line-height:1.65;margin-block:12px}
+.subtle-note,.source-note{font-size:14px;color:var(--muted);margin-top:20px}
+.honey{position:absolute!important;left:-10000px!important;top:auto;overflow:hidden;width:1px;height:1px}
+
+/* ---------- Header ---------- */
+.site-header{position:sticky;top:0;z-index:40;padding:12px 16px 0;background:linear-gradient(var(--bg) 70%,transparent)}
+.nav-wrap{width:min(1280px,100%);margin:auto;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand{display:flex;align-items:center;gap:12px;padding:8px 22px 8px 8px;background:var(--surface);border-radius:999px;box-shadow:var(--shadow);font-size:17px;letter-spacing:.06em;line-height:1.1;font-weight:500;white-space:nowrap;color:var(--ink)}
+.brand strong{font-weight:800}
+.brand small{display:block;font-size:8.5px;letter-spacing:.13em;margin-top:5px;font-weight:700;color:var(--muted)}
+.brand-symbol{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:#fff;flex-shrink:0}
+.brand-symbol img{width:34px;height:34px;object-fit:contain}
+.navigation{display:flex;gap:10px;align-items:center;font-size:14px;font-weight:700;letter-spacing:.02em;text-transform:uppercase}
+.navigation>a{display:inline-flex;align-items:center;gap:9px;padding:13px 20px;border-radius:999px;background:var(--surface);box-shadow:var(--shadow);color:var(--ink)}
+.navigation>a svg{color:var(--green)}
+.navigation>a:hover{background:#fff}
+.navigation>a[aria-current=page]{background:var(--ink);color:#fff}
+.navigation>a[aria-current=page] svg{color:#fff}
+.navigation>.nav-join{background:var(--ink);color:#fff;padding:13px 22px}
+.navigation>.nav-join svg{color:#fff}
+.navigation>.nav-join:hover{background:var(--green)}
+.menu-toggle{display:none;background:var(--surface);box-shadow:var(--shadow);border:0;border-radius:50%;width:48px;height:48px;place-items:center;padding:0}
+
+/* ---------- Buttons & links ---------- */
+.button{display:inline-flex;justify-content:center;align-items:center;gap:12px;border:2px solid var(--ink);border-radius:999px;padding:13px 26px;background:var(--ink);color:#fff;font-size:15px;line-height:1.3;font-weight:800;min-height:50px;letter-spacing:.02em}
+.button:hover{background:var(--green);border-color:var(--green);color:#fff}
+.button-small{padding:10px 18px;font-size:14px;min-height:44px}
+.button-outline{background:transparent;color:var(--ink)}
+.button-outline:hover{background:var(--surface);color:var(--ink);border-color:var(--ink)}
+.text-link{display:inline-flex;align-items:center;gap:8px;font-weight:800;color:var(--green);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
+.text-link:hover{color:var(--green-dark)}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.eyebrow>span:empty{display:none}
+.eyebrow:before{content:"";width:22px;height:3px;background:var(--orange);border-radius:2px;flex-shrink:0}
+
+/* ---------- Page intro (inner pages) ---------- */
+.page-intro{padding-block:clamp(40px,6vw,72px) clamp(24px,4vw,40px);max-width:1180px}
+.page-intro h1{max-width:20ch}
+.page-intro p{max-width:640px;font-size:19px;margin-top:18px}

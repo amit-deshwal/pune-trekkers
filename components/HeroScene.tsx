@@ -51,7 +51,7 @@ function height(x: number, z: number) {
   return h
 }
 
-// Light, fog and tint per time of day. The sky, sun/moon and stars are CSS (see globals.css), so 3D only handles light.
+// Light, fog and tint per time of day. The sky, sun/moon and stars are CSS (see styles/home.css), so 3D only handles light.
 const MOODS: Record<Phase, { sky: number; ground: number; hemi: number; sun: number; sunI: number; pos: [number, number, number]; fog: number; tint: number }> = {
   morning: { sky: 0xfff0e6, ground: 0x1b5a50, hemi: 0.75, sun: 0xffe2c4, sunI: 1.9, pos: [-6, 3.2, 5], fog: 0xe6d9cc, tint: 0xffffff },
   afternoon: { sky: 0xe8f4ff, ground: 0x2a6a60, hemi: 0.95, sun: 0xffffff, sunI: 2.2, pos: [2, 9, 4], fog: 0xcfe6ee, tint: 0xffffff },

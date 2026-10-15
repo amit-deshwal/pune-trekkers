@@ -1,0 +1,57 @@
+/* ---------- Values ---------- */
+.values-grid,.three-columns{display:grid;gap:20px}
+.values-grid{grid-template-columns:repeat(4,1fr)}
+.three-columns{grid-template-columns:repeat(3,1fr)}
+.value,.three-columns>div,.policy-cards>div,.role-grid>div{display:flex;flex-direction:column;gap:10px;padding:26px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg)}
+.value p,.three-columns>div p,.role-grid p{font-size:15px}
+.icon-box{display:inline-grid;place-items:center;width:48px;height:48px;border-radius:12px;background:var(--tint);color:var(--green);flex-shrink:0}
+.policy-cards{margin-block:40px}
+
+/* ---------- Conservation banner ---------- */
+.conserve{display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(24px,5vw,64px);align-items:center;padding:clamp(28px,5vw,56px);background:var(--green-dark);border-radius:var(--radius-lg);color:#f1f4ea}
+.conserve h2,.conserve .eyebrow,.join-banner .eyebrow{color:#fff}
+.conserve .eyebrow:before,.join-banner .eyebrow:before{background:var(--sun)}
+.conserve p{color:#e3e9dc;margin-top:14px;font-size:17px}
+.conserve .inline-actions{margin-top:22px}
+.conserve .button{background:#fff;color:var(--green-dark);border-color:#fff}
+.conserve .button:hover{background:var(--sun);border-color:var(--sun)}
+.conserve-points{list-style:none;padding:0;display:grid;gap:10px}
+.conserve-points li{display:flex;gap:12px;align-items:center;padding:14px 16px;border:1px solid rgba(255,255,255,.28);border-radius:var(--radius);color:#fff;font-weight:700}
+.inline-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px}
+.planned-label{font-size:14px;font-weight:700;opacity:.9}
+
+/* ---------- FAQ ---------- */
+.faq-home{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(28px,6vw,80px);align-items:start;padding-block:clamp(48px,7vw,88px)}
+.faq-home h2{margin-bottom:20px}
+.faq-list{display:grid;gap:10px}
+.faq-list details{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:0 22px}
+.faq-list details[open]{border-color:var(--green)}
+.faq-list summary{display:flex;justify-content:space-between;align-items:center;gap:20px;cursor:pointer;list-style:none;padding:18px 0;font-size:17px;font-weight:800;color:var(--ink);line-height:1.35}
+.faq-list summary::-webkit-details-marker{display:none}
+.faq-list summary span{font-size:24px;line-height:1;color:var(--green);flex-shrink:0}
+.faq-list details[open] summary span{transform:rotate(45deg)}
+.faq-list p{padding-bottom:20px;font-size:16px;max-width:62ch}
+
+/* ---------- Join banner ---------- */
+.join-banner{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(20px,4vw,48px);align-items:center;background:var(--sun);border:1px solid #ecd98e;border-radius:var(--radius-lg);padding:clamp(28px,4vw,48px);margin-block:clamp(32px,5vw,64px)}
+.join-banner h2{font-size:clamp(26px,3.4vw,40px)}
+.join-banner p{margin-top:10px;color:var(--ink);font-size:18px}
+.join-icon{display:grid;place-items:center;width:84px;height:84px;border-radius:50%;background:var(--surface);color:var(--green);flex-shrink:0}
+
+/* ---------- Footer ---------- */
+.site-footer{background:var(--green-dark);color:#e9eee3;margin-top:clamp(32px,5vw,72px);padding-top:clamp(40px,6vw,64px)}
+.site-footer p,.site-footer .small{color:#d5dccf}
+.site-footer .brand{display:inline-flex;padding:0;background:none;box-shadow:none;color:#fff}
+.site-footer .brand:hover{text-decoration:none}
+.site-footer .brand small{color:#cdd6c6}
+.site-footer .brand-symbol{border-color:#fff}
+.footer-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1.2fr;gap:32px;padding-bottom:40px}
+.footer-intro p{margin:16px 0 12px;font-size:16px}
+.site-footer h3{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--sun);margin-bottom:14px}
+.footer-grid>div>a{display:block;padding:4px 0;font-size:15px}
+.site-footer a:hover{text-decoration:underline;text-underline-offset:4px}
+.location{display:flex;align-items:center;gap:8px;font-size:14px;color:#d5dccf}
+.email-link{overflow-wrap:anywhere}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 28px;padding-block:20px;border-top:1px solid rgba(255,255,255,.22);font-size:14px;color:#d5dccf}
+.footer-bottom div{display:flex;gap:20px;flex-wrap:wrap}
+.music-credit{margin-block:0;padding-bottom:20px;font-size:12px;color:#aebaaf}.music-credit a{color:inherit;text-decoration:underline;text-underline-offset:2px}

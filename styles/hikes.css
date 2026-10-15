@@ -1,0 +1,61 @@
+/* Find hikes */
+.fort-finder{max-width:760px;margin:8px 0 12px}
+.fort-search-block{padding:24px;background:var(--tint);border:1px solid var(--line);border-radius:var(--radius-lg)}
+.fort-search-block>label{display:block;margin-bottom:14px;font-size:19px;font-weight:800;color:var(--ink)}
+.fort-search-block>p{margin:10px 0 0;font-size:13px;color:var(--muted)}
+.fort-search-field{background:#fff}
+.fort-community-link{margin:0 0 22px;font-size:14px;color:var(--muted)}
+.fort-community-link a{font-weight:800;color:var(--green);text-decoration:underline;text-underline-offset:3px}
+.fort-more-options{margin-bottom:26px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.fort-more-options>summary{padding:15px 0;cursor:pointer;font-weight:800;color:var(--green)}
+.fort-browse-block{padding:12px 0 18px}
+.fort-browse-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px;font-size:16px}
+.fort-browse-heading strong{color:var(--ink)}
+.fort-controls{display:flex;flex-wrap:wrap;align-items:end;gap:10px 26px;padding:18px 0}
+.fort-control-group>span{display:block;margin-bottom:8px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fort-controls .chip-row{margin-bottom:0}
+.fort-results-heading{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:16px}
+.fort-results-heading h2{margin:0 0 4px;font-size:24px;line-height:1.2}
+.fort-results-heading .hike-count{margin:0}
+.fort-browse-button{flex:none;white-space:nowrap;box-shadow:var(--shadow)}
+.trailhead-toggle{display:inline-flex;align-items:center;gap:7px;min-height:38px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer}
+.trailhead-toggle input{accent-color:var(--green);width:17px;height:17px}
+.hike-search{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-block:8px 18px}
+.fort-browse-block .hike-search{margin:0}
+.fort-browse-block .hike-field{flex-basis:200px}
+.hike-field{position:relative;flex:1 1 320px;display:flex;align-items:center;gap:8px;padding:0 14px;background:#fff;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
+.hike-field:focus-within{border-color:var(--green);box-shadow:0 0 0 3px rgba(23,89,76,.15)}
+.hike-field input{flex:1;min-width:0;padding:13px 0;border:0;background:none;font:inherit;font-size:16px;color:var(--ink);outline:none}
+.suggest{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:20;margin:0;padding:6px;list-style:none;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 28px rgba(0,0,0,.12)}
+.suggest button{width:100%;text-align:left;padding:9px 12px;border:0;background:none;font:inherit;font-size:15px;color:var(--ink);cursor:pointer;border-radius:8px}
+.suggest button:hover,.suggest button:focus-visible{background:var(--tint)}
+.suggest small{color:var(--muted);font-weight:500}
+.text-button{border:0;background:none;padding:4px 2px;font:inherit;font-weight:700;color:var(--green);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.hike-msg{margin:-8px 0 12px;font-size:14px;color:var(--muted)}
+.chip-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px;scrollbar-width:none}
+.chip-row::-webkit-scrollbar{display:none}
+.chip{flex:none;display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font:inherit;font-size:15px;font-weight:700;color:var(--text);cursor:pointer;white-space:nowrap}
+.chip span{font-size:12px;font-weight:800;color:var(--muted)}
+.chip:hover{border-color:var(--green)}
+.chip.on{background:var(--green);border-color:var(--green);color:#fff}
+.chip.on span{color:#cfe8e1}
+.chip-row.small .chip{padding:6px 12px;font-size:13px}
+.chip-row.small .chip.on{background:var(--tint);color:var(--green-dark);border-color:var(--green)}
+.chip-sep{flex:none;width:1px;margin:4px 4px;background:var(--line)}
+.hike-count{margin:14px 0;font-size:15px;color:var(--muted)}
+.hike-count strong{color:var(--ink)}
+.hike-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.hike-row{padding:16px 18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+.hike-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.hike-head h3{margin:0;font-size:19px;line-height:1.25}
+.hike-dist{font-size:13px;font-weight:800;color:var(--green);text-align:right}
+.hike-meta{margin:4px 0 10px;font-size:13px;color:var(--muted)}
+.hike-start{margin:0;font-size:14px;color:var(--text)}
+.hike-row details{margin-top:10px;font-size:14px}
+.hike-row summary{cursor:pointer;font-weight:700;color:var(--green)}
+.hike-row details small{display:block;margin-top:6px;color:var(--muted)}
+.starts{list-style:none;margin:8px 0;padding:0;display:grid;gap:8px}
+.starts li{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.tag{margin-left:6px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:2px 7px;border-radius:99px;background:#eceadf;color:var(--muted)}
+.show-more{margin:22px auto 0;display:flex}
+@media (max-width:600px){.hike-search .button{flex:1}.hike-list{grid-template-columns:1fr}.fort-search-block{padding:18px}.fort-controls{gap:16px}.fort-control-group{max-width:100%}.fort-browse-heading,.fort-results-heading{align-items:flex-start;flex-direction:column}.fort-browse-button{width:100%;white-space:normal}.hike-head{align-items:flex-start;flex-direction:column;gap:5px}.hike-dist{text-align:left}}
