@@ -1,9 +1,44 @@
 import Link from 'next/link'
-import Seo from '../../components/Seo'
-import { PageIntro, Value, JoinBanner, Note } from '../../components/Shared'
+import dynamic from 'next/dynamic'
 import type { GetServerSideProps } from 'next'
+import Seo from '../../components/Seo'
 import { getCachedContent } from '../../lib/content'
 import type { SiteContent } from '../../lib/content-schema'
 import { formatDate } from '../../lib/site'
-export const getServerSideProps:GetServerSideProps=async({res})=>({props:await getCachedContent(res)})
-export default function About({content}: {content:SiteContent}){return <><Seo title="Our story: a Pune trekking group born on Reddit" description="How Pune Trekkers grew from a Reddit conversation into a free, volunteer-run trekking community of about 2,300 people in Pune, sharing actual costs with no profit."/><PageIntro eyebrow="PEOPLE FIRST. PEAKS SECOND." title="A shared trail starts with a simple hello.">Born from a need on Reddit. Built by people who wanted to get outdoors, together.</PageIntro><div className="container editorial"><div className="editorial-main"><h2>From an online conversation to the outdoors.</h2><p>Pune Trekkers began with a community need: finding people around Pune to go trekking with. The idea was simple—bring people together, make a plan, and share the actual cost of getting there.</p><p>Today, approximately 2,300 members connect across three WhatsApp groups. We’re students, working people, first-timers and experienced hikers, brought together by a love of the outdoors.</p><h2>Community over commerce.</h2><p>Current community treks are not organized for profit. This is a community initiative; we do not claim registered NGO, charity or company status. We want participation to be welcoming, expenses to be understandable, and respect to be non-negotiable.</p><h2>How a trek comes together.</h2><ol className="steps"><li><strong>A route and a responsible plan.</strong><p>Coordinators check the route, expected conditions, access requirements, transport and the group’s abilities.</p></li><li><strong>A clear briefing before you commit.</strong><p>The organizer shares the difficulty, meeting point, equipment, capacity, cancellation terms and estimated cost. A proposal becomes confirmed only when the organizer says so.</p></li><li><strong>Actual expenses, divided openly.</strong><p>Participants agree which costs are shared. Transport, fees, food and other agreed expenses are divided among participants; estimates may change with group size. The coordinator should provide the final breakdown and settle any balance.</p></li></ol><h2>Our trail so far.</h2>{content.timeline.length?<ol className="timeline">{content.timeline.map(t=><li key={t.date+t.title}><time>{formatDate(t.date)}</time><h3>{t.title}</h3><p>{t.detail}</p></li>)}</ol>:<Note>Our original gallery contains uploads from 2023, including Rajgad, Ratangad and Jivdhan. We’re checking the actual trek dates before publishing a dated timeline.</Note>}<p><Link href="/past-treks" className="text-link">Explore the original archive →</Link></p><h2>The people who make it happen.</h2>{content.people.length?content.people.map(p=><article key={p.name}><h3>{p.name} · {p.role}</h3><p>{p.bio}</p></article>):<p>Admins, coordinators and volunteers keep the community moving. We’ll introduce them here once their roles and permission to publish are confirmed. You can also <Link href="/volunteer">express interest in volunteering</Link>.</p>}<h2>Our community and any future ventures.</h2><p>Any future paid venture would need its own clearly identified operator, prices, terms and relationship to this community. Participation in this community does not imply agreement to a future commercial service. No such service is offered here.</p></div><aside className="editorial-aside"><Value icon="people" title="Approximately 2,300">Members across three WhatsApp groups, as shared by the community.</Value><Value icon="rupee" title="Actual expenses">No profit on current community treks.</Value><Value icon="heart" title="Everyone deserves respect">Our conduct and inclusion rules apply to all members.</Value><Link href="/safety" className="text-link">Read our guidelines →</Link></aside></div><JoinBanner/></>}
+
+const HeroScene = dynamic(() => import('../../components/HeroScene'), { ssr: false })
+export const getServerSideProps: GetServerSideProps = async ({ res }) => ({ props: await getCachedContent(res) })
+
+const milestones = [
+  { label: 'The beginning', title: 'A conversation on Reddit', detail: 'People in Pune wanted company for a trek. That conversation brought the first group together.' },
+  { label: '2023 archive', title: 'More trails together', detail: 'Our original gallery has uploads from Rajgad, Ratangad and Jivdhan. We are still verifying the trek dates.' },
+  { label: 'Today', title: 'A community of about 2,300', detail: 'Members connect across three WhatsApp groups. Joining is free, and community treks share actual costs without profit.' },
+]
+
+export default function About({ content }: { content: SiteContent }) {
+  return <>
+    <Seo title="Our story: from Reddit to the trail" description="How Pune Trekkers grew from a Reddit conversation into a free trekking community of about 2,300 people." />
+    <section className="about-hero container" aria-labelledby="about-title">
+      <div className="about-hero-copy">
+        <span className="eyebrow">Our story</span>
+        <h1 id="about-title">From Reddit to the trail.</h1>
+        <p>One conversation became a community that keeps getting outdoors together.</p>
+      </div>
+      <div className="about-hero-visual">
+        <div className="scene-bg">
+          <svg className="scene-poster" viewBox="0 0 800 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="M0 420 160 300l90 70 150-190 140 170 90-60 170 150v200H0Z" className="ridge-far"/><path d="M0 500c140-90 260-60 380-120s250-20 420 70v190H0Z" className="ridge-mid"/><path d="M0 590c180-60 300-20 440-60s240-10 360 30v80H0Z" className="ridge-near"/></svg>
+          <HeroScene phase="morning" />
+        </div>
+      </div>
+    </section>
+
+    <section className="about-story section-tinted" aria-labelledby="story-title"><div className="container section-space">
+      <h2 id="story-title">How we got here</h2>
+      <ol className="about-milestones">
+        {milestones.map((item, index) => <li key={item.label}><span className="about-milestone-number">0{index + 1}</span><div><span className="about-milestone-label">{item.label}</span><h3>{item.title}</h3><p>{item.detail}</p></div></li>)}
+        {content.timeline.map(item => <li key={item.date + item.title}><span className="about-milestone-number">+</span><div><time className="about-milestone-label" dateTime={item.date}>{formatDate(item.date)}</time><h3>{item.title}</h3><p>{item.detail}</p></div></li>)}
+      </ol>
+      <div className="about-story-links"><Link href="/past-treks" className="text-link">Explore past treks →</Link><Link href="/join" className="button">Join the community</Link></div>
+    </div></section>
+  </>
+}
