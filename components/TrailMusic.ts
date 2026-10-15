@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react'
 export const TRACK = {
   src: '/audio/living-voyage.m4a', title: 'Living Voyage', artist: 'Kevin MacLeod', source: 'https://incompetech.com',
   license: 'CC BY 4.0', licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
+  loopFrom: 0, // seconds: playback starts here and each loop jumps back here, skipping any intro
 }
 const VOLUME = 0.16
 const KEY = 'trail-music'
@@ -23,7 +24,10 @@ export function useTrailMusic(enabled: boolean) {
     if (player.current) return player.current
     const Ctx = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
     const el = new Audio(TRACK.src)
-    el.loop = true
+    if (TRACK.loopFrom > 0) {
+      el.addEventListener('loadedmetadata', () => { el.currentTime = TRACK.loopFrom }, { once: true })
+      el.addEventListener('ended', () => { el.currentTime = TRACK.loopFrom; el.play().catch(() => {}) })
+    } else el.loop = true
     const ctx = new Ctx(), gain = ctx.createGain()
     gain.gain.value = 0
     ctx.createMediaElementSource(el).connect(gain).connect(ctx.destination)
