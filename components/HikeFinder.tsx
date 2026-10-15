@@ -1,15 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import Seo from '../components/Seo'
-import Icon from '../components/Icon'
-import { PageIntro } from '../components/Shared'
+import Icon from './Icon'
 import hikeReview from '../data/hike-review.json'
+import { PUNE, km, type Origin } from '../lib/hikes'
 
-type Start = { name: string; lat: number; lon: number; note: string; verified: boolean }
-type Hike = { slug: string; name: string; kind: 'fort' | 'peak'; lat: number; lon: number; elevationM: number | null; difficulty: string | null; region: string | null; popular: boolean; hidden: boolean; approxLocation: boolean; notes: string | null; aliases: string[]; starts: Start[]; sources: string[]; links: { label: string; url: string }[] }
-type Origin = { name: string; lat: number; lon: number }
-
-const PUNE: Origin = { name: 'Pune', lat: 18.5214, lon: 73.8545 }
+export type Start = { name: string; lat: number; lon: number; note: string; verified: boolean }
+export type Hike = { slug: string; name: string; kind: 'fort' | 'peak'; lat: number; lon: number; elevationM: number | null; difficulty: string | null; region: string | null; popular: boolean; hidden: boolean; approxLocation: boolean; notes: string | null; aliases: string[]; areas: string[]; starts: Start[]; sources: string[]; links: { label: string; url: string }[] }
 const startingAreas: Origin[] = [PUNE,
   { name: 'Lonavala', lat: 18.7549, lon: 73.4017 },
   { name: 'Karjat', lat: 18.9128, lon: 73.3228 },
@@ -25,15 +21,13 @@ const radii = [50, 100, 200, 0] // 0 = any distance
 const featured = new Set(hikeReview.featured.map(h => h.slug))
 const excluded = new Set(hikeReview.exclude)
 
-function km(a: { lat: number; lon: number }, b: { lat: number; lon: number }) {
-  const r = (d: number) => (d * Math.PI) / 180
-  const h = Math.sin(r(b.lat - a.lat) / 2) ** 2 + Math.cos(r(a.lat)) * Math.cos(r(b.lat)) * Math.sin(r(b.lon - a.lon) / 2) ** 2
-  return 12742 * Math.asin(Math.sqrt(h))
-}
 const dirUrl = (o: Origin, s: { lat: number; lon: number }) => `https://www.google.com/maps/dir/?api=1&origin=${o.lat},${o.lon}&destination=${s.lat},${s.lon}&travelmode=driving`
 
-export default function FindHikes() {
-  const [hikes, setHikes] = useState<Hike[]>([])
+// Server-rendered with the featured destinations (so the default list is in the HTML); the full dataset loads on mount.
+// `guides` maps a hike slug to its written guide under /treks-near-pune.
+export default function HikeFinder({ initialHikes, guides }: { initialHikes: Hike[]; guides: Record<string, string> }) {
+  const [hikes, setHikes] = useState<Hike[]>(initialHikes)
+  const [loaded, setLoaded] = useState(false)
   const [loadError, setLoadError] = useState(false)
   const [query, setQuery] = useState('')
   const [text, setText] = useState('')
@@ -48,7 +42,7 @@ export default function FindHikes() {
 
   useEffect(() => {
     fetch('/data/hikes.json').then(r => r.json())
-      .then(h => setHikes(h))
+      .then(h => { setHikes(h); setLoaded(true) })
       .catch(() => setLoadError(true))
   }, [])
   useEffect(() => setShown(PAGE), [origin, view, knownStartOnly, radius, query, kind])
@@ -68,7 +62,7 @@ export default function FindHikes() {
   const search = query.trim().toLowerCase()
   const results = nearby.filter(({ hike: h, d }) =>
     (search || kind === 'all' || h.kind === kind) &&
-    (search ? [h.name, ...h.aliases, h.region ?? ''].some(value => value.toLowerCase().includes(search)) :
+    (search ? [h.name, ...h.aliases, ...h.areas, h.region ?? ''].some(value => value.toLowerCase().includes(search)) :
       (!radius || Math.round(d) <= radius) && (view === 'all' || featured.has(h.slug))) &&
     (!knownStartOnly || h.starts.some(s => s.verified)))
     .sort((a, b) => search ? Number(b.hike.name.toLowerCase().startsWith(search)) - Number(a.hike.name.toLowerCase().startsWith(search)) || a.hike.name.localeCompare(b.hike.name) : a.d - b.d)
@@ -98,10 +92,7 @@ export default function FindHikes() {
     navigator.geolocation.getCurrentPosition(pos => choose({ name: 'Your location', lat: pos.coords.latitude, lon: pos.coords.longitude }), () => setMsg('Location was blocked. Type an area instead.'))
   }
 
-  return <>
-    <Seo title="Find hikes near Pune" description="Browse referenced fort hikes near Pune, or search sourced listings across Maharashtra." />
-    <PageIntro eyebrow="FIND HIKES" title="Find a hike near Pune.">Start with well-known forts nearby. Have a place in mind? Search for it below.</PageIntro>
-    <section className="container listing-section">
+  return <section className="container listing-section">
       <div className="fort-finder">
         <div className="fort-search-block">
           <label htmlFor="fort-search">Search a fort or peak</label>
@@ -140,7 +131,7 @@ export default function FindHikes() {
       </details>
 
       <div className="fort-results-heading"><div><h2>{search ? 'Search results' : view === 'featured' ? `Well-known ${kind === 'fort' ? 'forts' : 'hikes'} near ${origin.name}` : `More mapped places near ${origin.name}`}</h2><p className="hike-count" aria-live="polite">{loadError ? 'Hike data could not be loaded. Please refresh.' : hikes.length ? <>{results.length} {kind === 'fort' ? results.length === 1 ? 'fort' : 'forts' : results.length === 1 ? 'listing' : 'listings'}{search ? ` matching “${query.trim()}”` : radius ? ` within ${radius} km in a straight line` : ''}</> : 'Loading hikes…'}</p></div>
-        {!search && hikes.length > 0 && <button type="button" className={`button fort-browse-button ${view === 'all' ? 'button-outline' : ''}`} onClick={() => { setView(view === 'featured' ? 'all' : 'featured'); setShown(PAGE) }}>{view === 'featured' ? `Explore all ${browseCount} nearby listings` : 'Show starting picks'} <Icon name="arrow" size={18}/></button>}
+        {!search && loaded && <button type="button" className={`button fort-browse-button ${view === 'all' ? 'button-outline' : ''}`} onClick={() => { setView(view === 'featured' ? 'all' : 'featured'); setShown(PAGE) }}>{view === 'featured' ? `Explore all ${browseCount} nearby listings` : 'Show starting picks'} <Icon name="arrow" size={18}/></button>}
       </div>
       {(search || view === 'all') && <p className="source-note">These additional listings come from source directories. We have not checked every route or access condition.</p>}
 
@@ -152,11 +143,12 @@ export default function FindHikes() {
           const reviewEvidence = hikeReview.featured.find(item => item.slug === hike.slug)?.evidence
           return <article className="hike-row" key={hike.slug}>
             <div className="hike-head">
-              <h2>{hike.name}</h2>
+              <h3>{hike.name}</h3>
               <span className="hike-dist">~{Math.round(d)} km away · straight line</span>
             </div>
             <p className="hike-meta">{[hike.kind === 'fort' ? 'Fort' : 'Peak', hike.region].filter(Boolean).join(' · ')}</p>
             {main?.verified ? <p className="hike-start">Listed base village: <strong>{main.name}</strong> · <a href={dirUrl(origin, main)} target="_blank" rel="noopener noreferrer">Directions to village ↗</a></p> : <p className="hike-start">Start point not checked · <a href={`https://www.google.com/maps/search/?api=1&query=${hike.lat},${hike.lon}`} target="_blank" rel="noopener noreferrer">View place on map ↗</a></p>}
+            {guides[hike.slug] && <p className="hike-start" style={{ marginTop: 6 }}><Link href={`/treks-near-pune/${guides[hike.slug]}`}>Read our {hike.name} guide →</Link></p>}
             {(more.length > 0 || main?.note || hike.links.length > 0 || reviewEvidence) && <details>
               <summary>{more.length ? `${more.length} more starting point${more.length > 1 ? 's' : ''} & details` : 'Details'}</summary>
               <ul className="starts">{starts.map(s => <li key={s.name + s.lat}><strong>{s.name}</strong>{s.verified ? <> · listed base village · <a href={dirUrl(origin, s)} target="_blank" rel="noopener noreferrer">Directions to village ↗</a></> : <> · nearby map village, not a checked start</>}{s.note && <small>{s.note}</small>}</li>)}</ul>
@@ -169,6 +161,5 @@ export default function FindHikes() {
       {results.length > visibleResults.length && <button className="button button-outline show-more" onClick={() => setShown(s => s + PAGE)}>Show more ({results.length - shown} left)</button>}
 
       <p className="source-note">Distances are straight-line estimates to a listed base village, or to the mapped place if no base village is listed. Driving distance, walking route, current access and conditions must be checked separately. Data © OpenStreetMap contributors (ODbL), Wikidata, Trekshitiz and Maharashtra Tourism.</p>
-    </section>
-  </>
+  </section>
 }

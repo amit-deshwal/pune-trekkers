@@ -10,6 +10,8 @@ import { phaseAt, phases, type Phase } from '../lib/phase'
 import PuneWeather from '../components/PuneWeather'
 import { ButtonLink, SectionHeading, TrekCard, PlaceCard, Value, JoinBanner, FAQList, PhotoImage } from '../components/Shared'
 import { groupPlaces } from '../lib/places'
+import { site } from '../lib/site'
+import { organizationJsonLd, websiteJsonLd } from '../lib/seo'
 
 const HeroScene=dynamic(()=>import('../components/HeroScene'),{ssr:false})
 
@@ -26,12 +28,13 @@ export default function Home({content,preview,contentUnavailable}: {content:Site
   const diary=groupPlaces(past).sort((a,b)=>Number(b.visits.some(v=>v.photos.length))-Number(a.visits.some(v=>v.photos.length))).slice(0,3)
   const guides=maharashtraGuides.slice(0,5)
   return <>
-    <Seo title="Good trails. Better company."/>
+    <Seo title="Free trekking group in Pune" fullTitle="Pune Trekkers: Free Trekking Group & Community in Pune" jsonLd={[organizationJsonLd(site),websiteJsonLd(site)]}/>
 
     <section className="hero2 container" aria-label="Introduction">
       <h1 className="hero2-title"><span>Good trails.</span><span>Better company.</span></h1>
       <div className="hero2-left">
-        <p className="hero2-lede">A volunteer-run community that helps people in Pune get outdoors together. Treks are planned openly, actual costs are shared and no one makes a profit. Beginners and solo trekkers are welcome.</p>
+        <span className="eyebrow">Free Pune trekking group</span>
+        <p className="hero2-lede">Pune Trekkers is a free, volunteer-run trekking group that helps people in Pune get outdoors together. Treks are planned openly, actual costs are shared and no one makes a profit. Beginners and solo trekkers are welcome.</p>
         <div className="hero2-actions">
           <Link href="/join" className="cta-pill"><span className="cta-dot"><Icon name="arrow" size={20}/></span>Join the community</Link>
           <Link href="/treks" className="quiet-link">See upcoming treks</Link>
@@ -59,7 +62,7 @@ export default function Home({content,preview,contentUnavailable}: {content:Site
       </div>
       <ul className="hero2-pills">
         <li><Link href="/treks"><Icon name="calendar" size={18}/>Upcoming treks</Link></li>
-        <li><Link href="/explore-maharashtra"><Icon name="compass" size={18}/>Explore Maharashtra</Link></li>
+        <li><Link href="/treks-near-pune"><Icon name="compass" size={18}/>Treks near Pune</Link></li>
         <li><Link href="/safety"><Icon name="shield" size={18}/>Safety &amp; preparation</Link></li>
         <li><Link href="/volunteer"><Icon name="heart" size={18}/>Volunteer</Link></li>
       </ul>
@@ -103,9 +106,9 @@ export default function Home({content,preview,contentUnavailable}: {content:Site
     </section>
 
     <section className="container section-space" style={{paddingTop:0}}>
-      <SectionHeading eyebrow="Explore on your own" title="Trail guides across Maharashtra." href="/explore-maharashtra" link="All trail guides">Independent planning notes by difficulty. These are route ideas, not Pune Trekkers events.</SectionHeading>
+      <SectionHeading eyebrow="Explore on your own" title="Trek guides near Pune." href="/treks-near-pune" link="Find a trek near Pune">Independent planning notes by difficulty. These are route ideas, not Pune Trekkers events.</SectionHeading>
       <div className="explore-rows">
-        {guides.map(g=><Link key={g.slug} href={`/explore-maharashtra/${g.slug}`} className="explore-row">
+        {guides.map(g=><Link key={g.slug} href={`/treks-near-pune/${g.slug}`} className="explore-row">
           <h3>{g.name}</h3>
           <span className="where">{g.region}</span>
           <span className={`chip difficulty-${g.difficulty.toLowerCase()}`}>{g.difficulty}</span>
@@ -124,7 +127,7 @@ export default function Home({content,preview,contentUnavailable}: {content:Site
     </section>}
 
     <section className="container section-space">
-      <SectionHeading eyebrow="How we work" title="Our principles."/>
+      <SectionHeading eyebrow="How we work" title="A trekking community, not a tour company.">Joining is free and there is no organiser fee. Participants split the actual cost of transport, food and entry fees, so a trek near Pune costs only what it really costs.</SectionHeading>
       <div className="values-grid">
         <Value icon="rupee" title="Shared costs, no profit">We split the actual agreed expenses. Current community treks are not organized for profit.</Value>
         <Value icon="people" title="Everyone belongs">Women, solo trekkers and first-timers are welcome on treks that suit their ability.</Value>

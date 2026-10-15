@@ -241,7 +241,7 @@ em{font-style:normal}
 .explore-row h3{font-size:20px}
 .explore-row .where{font-size:15px;color:var(--muted)}
 .explore-row .go{color:var(--green)}
-.chip,.guide-level,.explore-mark span{display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;padding:4px 12px;border-radius:999px;background:var(--tint);color:var(--ink);border:1px solid var(--line)}
+.chip,.guide-level{display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;padding:4px 12px;border-radius:999px;background:var(--tint);color:var(--ink);border:1px solid var(--line)}
 .difficulty-easy{background:#e3f0d8!important}
 .difficulty-moderate{background:#fcefc4!important}
 .difficulty-challenging{background:#f7dccd!important}
@@ -328,15 +328,6 @@ em{font-style:normal}
 .policy-status{display:inline-flex;font-size:13px;font-weight:800;color:var(--ink);padding:6px 12px;background:var(--orange-soft);border-radius:999px;margin-bottom:18px}
 
 /* ---------- Explore Maharashtra ---------- */
-.explore-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
-.explore-card{display:grid;grid-template-columns:110px 1fr;gap:20px;padding:22px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg)}
-.explore-card:hover{border-color:var(--green)}
-.explore-mark{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:var(--radius);min-height:130px;padding:10px;color:var(--green-dark)}
-.explore-card h2{font-size:24px;margin-block:4px 8px}
-.explore-card h2 a:hover{text-decoration:underline;text-underline-offset:4px}
-.explore-card p{font-size:15px}
-.explore-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:14px;font-size:14px;font-weight:700}
-.explore-footer a{display:inline-flex;gap:8px;align-items:center;color:var(--green);text-decoration:underline;text-underline-offset:4px}
 
 /* ---------- Detail + editorial ---------- */
 .detail-hero{position:relative;aspect-ratio:2.2;border-radius:var(--radius-lg);overflow:hidden;background:var(--tint);border:1px solid var(--line)}
@@ -437,8 +428,8 @@ blockquote cite{display:block;margin-top:10px;font-style:normal;font-weight:800;
 .gallery-admin-item>button{justify-self:start;border:0;background:none;color:var(--orange);font-weight:800;text-decoration:underline;cursor:pointer}
 
 /* ---------- Soft surfaces ---------- */
-.trek-card,.involve-card,.value,.three-columns>div,.policy-cards>div,.role-grid>div,.step-row li,.faq-list details,.upcoming-empty,.filter-bar,.interest-form,.editorial-aside>div,.guide-aside,.explore-card,.detail-meta>div,.steps li,.table-wrap,.draft-result{border:0;box-shadow:var(--shadow)}
-.trek-card:hover,.involve-card:hover,.explore-card:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.75),0 18px 40px rgba(32,56,48,.14)}
+.trek-card,.involve-card,.value,.three-columns>div,.policy-cards>div,.role-grid>div,.step-row li,.faq-list details,.upcoming-empty,.filter-bar,.interest-form,.editorial-aside>div,.guide-aside,.detail-meta>div,.steps li,.table-wrap,.draft-result{border:0;box-shadow:var(--shadow)}
+.trek-card:hover,.involve-card:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.75),0 18px 40px rgba(32,56,48,.14)}
 .faq-list details[open]{box-shadow:inset 0 0 0 2px var(--green),var(--shadow)}
 .card-picture{border-radius:var(--radius-lg) var(--radius-lg) 0 0}
 .empty-state,.conserve,.join-banner{border-radius:var(--radius-lg)}
@@ -465,7 +456,6 @@ blockquote cite{display:block;margin-top:10px;font-style:normal;font-weight:800;
   .values-grid{grid-template-columns:1fr 1fr}
   .conserve,.faq-home{grid-template-columns:1fr}
   .footer-grid{grid-template-columns:1fr 1fr}
-  .explore-grid{grid-template-columns:1fr}
   .editorial,.guide-layout,.form-layout{grid-template-columns:1fr}
   .editorial-aside>div,.guide-aside{position:static}
   .upcoming-empty{grid-template-columns:110px 1fr}.upcoming-empty .empty-side{grid-column:1/-1}
@@ -483,7 +473,6 @@ blockquote cite{display:block;margin-top:10px;font-style:normal;font-weight:800;
   .involve-grid,.card-grid,.step-row,.three-columns,.values-grid,.role-grid,.form-row,.gallery-grid,.footer-grid{grid-template-columns:1fr}
   .detail-meta{grid-template-columns:1fr 1fr}
   .detail-hero{aspect-ratio:1.4}
-  .explore-card{grid-template-columns:1fr}.explore-mark{min-height:90px;flex-direction:row}
   .explore-row{grid-template-columns:1fr 28px}.explore-row .where,.explore-row .chip{display:none}
   .join-banner{grid-template-columns:1fr}.join-icon{width:64px;height:64px}
   .filter-bar select,.filter-bar input{min-width:0;width:100%}.filter-bar label{width:100%}.filter-bar>span{margin-left:0}
@@ -548,7 +537,7 @@ blockquote cite{display:block;margin-top:10px;font-style:normal;font-weight:800;
 .hike-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
 .hike-row{padding:16px 18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
 .hike-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-.hike-head h2{margin:0;font-size:19px;line-height:1.25}
+.hike-head h3{margin:0;font-size:19px;line-height:1.25}
 .hike-dist{font-size:13px;font-weight:800;color:var(--green);text-align:right}
 .hike-meta{margin:4px 0 10px;font-size:13px;color:var(--muted)}
 .hike-start{margin:0;font-size:14px;color:var(--text)}
