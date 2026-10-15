@@ -31,6 +31,9 @@ create policy "public can read published website content" on public.public_site_
 -- Keep the raw table server-only. The service role used by /api/admin/treks bypasses RLS.
 revoke all on public.site_content from anon, authenticated;
 grant select on public.public_site_content to anon, authenticated;
+-- Explicit grants so this works when "Automatically expose new tables" is disabled.
+grant select on public.admin_users to authenticated;
+grant all on public.admin_users, public.site_content, public.public_site_content to service_role;
 
 insert into storage.buckets (id,name,public,file_size_limit,allowed_mime_types)
 values ('trip-uploads','trip-uploads',false,10485760,array['image/jpeg','image/png','image/webp','image/avif'])

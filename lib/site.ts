@@ -12,3 +12,5 @@ export const site = {
 }
 export const routes = ['/', '/about', '/treks', '/explore-maharashtra', '/find-hikes', '/past-treks', '/safety', '/join', '/conservation', '/volunteer', '/contact', '/faq', '/privacy', '/terms']
 export function formatDate(date: string) { return new Date(date + 'T12:00:00+05:30').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' }) }
+
+export function formatMonth(date: string) { return new Date(date + 'T12:00:00+05:30').toLocaleDateString('en-IN', { month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' }) }

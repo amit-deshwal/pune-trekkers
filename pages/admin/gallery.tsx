@@ -4,10 +4,12 @@ import Seo from '../../components/Seo'
 import { Note, PageIntro } from '../../components/Shared'
 import type { Photo, Video } from '../../lib/content-schema'
 import { browserSupabase, supabasePublicKey, supabasePublicUrl } from '../../lib/supabase'
+import { formatDate } from '../../lib/site'
+import { realText } from '../../lib/places'
 
-type GalleryTrip = {slug:string;name:string;destination:string;date:string|null;summary:string;photos:Photo[];videos:Video[]}
-type PendingFile = {id:string;file:File;description:string;caption:string}
-const empty = ():GalleryTrip => ({slug:'',name:'',destination:'',date:null,summary:'',photos:[],videos:[]})
+type GalleryTrip = {slug:string;name:string;kind:'trek'|'initiative';destination:string;date:string|null;summary:string;photos:Photo[];videos:Video[]}
+type PendingFile = {id:string;file:File;preview:string;description:string;caption:string}
+const empty = ():GalleryTrip => ({slug:'',name:'',kind:'trek',destination:'',date:null,summary:'',photos:[],videos:[]})
 const imageTypes = ['image/jpeg','image/png','image/webp','image/avif']
 const videoTypes = ['video/mp4','video/webm']
 const extensions:Record<string,string> = {'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/avif':'avif','video/mp4':'mp4','video/webm':'webm'}
@@ -18,11 +20,16 @@ export default function GalleryAdmin(){
   const [token,setToken]=useState('')
   const [checking,setChecking]=useState(true)
   const [saving,setSaving]=useState(false)
+  const [deleting,setDeleting]=useState(false)
   const [message,setMessage]=useState('')
   const [trips,setTrips]=useState<GalleryTrip[]>([])
   const [trip,setTrip]=useState<GalleryTrip>(empty)
   const [pending,setPending]=useState<PendingFile[]>([])
   const configured=Boolean(supabasePublicUrl&&supabasePublicKey)
+  // Same place can have many visits: label each by date and suggest existing place names.
+  const sortedTrips=[...trips].sort((a,b)=>a.name.localeCompare(b.name)||(b.date||'').localeCompare(a.date||''))
+  const places=Array.from(new Set(trips.map(item=>realText(item.destination)).filter(Boolean))).sort()
+  const tripLabel=(item:GalleryTrip)=>`${item.name} — ${item.date?formatDate(item.date):'no date'}`
 
   async function load(accessToken:string){
     const response=await fetch('/api/admin/gallery',{headers:{Authorization:`Bearer ${accessToken}`}})
@@ -41,11 +48,25 @@ export default function GalleryAdmin(){
     try{const {data,error}=await browserSupabase().auth.signInWithPassword({email,password});if(error||!data.session)throw error||new Error('No session returned.');await load(data.session.access_token);setToken(data.session.access_token)}
     catch(error){setMessage(error instanceof Error?error.message:'Could not sign in.')}
   }
-  function selectTrip(slug:string){setTrip(trips.find(item=>item.slug===slug)||empty());setPending([]);setMessage('')}
+  function clearPending(){setPending(current=>{current.forEach(item=>URL.revokeObjectURL(item.preview));return []})}
+  function selectTrip(slug:string){setTrip(trips.find(item=>item.slug===slug)||empty());clearPending();setMessage('')}
   function addFiles(files:FileList|null){
     if(!files)return
-    const next=Array.from(files).map(file=>({id:crypto.randomUUID(),file,description:'',caption:''}))
+    const next=Array.from(files).map(file=>({id:crypto.randomUUID(),file,preview:URL.createObjectURL(file),description:'',caption:''}))
     setPending(current=>[...current,...next])
+  }
+  function removePending(id:string){setPending(current=>current.filter(item=>{if(item.id===id)URL.revokeObjectURL(item.preview);return item.id!==id}))}
+  async function deleteTrip(){
+    if(!trip.slug||!confirm(`Delete "${trip.name}" and all its photos and videos? This cannot be undone.`))return
+    setDeleting(true);setMessage('')
+    try{
+      const response=await fetch(`/api/admin/gallery?slug=${encodeURIComponent(trip.slug)}`,{method:'DELETE',headers:{Authorization:`Bearer ${token}`}})
+      const result=await response.json()
+      if(!response.ok)throw new Error(result.error||'Could not delete this trip.')
+      setTrips(current=>current.filter(item=>item.slug!==trip.slug));setTrip(empty());clearPending()
+      setMessage('Trip deleted from the public gallery.')
+    }catch(error){setMessage(error instanceof Error?error.message:'Could not delete this trip.')}
+    finally{setDeleting(false)}
   }
   function editPending(id:string,changes:Partial<PendingFile>){setPending(current=>current.map(item=>item.id===id?{...item,...changes}:item))}
   function editPhoto(id:string,changes:Partial<Photo>){setTrip(current=>({...current,photos:current.photos.map(item=>item.id===id?{...item,...changes}:item)}))}
@@ -74,21 +95,22 @@ export default function GalleryAdmin(){
       const result=await response.json()
       if(!response.ok)throw new Error(result.error||'Could not save gallery trip.')
       setTrips(current=>[result.trek,...current.filter(item=>item.slug!==result.trek.slug)])
-      setTrip(result.trek);setPending([])
-      setMessage('Gallery trip saved. Photos and videos are now visible in the public gallery.')
+      setTrip(result.trek);clearPending()
+      setMessage('Gallery trip saved. Removed photos and videos were deleted; new ones are visible in the public gallery.')
     }catch(error){setMessage(error instanceof Error?error.message:'Could not save gallery trip.')}
     finally{setSaving(false)}
   }
   return <><Seo title="Gallery admin" noindex/><PageIntro eyebrow="PRIVATE ADMIN AREA" title="Curate the trail gallery.">Create or update a past trip, then add photos and videos to its gallery.</PageIntro><section className="container admin-layout">
     {!configured?<Note>Supabase is not connected yet. Configure it as described in the Supabase setup guide.</Note>:checking?<p>Loading gallery editor…</p>:!token?<form className="interest-form admin-form" onSubmit={login}><h2>Admin sign in</h2><label>Email<input required type="email" autoComplete="email" value={email} onChange={event=>setEmail(event.target.value)}/></label><label>Password<input required type="password" autoComplete="current-password" value={password} onChange={event=>setPassword(event.target.value)}/></label><button className="button" type="submit">Sign in</button></form>:<form className="interest-form admin-form" onSubmit={save}>
       <div className="admin-heading"><div><span className="eyebrow">PAST TRIPS</span><h2>Trip details</h2></div><Link href="/admin">Trek admin →</Link></div>
-      <label>Edit an existing trip or create a new one<select value={trip.slug} onChange={event=>selectTrip(event.target.value)}><option value="">New gallery trip</option>{trips.map(item=><option key={item.slug} value={item.slug}>{item.name}</option>)}</select></label>
-      <div className="form-row"><label>Trip name<input required value={trip.name} onChange={event=>setTrip(current=>({...current,name:event.target.value}))} placeholder="e.g. Rajgad monsoon trek"/></label><label>Destination (optional)<input value={trip.destination} onChange={event=>setTrip(current=>({...current,destination:event.target.value}))} placeholder="e.g. Rajgad Fort"/></label></div>
+      <label>Edit an existing trip or create a new one<select value={trip.slug} onChange={event=>selectTrip(event.target.value)}><option value="">New gallery trip</option>{sortedTrips.map(item=><option key={item.slug} value={item.slug}>{tripLabel(item)}</option>)}</select></label>
+      <div className="form-row"><label>Trip name<input required value={trip.name} onChange={event=>setTrip(current=>({...current,name:event.target.value}))} placeholder="e.g. Rajgad monsoon trek"/></label><label>Place (optional; visits to the same place are grouped)<input list="gallery-places" value={realText(trip.destination)} onChange={event=>setTrip(current=>({...current,destination:event.target.value}))} placeholder="e.g. Rajgad Fort"/><datalist id="gallery-places">{places.map(place=><option key={place} value={place}/>)}</datalist></label></div>
+      <label>Type<select value={trip.kind} onChange={event=>setTrip(current=>({...current,kind:event.target.value as GalleryTrip['kind']}))}><option value="trek">Trek or outing</option><option value="initiative">Community initiative (tree plantation, hill cleaning…)</option></select></label>
       <label>Trek date (optional; enter only if verified)<input type="date" value={trip.date||''} onChange={event=>setTrip(current=>({...current,date:event.target.value||null}))}/></label>
       <label>Short story (optional)<textarea value={trip.summary} onChange={event=>setTrip(current=>({...current,summary:event.target.value}))} placeholder="A few words about the trip"/></label>
-      <fieldset className="admin-photos"><legend>Current photos and videos</legend>{!trip.photos.length&&!trip.videos.length&&<p>No media added yet.</p>}{trip.photos.map(item=><div className="gallery-admin-item" key={item.id}><strong>Photo</strong><label>Image description<input required minLength={8} value={item.alt} onChange={event=>editPhoto(item.id,{alt:event.target.value})}/></label><label>Caption<input value={item.caption} onChange={event=>editPhoto(item.id,{caption:event.target.value})}/></label><button type="button" onClick={()=>setTrip(current=>({...current,photos:current.photos.filter(photo=>photo.id!==item.id)}))}>Remove photo from gallery</button></div>)}{trip.videos.map(item=><div className="gallery-admin-item" key={item.id}><strong>Video</strong><label>Caption<input value={item.caption} onChange={event=>editVideo(item.id,{caption:event.target.value})}/></label><button type="button" onClick={()=>setTrip(current=>({...current,videos:current.videos.filter(video=>video.id!==item.id)}))}>Remove video from gallery</button></div>)}</fieldset>
-      <fieldset className="admin-photos"><legend>Add media</legend><label>Choose photos or videos<input type="file" accept="image/jpeg,image/png,image/webp,image/avif,video/mp4,video/webm" multiple onChange={event=>{addFiles(event.target.files);event.target.value=''}}/></label><p>Photos: up to 10 MB each. Videos: MP4 or WebM, up to 50 MB each.</p>{pending.map(item=><div className="gallery-admin-item" key={item.id}><strong>{item.file.name}</strong>{imageTypes.includes(item.file.type)&&<label>Image description<input required minLength={8} value={item.description} onChange={event=>editPending(item.id,{description:event.target.value})} placeholder="What can be seen in this photo?"/></label>}<label>Caption (optional)<input value={item.caption} onChange={event=>editPending(item.id,{caption:event.target.value})}/></label><button type="button" onClick={()=>setPending(current=>current.filter(file=>file.id!==item.id))}>Remove from upload</button></div>)}</fieldset>
-      <button className="button" type="submit" disabled={saving}>{saving?'Uploading and saving…':trip.slug?'Save gallery changes':'Create gallery trip'}</button>
+      <fieldset className="admin-photos"><legend>Current photos and videos</legend>{!trip.photos.length&&!trip.videos.length&&<p>No media added yet.</p>}{trip.photos.map(item=><div className="gallery-admin-item" key={item.id}><img className="gallery-admin-thumb" src={item.src} alt=""/><div className="gallery-admin-fields"><label>Image description<input required minLength={8} value={item.alt} onChange={event=>editPhoto(item.id,{alt:event.target.value})}/></label><label>Caption<input value={item.caption} onChange={event=>editPhoto(item.id,{caption:event.target.value})}/></label><button type="button" className="admin-remove" onClick={()=>setTrip(current=>({...current,photos:current.photos.filter(photo=>photo.id!==item.id)}))}>Remove photo</button></div></div>)}{trip.videos.map(item=><div className="gallery-admin-item" key={item.id}><video className="gallery-admin-thumb" src={item.src} muted preload="metadata"/><div className="gallery-admin-fields"><label>Caption<input value={item.caption} onChange={event=>editVideo(item.id,{caption:event.target.value})}/></label><button type="button" className="admin-remove" onClick={()=>setTrip(current=>({...current,videos:current.videos.filter(video=>video.id!==item.id)}))}>Remove video</button></div></div>)}{trip.slug&&<p className="subtle-note">Removed items are deleted for good when you save.</p>}</fieldset>
+      <fieldset className="admin-photos"><legend>Add media</legend><label>Choose photos or videos<input type="file" accept="image/jpeg,image/png,image/webp,image/avif,video/mp4,video/webm" multiple onChange={event=>{addFiles(event.target.files);event.target.value=''}}/></label><p>Photos: up to 10 MB each. Videos: MP4 or WebM, up to 50 MB each.</p>{pending.map(item=><div className="gallery-admin-item" key={item.id}>{imageTypes.includes(item.file.type)?<img className="gallery-admin-thumb" src={item.preview} alt=""/>:<video className="gallery-admin-thumb" src={item.preview} muted preload="metadata"/>}<div className="gallery-admin-fields"><strong>{item.file.name}</strong>{imageTypes.includes(item.file.type)&&<label>Image description<input required minLength={8} value={item.description} onChange={event=>editPending(item.id,{description:event.target.value})} placeholder="What can be seen in this photo?"/></label>}<label>Caption (optional)<input value={item.caption} onChange={event=>editPending(item.id,{caption:event.target.value})}/></label><button type="button" className="admin-remove" onClick={()=>removePending(item.id)}>Remove from upload</button></div></div>)}</fieldset>
+      <div className="admin-actions"><button className="button" type="submit" disabled={saving||deleting}>{saving?'Uploading and saving…':trip.slug?'Save gallery changes':'Create gallery trip'}</button>{trip.slug&&<button className="button admin-danger" type="button" onClick={deleteTrip} disabled={saving||deleting}>{deleting?'Deleting…':'Delete trip'}</button>}</div>
     </form>}{message&&<p className="admin-message" role="status">{message}</p>}
   </section></>
 }

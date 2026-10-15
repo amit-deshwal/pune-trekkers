@@ -16,7 +16,7 @@ export const videoSchema = z.object({
 export const trekSchema = z.object({
   slug: z.string().regex(/^[a-z0-9-]+$/), name: z.string().min(1), destination: z.string(),
   status: z.enum(['proposed', 'confirmed', 'completed', 'cancelled']),
-  organizerConfirmed: z.boolean().default(false), date: date.nullable(), dateVerified: z.boolean(),
+  kind: z.enum(['trek', 'initiative']).default('trek'), organizerConfirmed: z.boolean().default(false), date: date.nullable(), dateVerified: z.boolean(),
   difficulty: z.enum(['Easy', 'Moderate', 'Challenging', 'To be confirmed']),
   duration: z.string(), approximateCost: z.string(), capacity: z.number().int().positive().nullable(),
   registrationStatus: z.enum(['Not open', 'Open', 'Full', 'Closed']), registrationUrl: safeUrl.nullable(),

@@ -8,7 +8,8 @@ import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 import { phaseAt, phases, type Phase } from '../lib/phase'
 import PuneWeather from '../components/PuneWeather'
-import { ButtonLink, SectionHeading, TrekCard, Value, JoinBanner, FAQList, PhotoImage } from '../components/Shared'
+import { ButtonLink, SectionHeading, TrekCard, PlaceCard, Value, JoinBanner, FAQList, PhotoImage } from '../components/Shared'
+import { groupPlaces } from '../lib/places'
 
 const HeroScene=dynamic(()=>import('../components/HeroScene'),{ssr:false})
 
@@ -21,7 +22,8 @@ export default function Home({content,preview,contentUnavailable}: {content:Site
   useEffect(()=>{document.documentElement.dataset.phase=phase},[phase])
   const upcoming=contentUnavailable?[]:upcomingTreks(content.treks)
   const past=content.treks.filter(t=>t.status==='completed')
-  const diary=['rajgad-fort','ratangad','jivdhan-night-camping'].map(slug=>past.find(t=>t.slug===slug)).filter(Boolean) as SiteContent['treks']
+  // Places with uploaded photos first, then the most recent.
+  const diary=groupPlaces(past).sort((a,b)=>Number(b.visits.some(v=>v.photos.length))-Number(a.visits.some(v=>v.photos.length))).slice(0,3)
   const guides=maharashtraGuides.slice(0,5)
   return <>
     <Seo title="Good trails. Better company."/>
@@ -113,13 +115,13 @@ export default function Home({content,preview,contentUnavailable}: {content:Site
       <p className="explore-note">Difficulty is an editorial starting point, not a live safety rating. Check local conditions before you set out.</p>
     </section>
 
-    <section className="section-tinted">
+    {diary.length>0&&    <section className="section-tinted">
       <div className="container section-space">
         <SectionHeading eyebrow="Trail diary" title="From our community archive." href="/past-treks" link="Browse the archive">Places we have explored together. Photos appear once permission is recorded.</SectionHeading>
-        <div className="card-grid">{diary.map(t=><TrekCard key={t.slug} trek={t} preview={preview}/>)}</div>
+        <div className="card-grid">{diary.map(p=><PlaceCard key={p.key} place={p} preview={preview}/>)}</div>
         {preview&&<p className="subtle-note">Local preview only: legacy photos await renewed website permission.</p>}
       </div>
-    </section>
+    </section>}
 
     <section className="container section-space">
       <SectionHeading eyebrow="How we work" title="Our principles."/>

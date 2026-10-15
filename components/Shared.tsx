@@ -3,14 +3,16 @@ import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import Icon, { type IconName } from './Icon'
-import { formatDate } from '../lib/site'
+import TripModal from './TripModal'
+import { formatDate, formatMonth } from '../lib/site'
+import { realText, type Place } from '../lib/places'
 import type { Trek, Photo } from '../lib/content-schema'
 export function ButtonLink({ href, children, secondary=false }: { href:string;children:ReactNode;secondary?:boolean }) { return <Link href={href} className={`button ${secondary?'button-outline':''}`}>{children}<Icon name="arrow" size={18}/></Link> }
 export function PageIntro({ eyebrow, title, children }: {eyebrow:string;title:string;children:ReactNode}) {return <div className="page-intro container"><span className="eyebrow"><span/>{eyebrow}</span><h1>{title}</h1><p>{children}</p></div>}
 export function SectionHeading({ eyebrow,title,children,href,link }: {eyebrow:string;title:string;children?:ReactNode;href?:string;link?:string}) {return <div className="section-heading"><div><span className="eyebrow">{eyebrow}</span><h2>{title}</h2>{children&&<p>{children}</p>}</div>{href&&<Link href={href} className="text-link">{link}<Icon name="arrow" size={19}/></Link>}</div>}
 export function Note({children}: {children:ReactNode}) {return <div className="note"><Icon name="compass" size={20}/><div>{children}</div></div>}
 export function JoinBanner() {return <section className="join-banner container"><div className="join-icon"><Icon name="mountain" size={58}/></div><div><span className="eyebrow">YOUR NEXT CHAPTER STARTS OUTSIDE</span><h2>Come for the trail. Stay for the people.</h2><p>You don’t need a group of friends to start. You’ll find one here.</p></div><ButtonLink href="/join">Find your community</ButtonLink></section>}
-export function PhotoImage({photo,priority=false, className=''}: {photo:Photo;priority?:boolean;className?:string}) {const [failed,setFailed]=useState(false);return failed?<div className={`photo-fallback ${className}`}><Icon name="mountain" size={40}/><span>Photo unavailable</span></div>:<Image className={className} src={photo.src} alt={photo.alt} fill sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" priority={priority} onError={()=>setFailed(true)} style={{objectFit:'cover'}}/>}
+export function PhotoImage({photo,priority=false, className=''}: {photo:Photo;priority?:boolean;className?:string}) {const [failed,setFailed]=useState(false);return failed?<div className={`photo-fallback ${className}`}><Icon name="mountain" size={40}/><span>Photo unavailable</span></div>:<Image className={className} src={photo.src} alt={photo.alt} fill sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" priority={priority} unoptimized={photo.src.startsWith('/api/media/')} onError={()=>setFailed(true)} style={{objectFit:'cover'}}/>}
 const previews:Record<string,number>={'jivdhan-night-camping':13,'devkund-waterfall':11,'ratangad':10,'tarsar-marsar-trek':9,'rohida-fort':7,'goradeshwar':6,'kalavantin-and-prabalgad':5,'rajgad-fort':1}
 export function ArchiveImage({trek,preview=false}: {trek:Trek;preview?:boolean}) {
   const [missing,setMissing]=useState(false);const ref=useRef<HTMLImageElement>(null)
@@ -19,7 +21,20 @@ export function ArchiveImage({trek,preview=false}: {trek:Trek;preview?:boolean})
   if(preview&&previews[trek.slug]&&!missing)return <img ref={ref} src={`/api/preview-photo/${previews[trek.slug]}`} alt={`Original ${trek.name} archive photograph, local preview`} loading="lazy" onError={()=>setMissing(true)}/>
   return <div className="photo-fallback"><Icon name="mountain" size={42}/><span>Photos being curated</span></div>
 }
-export function TrekCard({trek,preview=false}: {trek:Trek;preview?:boolean}) {const past=trek.status==='completed';return <article className="trek-card"><Link href={`${past?'/past-treks':'/treks'}/${trek.slug}`} className="card-picture" tabIndex={-1} aria-hidden="true"><ArchiveImage trek={trek} preview={preview}/><span className="image-tag">{past?'FROM THE ARCHIVE':trek.status==='confirmed'?'CONFIRMED':'PROPOSED · NOT CONFIRMED'}</span></Link><div className="card-body"><span className="card-meta"><Icon name="pin" size={14}/>{trek.destination}</span><h3><Link href={`${past?'/past-treks':'/treks'}/${trek.slug}`}>{trek.name}</Link></h3><p>{past?(trek.summary||'Small moments. Shared adventures. Stories worth keeping.'):trek.summary}</p><div className="card-bottom"><span>{trek.date?formatDate(trek.date):past?'Trek date being verified':'Date to be confirmed'}</span><Link href={`${past?'/past-treks':'/treks'}/${trek.slug}`} aria-label={`Explore ${trek.name}`}><Icon name="arrow" size={19}/></Link></div></div></article>}
+const plural=(n:number,word:string)=>`${n} ${word}${n===1?'':'s'}`
+export function PlaceCard({place,preview=false}: {place:Place;preview?:boolean}) {
+  const [open,setOpen]=useState(false)
+  const {visits}=place,latest=visits[0],single=visits.length===1
+  const cover=visits.find(v=>v.photos.length)||latest
+  const photos=visits.reduce((n,v)=>n+v.photos.length,0),videos=visits.reduce((n,v)=>n+v.videos.length,0)
+  const chip=[!single&&`${visits.length} visits`,photos&&plural(photos,'photo'),videos&&plural(videos,'video')].filter(Boolean).join(' · ')
+  const title=single?latest.name:place.name
+  const location=single?realText(latest.destination):''
+  const summary=single?realText(latest.summary):''
+  const date=latest.date?(single?formatDate(latest.date):`Last visit ${formatMonth(latest.date)}`):''
+  return <article className="trek-card past-card"><div className="card-picture"><ArchiveImage trek={cover} preview={preview}/>{chip&&<span className="media-chip">{chip}</span>}</div><div className="card-body">{date&&<span className="card-meta"><Icon name="calendar" size={14}/>{date}</span>}<div className="card-title-row"><h3><button type="button" className="card-open" onClick={()=>setOpen(true)} aria-haspopup="dialog">{title}</button></h3><Icon name="arrow" size={19}/></div>{location&&location.toLowerCase()!==title.toLowerCase()&&<span className="card-meta"><Icon name="pin" size={14}/>{location}</span>}{summary&&<p>{summary}</p>}</div><TripModal place={place} open={open} onClose={()=>setOpen(false)} fallback={trek=><ArchiveImage trek={trek} preview={preview}/>}/></article>
+}
+export function TrekCard({trek,preview=false}: {trek:Trek;preview?:boolean}) {const past=trek.status==='completed';if(past)return <PlaceCard place={{key:trek.slug,name:trek.name,visits:[trek]}} preview={preview}/>;return <article className="trek-card"><Link href={`${past?'/past-treks':'/treks'}/${trek.slug}`} className="card-picture" tabIndex={-1} aria-hidden="true"><ArchiveImage trek={trek} preview={preview}/><span className="image-tag">{past?'FROM THE ARCHIVE':trek.status==='confirmed'?'CONFIRMED':'PROPOSED · NOT CONFIRMED'}</span></Link><div className="card-body"><span className="card-meta"><Icon name="pin" size={14}/>{trek.destination}</span><h3><Link href={`${past?'/past-treks':'/treks'}/${trek.slug}`}>{trek.name}</Link></h3><p>{past?(trek.summary||'Small moments. Shared adventures. Stories worth keeping.'):trek.summary}</p><div className="card-bottom"><span>{trek.date?formatDate(trek.date):past?'Trek date being verified':'Date to be confirmed'}</span><Link href={`${past?'/past-treks':'/treks'}/${trek.slug}`} aria-label={`Explore ${trek.name}`}><Icon name="arrow" size={19}/></Link></div></div></article>}
 export function Value({icon,title,children}: {icon:IconName;title:string;children:ReactNode}) {return <div className="value"><span className="icon-box"><Icon name={icon} size={25}/></span><h3>{title}</h3><p>{children}</p></div>}
 export const faqs = [
   ['Can I join on my own?', 'Absolutely. Many friendships begin at the meeting point. Introduce yourself to the coordinator, ask about the buddy arrangement, and choose a trek that suits your ability.'],
