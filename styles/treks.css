@@ -70,3 +70,4 @@
 .difficulty-moderate{background:#fcefc4!important}
 .difficulty-challenging{background:#f7dccd!important}
 .explore-note{margin-top:16px;font-size:14px;color:var(--muted)}
+.status-chip{display:inline-block;align-self:flex-start;margin-bottom:10px;background:var(--tint);color:var(--ink);font-size:12px;line-height:1;padding:8px 11px;border-radius:999px;font-weight:800}

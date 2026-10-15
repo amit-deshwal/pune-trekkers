@@ -49,7 +49,7 @@ export function trekEventJsonLd(trek: Trek, site: SiteInfo): JsonLd | null {
   const availability = { Open: 'InStock', Full: 'SoldOut', Closed: 'SoldOut', 'Not open': 'PreOrder' }[trek.registrationStatus]
   return {
     '@context': context, '@type': 'Event', name: trek.name, description: trek.summary, url,
-    startDate: trek.date, eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    startDate: trek.startTime ? `${trek.date}T${trek.startTime}:00+05:30` : trek.date, eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     location: { '@type': 'Place', name: trek.destination, address: { '@type': 'PostalAddress', addressRegion: 'Maharashtra', addressCountry: 'IN' } },
     organizer: { '@type': 'Organization', name: site.name, url: site.url },
     ...(trek.photos[0] ? { image: [absolute(site.url, trek.photos[0].src)] } : {}),

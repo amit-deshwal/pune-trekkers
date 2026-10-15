@@ -16,12 +16,14 @@ export const videoSchema = z.object({
 // "+91 98765 43210", "098765 43210" or "9876543210" → "919876543210". Ten-digit numbers are taken as Indian mobiles.
 export function whatsappDigits(raw: string) { const digits = raw.replace(/\D/g, '').replace(/^0+/, ''); return digits.length === 10 ? `91${digits}` : digits }
 const whatsapp = z.string().default('').transform(whatsappDigits).refine(value => value === '' || /^\d{11,15}$/.test(value), 'Use a WhatsApp number with country code, e.g. +91 98765 43210')
+const startTime = z.string().default('').refine(value => value === '' || /^([01]\d|2[0-3]):[0-5]\d$/.test(value), 'Use a 24-hour time like 06:30')
+const whatsappGroup = z.string().default('').transform(value => value.trim()).refine(value => value === '' || /^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9_-]+\/?(\?.*)?$/.test(value), 'Use a WhatsApp group invite link (https://chat.whatsapp.com/…)')
 export const trekSchema = z.object({
   slug: z.string().regex(/^[a-z0-9-]+$/), name: z.string().min(1), destination: z.string(),
   status: z.enum(['proposed', 'confirmed', 'completed', 'cancelled']),
   kind: z.enum(['trek', 'initiative']).default('trek'), organizerConfirmed: z.boolean().default(false), date: date.nullable(), dateVerified: z.boolean(),
   difficulty: z.enum(['Easy', 'Moderate', 'Challenging', 'To be confirmed']),
-  duration: z.string(), approximateCost: z.string(), capacity: z.number().int().positive().nullable(),
+  startTime, whatsappGroupUrl: whatsappGroup, duration: z.string(), approximateCost: z.string(), capacity: z.number().int().positive().nullable(),
   registrationStatus: z.enum(['Not open', 'Open', 'Full', 'Closed']), registrationUrl: safeUrl.nullable(),
   beginnerGuidance: z.string(), fitness: z.string(), transport: z.string(), meetingPoint: z.string(),
   inclusions: z.string(), exclusions: z.string(), cancellation: z.string(), route: z.string(),
