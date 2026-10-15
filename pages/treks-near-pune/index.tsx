@@ -30,7 +30,7 @@ export default function TreksNearPune({ initialHikes, guides, trails }: { initia
     ['Which treks are closest to Pune?', `${closest.slice(0, -1).map(t => t.name).join(', ')} and ${closest[closest.length - 1].name} are among the closest well-known forts, roughly ${closest[0].km}–${closest[closest.length - 1].km} km from central Pune in a straight line. The drive is longer than that, especially on ghat roads.`],
     ['Which trek near Pune is good for beginners?', 'Lohagad is a common first fort walk. Our guide rates it Easy, though wet stone gets slippery. Sinhagad and Rajgad suit people who are comfortable with sustained uphill walking. Whatever you choose, start early and go with a prepared companion or group.'],
     ['What is the best time to trek near Pune?', 'October to February usually brings cooler weather and clearer views. The monsoon, from June to September, turns the Sahyadris green and fills the waterfalls, but trails get slippery and some routes become risky or closed. In summer, start very early and carry extra water.'],
-    ['Is there a free trekking group in Pune?', 'Yes. Pune Trekkers is a free-to-join, volunteer-run community of about 2,300 people across three WhatsApp groups. There is no organiser fee: participants split the actual cost of transport, food and entry fees.'],
+    ['Is there a free trekking group in Pune?', 'Yes. Pune Trekkers is a free-to-join, volunteer-run community of about 2,300 people across three WhatsApp groups. Nobody makes a profit: participants split the actual cost of transport, food and entry fees.'],
   ]
   const jsonLd = [
     breadcrumbJsonLd(site.url, [['Home', '/'], ['Treks near Pune', '/treks-near-pune']]),
@@ -65,7 +65,7 @@ export default function TreksNearPune({ initialHikes, guides, trails }: { initia
 
       <section id="trek-with-a-group" className="section-space" style={{ paddingBottom: 0 }}>
         <SectionHeading eyebrow="Trek with us" title="Prefer to trek with a group?"/>
-        <p style={{ maxWidth: 680, fontSize: 18 }}>Pune Trekkers is a free, volunteer-run trekking community in Pune. Members plan treks openly and split the actual cost of transport, food and entry fees, with no organiser fee or markup. Beginners, women and solo trekkers are welcome on routes that suit their ability.</p>
+        <p style={{ maxWidth: 680, fontSize: 18 }}>Pune Trekkers is a free, volunteer-run trekking community in Pune. Members plan treks openly and split the actual cost of transport, food and entry fees, with no markup or profit. Beginners, women and solo trekkers are welcome on routes that suit their ability.</p>
         <p><Link href="/treks" className="text-link">See upcoming treks from Pune <Icon name="arrow" size={18}/></Link></p>
       </section>
 

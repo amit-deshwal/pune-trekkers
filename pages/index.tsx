@@ -128,7 +128,7 @@ export default function Home({content,preview,contentUnavailable}: {content:Site
     </section>}
 
     <section className="container section-space">
-      <SectionHeading eyebrow="How we work" title="A trekking community, not a tour company.">Joining is free and there is no organiser fee. Participants split the actual cost of transport, food and entry fees, so a trek near Pune costs only what it really costs.</SectionHeading>
+      <SectionHeading eyebrow="How we work" title="A trekking community, not a tour company.">Joining is free and nobody makes a profit. Participants split the actual cost of transport, food and entry fees, so a trek near Pune costs only what it really costs.</SectionHeading>
       <div className="values-grid">
         <Value icon="rupee" title="Shared costs, no profit">We split the actual agreed expenses. Current community treks are not organized for profit.</Value>
         <Value icon="people" title="Everyone belongs">Women, solo trekkers and first-timers are welcome on treks that suit their ability.</Value>
