@@ -36,6 +36,3 @@ yarn-error.log*
 
 # Temporary local setup files
 temp/
-
-# Local-only test audio (not for deploy)
-public/audio/test-track.mp3

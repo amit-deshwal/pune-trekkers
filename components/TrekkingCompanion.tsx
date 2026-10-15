@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import type { Act, Companion } from './CompanionScene'
-import { TRACK, useTrailMusic } from './TrailMusic'
+import { useTrailMusic } from './TrailMusic'
 
 // What the buddy says on each section of the site (first match wins).
 const LINES: [string, string][] = [
@@ -119,7 +119,7 @@ export default function TrekkingCompanion() {
     if (e.key === 'Escape') { e.preventDefault(); close() }
   }}>
     <button className={`trail-buddy-music${music.on ? ' is-playing' : ''}`} data-music-toggle aria-pressed={music.on}
-      aria-label={music.on ? 'Pause trail music' : 'Play trail music'} title={`${music.on ? 'Pause' : 'Play'} trail music: “${TRACK.title}” by ${TRACK.artist}`}
+      aria-label={music.on ? 'Pause trail music' : 'Play trail music'} title={music.on ? 'Pause trail music' : 'Play trail music'}
       onClick={() => { music.toggle(); if (!music.on && !minimized) speak('Ooh, trail music!', 2200) }}>
       {music.on
         ? <span className="trail-buddy-eq" aria-hidden="true"><i/><i/><i/></span>

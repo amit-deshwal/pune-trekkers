@@ -5,9 +5,8 @@ import { useEffect, useRef, useState } from 'react'
 // Volume runs through a Web Audio gain node because iOS ignores <audio>.volume. Client-side navigation keeps
 // _app mounted, so the track carries on across pages.
 export const TRACK = {
-  src: '/audio/living-voyage.m4a', title: 'Living Voyage', artist: 'Kevin MacLeod', source: 'https://incompetech.com',
-  license: 'CC BY 4.0', licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
-  loopFrom: 0, // seconds: playback starts here and each loop jumps back here, skipping any intro
+  src: '/audio/mandalorian.mp3',
+  loopFrom: 44, // seconds: playback starts here and each loop jumps back here, skipping the intro
 }
 const VOLUME = 0.16
 const KEY = 'trail-music'
