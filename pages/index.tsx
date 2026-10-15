@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { getContent } from '../lib/content'
+import type { GetServerSideProps } from 'next'
+import { getCachedContent } from '../lib/content'
 import { upcomingTreks, type SiteContent } from '../lib/content-schema'
 import { maharashtraGuides } from '../lib/maharashtra-explorer'
 import Seo from '../components/Seo'
@@ -15,7 +16,7 @@ import { organizationJsonLd, websiteJsonLd } from '../lib/seo'
 
 const HeroScene=dynamic(()=>import('../components/HeroScene'),{ssr:false})
 
-export async function getServerSideProps(){return {props:await getContent()}}
+export const getServerSideProps:GetServerSideProps=async({res})=>({props:await getCachedContent(res)})
 
 export default function Home({content,preview,contentUnavailable}: {content:SiteContent;preview:boolean;contentUnavailable:boolean}) {
   // Scene follows the visitor's local time; the Morning/Day/Dusk/Night buttons let anyone preview the others.
@@ -50,7 +51,7 @@ export default function Home({content,preview,contentUnavailable}: {content:Site
         </div>
         <ul className="scene-chips" aria-label="What to expect">
           <li className="chip-a"><span className="chip-icon orange"><Icon name="rupee" size={18}/></span><span><small>Shared costs</small><b>Zero markup</b></span></li>
-          <li className="chip-b"><span className="chip-icon logo"><img src="/images/brand/pune-trekkers-hiking-mark-v3-header.png" alt=""/></span><span><small>New here?</small><b>Beginners welcome</b></span></li>
+          <li className="chip-b"><span className="chip-icon logo"><img src="/images/brand/pune-trekkers-hiking-mark-v3-header.webp" alt="" width={30} height={30}/></span><span><small>New here?</small><b>Beginners welcome</b></span></li>
           <li className="chip-c"><span className="chip-icon green"><Icon name="chat" size={18}/></span><span><small>3 groups</small><b>Join on WhatsApp</b></span></li>
         </ul>
         <div className="scene-stat">

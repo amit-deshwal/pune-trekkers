@@ -1,3 +1,4 @@
+import type { ServerResponse } from 'node:http'
 import fallback from '../data/community.json'
 import { contentSchema, publicContent, type SiteContent } from './content-schema'
 
@@ -20,4 +21,15 @@ export async function getContent(): Promise<{ content: SiteContent; contentUnava
   // Unapproved legacy images are available only on the local development server.
   const preview = process.env.NODE_ENV === 'development'
   return { content, contentUnavailable, preview }
+}
+
+// Lets Vercel's edge serve a cached page for a minute (then refresh in the background), so visitors and crawlers
+// don't wait on Supabase or a cold start. Admin edits appear within about a minute. A failed read is never cached.
+export function cachePage(res: ServerResponse, contentUnavailable = false) {
+  res.setHeader('Cache-Control', contentUnavailable ? 'no-store' : 'public, s-maxage=60, stale-while-revalidate=3600')
+}
+export async function getCachedContent(res: ServerResponse) {
+  const result = await getContent()
+  cachePage(res, result.contentUnavailable)
+  return result
 }

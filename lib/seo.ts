@@ -11,7 +11,7 @@ export function organizationJsonLd(site: SiteInfo): JsonLd {
   return {
     '@context': context, '@type': 'Organization', '@id': `${site.url}/#organization`,
     name: site.name, alternateName: ['Pune Trekkers Community', 'Pune Trekking Group'],
-    url: site.url, logo: `${site.url}/images/brand/pune-trekkers-hiking-mark-v3.png`,
+    url: site.url, logo: `${site.url}/android-chrome-512x512.png`,
     description: site.description, email: site.email, sameAs: [site.instagram],
     areaServed: { '@type': 'City', name: 'Pune', containedInPlace: { '@type': 'State', name: 'Maharashtra' } },
     knowsAbout: ['Trekking', 'Hiking', 'Sahyadri forts', 'Treks near Pune'],

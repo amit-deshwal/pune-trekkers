@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Icon, { type IconName } from '../Icon'
-export function Brand() { return <Link href="/" className="brand" aria-label="Pune Trekkers home"><span className="brand-symbol"><img src="/images/brand/pune-trekkers-hiking-mark-v3-header.png" alt="" /></span><span>PUNE <strong>TREKKERS</strong><small>FIND YOUR PEOPLE. FIND YOUR TRAIL.</small></span></Link> }
+export function Brand() { return <Link href="/" className="brand" aria-label="Pune Trekkers home"><span className="brand-symbol"><img src="/images/brand/pune-trekkers-hiking-mark-v3-header.webp" alt="" width={34} height={34} /></span><span>PUNE <strong>TREKKERS</strong><small>FIND YOUR PEOPLE. FIND YOUR TRAIL.</small></span></Link> }
 const links:[string,string,IconName][]=[['/about','Our story','people'],['/treks','Treks','calendar'],['/treks-near-pune','Find hikes','pin'],['/past-treks','Archive','mountain'],['/conservation','Give back','leaf']]
 export default function Navbar() {
   const [open, setOpen] = useState(false); const router = useRouter()

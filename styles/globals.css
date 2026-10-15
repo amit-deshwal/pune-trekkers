@@ -258,8 +258,8 @@ em{font-style:normal}
 
 /* ---------- Conservation banner ---------- */
 .conserve{display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(24px,5vw,64px);align-items:center;padding:clamp(28px,5vw,56px);background:var(--green-dark);border-radius:var(--radius-lg);color:#f1f4ea}
-.conserve h2,.conserve .eyebrow{color:#fff}
-.conserve .eyebrow:before{background:var(--sun)}
+.conserve h2,.conserve .eyebrow,.join-banner .eyebrow{color:#fff}
+.conserve .eyebrow:before,.join-banner .eyebrow:before{background:var(--sun)}
 .conserve p{color:#e3e9dc;margin-top:14px;font-size:17px}
 .conserve .inline-actions{margin-top:22px}
 .conserve .button{background:#fff;color:var(--green-dark);border-color:#fff}
