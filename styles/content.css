@@ -142,3 +142,12 @@ blockquote cite{display:block;margin-top:10px;font-style:normal;font-weight:800;
 
 /* ---------- Loading ---------- */
 .loading-bar{position:fixed;top:0;left:0;width:100%;height:3px;background:var(--orange);z-index:100}
+
+/* conservation page rhythm */
+.conservation-done{padding-block:8px 0}
+.conservation-done h2,.conservation-next h2{margin:4px 0 10px}
+.conservation-done>p{margin:0 0 28px;max-width:640px;font-size:17px}
+.conservation-next{margin-top:64px}
+.conservation-next h2{margin-bottom:24px}
+.conservation-pillars{padding:0;margin-bottom:8px}
+.conservation-pillars+.prose{margin-top:32px}
