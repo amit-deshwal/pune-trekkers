@@ -1,0 +1,22 @@
+{
+  "hero": null,
+  "treks": [],
+  "timeline": [],
+  "people": [],
+  "testimonials": [],
+  "socialLinks": [
+    {
+      "label": "Instagram · @r.punetrekkers",
+      "url": "https://www.instagram.com/r.punetrekkers"
+    },
+    {
+      "label": "Official WhatsApp community invitation",
+      "url": "https://chat.whatsapp.com/Gn2Thc2HQCo4hwGhplNlj5?mode=r_c"
+    },
+    {
+      "label": "Upcoming treks board",
+      "url": "https://pune-trekkers.notion.site/pune-trekkers/Pune-Trekkers-Events-ac0739549832414a8d59a3dca62417d1"
+    }
+  ],
+  "impactReports": []
+}

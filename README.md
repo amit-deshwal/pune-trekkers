@@ -8,7 +8,7 @@ What sets Pune Trekkers apart is our strong sense of community. 🤝 We foster a
 
 Whether you're an avid hiker or a beginner, Pune Trekkers welcomes you to join us on our exciting journeys! 🎉 Come, let's explore breathtaking trails, conquer new heights, and create unforgettable moments together. 🥾🌟
 
-Group link - https://chat.whatsapp.com/LhZRnE30sWG5uTGEvGRghH
+Join the community - https://punetrekkers.org/join
 
 ## Built With
 
@@ -17,4 +17,4 @@ Group link - https://chat.whatsapp.com/LhZRnE30sWG5uTGEvGRghH
 - [Next.js](https://nextjs.org)
 - [Vercel](https://vercel.com)
 
-Deployed URL - https://pune-trekkers.vercel.app/
+Website - https://punetrekkers.org

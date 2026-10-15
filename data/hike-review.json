@@ -1,0 +1,36 @@
+{
+  "featured": [
+    { "slug": "sinhagad", "evidence": "https://maharashtratourism.gov.in/fort/sinhagad/" },
+    { "slug": "rajgad", "evidence": "https://maharashtratourism.gov.in/fort/rajgad/" },
+    { "slug": "torna", "evidence": "https://maharashtratourism.gov.in/fort/torna/" },
+    { "slug": "lohagad-fort", "evidence": "https://maharashtratourism.gov.in/fort/lohagad/" },
+    { "slug": "malhargad-fort", "evidence": "https://trekshitiz.com/fort/index.php?slug=Malhargad-fort" },
+    { "slug": "purandar", "evidence": "https://maharashtratourism.gov.in/fort/purandar/" },
+    { "slug": "visapur", "evidence": "https://maharashtratourism.gov.in/nature/lonavala/" },
+    { "slug": "rajmachi-fort", "evidence": "https://maharashtratourism.gov.in/adventure-tourism/" },
+    { "slug": "tikona-peak", "evidence": "https://trekshitiz.com/fort/index.php?slug=Tikona-fort" },
+    { "slug": "tung", "evidence": "https://trekshitiz.com/fort/index.php?slug=Tung-fort" },
+    { "slug": "rohida-fort", "evidence": "https://trekshitiz.com/fort/index.php?slug=Rohida-fort" },
+    { "slug": "korigad", "evidence": "https://trekshitiz.com/fort/index.php?slug=Korigad-fort" },
+    { "slug": "raigad", "evidence": "https://trekshitiz.com/fort/index.php?slug=Raigad-fort" },
+    { "slug": "pratapgad", "evidence": "https://maharashtratourism.gov.in/fort/pratapgad/" },
+    { "slug": "shivneri-fort", "evidence": "https://maharashtratourism.gov.in/fort/shivneri/" },
+    { "slug": "chavand", "evidence": "https://trekshitiz.com/fort/index.php?slug=Chavand-fort" },
+    { "slug": "hadsar", "evidence": "https://trekshitiz.com/fort/index.php?slug=Hadsar-fort" },
+    { "slug": "jivdhan-fort", "evidence": "https://trekshitiz.com/fort/index.php?slug=Jivdhan-fort" },
+    { "slug": "karnala", "evidence": "https://trekshitiz.com/fort/index.php?slug=Karnala-fort" },
+    { "slug": "ajinkyatara-fort", "evidence": "https://trekshitiz.com/fort/index.php?slug=Ajinkyatara-fort" },
+    { "slug": "sajjangad", "evidence": "https://maharashtratourism.gov.in/fort/sajjangad/" },
+    { "slug": "vasota", "evidence": "https://trekshitiz.com/fort/index.php?slug=Vasota-fort" },
+    { "slug": "harishchandragad-fort", "evidence": "https://maharashtratourism.gov.in/fort/harishchandragad/" },
+    { "slug": "harihar-fort", "evidence": "https://trekshitiz.com/fort/index.php?slug=Harihar-fort" },
+    { "slug": "tringalwadi", "evidence": "https://trekshitiz.com/fort/index.php?slug=Tringalwadi-fort" },
+    { "slug": "vishalgad-fort", "evidence": "https://maharashtratourism.gov.in/fort/vishalgad/" },
+    { "slug": "salher", "evidence": "https://trekshitiz.com/fort/index.php?slug=Salher-fort" },
+    { "slug": "kalasubai-peak", "evidence": "https://maharashtratourism.gov.in/nature/kalsubai-peak/" }
+  ],
+  "exclude": [
+    "lohgad",
+    "sandan-valley-karoli-ghat-fort"
+  ]
+}

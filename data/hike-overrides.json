@@ -1,0 +1,207 @@
+{
+  "_add": [
+    {
+      "name": "Dhak Bahiri",
+      "kind": "fort",
+      "lat": 18.8723,
+      "lon": 73.4021,
+      "approx": true,
+      "elevationM": 823,
+      "difficulty": "Challenging",
+      "region": "Karjat · Raigad district",
+      "starts": [
+        {
+          "name": "Sandshi",
+          "note": "Base village listed by Trekshitiz (as Sandashi). The final climb to the cave is exposed; go with someone who knows the route."
+        }
+      ],
+      "links": [
+        {
+          "label": "Trekshitiz",
+          "url": "https://trekshitiz.com/fort/index.php?slug=Dhak-Bahiri-fort"
+        }
+      ]
+    }
+  ],
+  "lohagad-fort": {
+    "difficulty": "Easy",
+    "region": "Maval · Pune district",
+    "starts": [
+      {
+        "name": "Lohagadwadi",
+        "note": "Road reaches this hamlet below the fort; most walkers start here."
+      },
+      {
+        "name": "Malavli",
+        "note": "Railway station for local trains; walk via Bhaje to Lohagadwadi."
+      }
+    ]
+  },
+  "visapur": {
+    "difficulty": "Moderate",
+    "region": "Maval · Pune district",
+    "starts": [
+      {
+        "name": "Malavli",
+        "note": "Railway station; the trail goes via Bhaje village."
+      }
+    ]
+  },
+  "rajgad": {
+    "starts": [
+      {
+        "name": "Gunjavane",
+        "note": "Common route to Padmavati Machi; Maharashtra Tourism describes it as moderate."
+      },
+      {
+        "name": "Pali",
+        "note": "Route to Sanjivani Machi; Maharashtra Tourism describes this option as more challenging."
+      }
+    ]
+  },
+  "torna": {
+    "starts": [
+      {
+        "name": "Velhe",
+        "note": "Maharashtra Tourism describes the main trail from Velhe."
+      }
+    ]
+  },
+  "sinhagad": {
+    "difficulty": "Moderate",
+    "region": "Haveli · Pune district"
+  },
+  "ratangad": {
+    "difficulty": "Moderate",
+    "region": "Akole · Ahilyanagar (Ahmednagar) district",
+    "starts": [
+      {
+        "name": "Ratanwadi",
+        "note": "Common start near the Amruteshwar temple."
+      }
+    ]
+  },
+  "harishchandragad-fort": {
+    "difficulty": "Challenging",
+    "region": "Akole · Ahilyanagar (Ahmednagar) district",
+    "starts": [
+      {
+        "name": "Pachnai",
+        "note": "Shortest and most popular route."
+      },
+      {
+        "name": "Khireshwar",
+        "note": "Tolar Khind route; longer."
+      }
+    ]
+  },
+  "irshalgad": {
+    "difficulty": "Challenging",
+    "region": "Khalapur · Raigad district",
+    "starts": [
+      {
+        "name": "Irshalwadi",
+        "note": "Hamlet below the pinnacle."
+      }
+    ]
+  },
+  "kalavantin-durg": {
+    "difficulty": "Challenging",
+    "region": "Panvel · Raigad district",
+    "starts": [
+      {
+        "name": "Prabalgad Machi",
+        "note": "Reached from Thakurwadi; the climb has exposed rock-cut steps."
+      }
+    ]
+  },
+  "prabalgad": {
+    "difficulty": "Moderate",
+    "region": "Panvel · Raigad district",
+    "starts": [
+      {
+        "name": "Prabalgad Machi",
+        "note": "Reached from Thakurwadi."
+      }
+    ]
+  },
+  "korigad": {
+    "difficulty": "Easy",
+    "region": "Mulshi · Pune district",
+    "starts": [
+      {
+        "name": "Peth Shahpur",
+        "note": "Road head near Aamby Valley."
+      }
+    ]
+  },
+  "tikona-peak": {
+    "name": "Tikona Fort",
+    "kind": "fort",
+    "difficulty": "Easy",
+    "region": "Maval · Pune district",
+    "starts": [
+      {
+        "name": "Tikona Peth",
+        "note": "Village at the base."
+      }
+    ]
+  },
+  "rajmachi-fort": {
+    "difficulty": "Moderate",
+    "region": "Maval · Pune district",
+    "starts": [
+      {
+        "name": "Rajmachi village",
+        "note": "Reached by the long jeep track from Lonavala, or by the climb from Kondivade."
+      }
+    ]
+  },
+  "ghoradeshwar": {
+    "difficulty": "Easy",
+    "region": "Maval · Pune district",
+    "hidden": true
+  },
+  "salher": {
+    "difficulty": "Challenging",
+    "region": "Baglan · Nashik district",
+    "starts": [
+      {
+        "name": "Waghambe",
+        "note": "Common route from the Salota side."
+      }
+    ]
+  },
+  "kalasubai-peak": {
+    "name": "Kalsubai Peak",
+    "region": "Akole · Ahilyanagar (Ahmednagar) district",
+    "starts": [
+      {
+        "name": "Bari",
+        "note": "Base village identified by Maharashtra Tourism for the main route."
+      }
+    ],
+    "kind": "peak"
+  },
+  "bhimashankar": {
+    "kind": "peak",
+    "region": "Khed · Pune district"
+  },
+  "murud-janjira": {
+    "kind": "fort",
+    "region": "Murud · Raigad district"
+  },
+  "ahmednagar-fort": {
+    "region": "Ahilyanagar (Ahmednagar) district"
+  },
+  "fort-bassein": {
+    "name": "Vasai Fort (Bassein)",
+    "region": "Vasai · Palghar district"
+  },
+  "kandhar-fort": {
+    "region": "Kandhar · Nanded district"
+  },
+  "panhala-fort": {
+    "region": "Panhala · Kolhapur district"
+  }
+}
