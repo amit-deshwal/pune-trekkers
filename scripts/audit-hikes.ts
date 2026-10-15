@@ -1,6 +1,7 @@
 // Structural audit of every published hike and location record.
 // This does not establish that a mapped place is a safe or accessible walking route.
 import { readFileSync } from 'node:fs'
+import { isDistrict } from '../lib/hike-labels.ts'
 
 const read = (path: string) => JSON.parse(readFileSync(path, 'utf8'))
 const hikes = read('public/data/hikes.json') as any[]
@@ -18,6 +19,9 @@ for (const hike of hikes) {
   slugs.add(hike.slug)
   if (!inBox(hike.lat, hike.lon)) errors.push(`Out-of-bounds hike: ${hike.slug}`)
   if (!['fort', 'peak'].includes(hike.kind)) errors.push(`Invalid kind: ${hike.slug}`)
+  // Shown regions end in a known district ("Pune district" or "Maval · Pune district"); ranges belong in `areas`.
+  if (hike.region !== null && !isDistrict(hike.region.split(' · ').pop().replace(/ district$/, ''))) errors.push(`Unknown district in region: ${hike.slug} / ${hike.region}`)
+  if (hike.areas.some((area: string) => isDistrict(area))) errors.push(`District listed as an area: ${hike.slug}`)
   if (hike.elevationM !== null && (!Number.isFinite(hike.elevationM) || hike.elevationM < 0 || hike.elevationM > 1646)) errors.push(`Implausible elevation: ${hike.slug}`)
   for (const start of hike.starts) {
     if (!inBox(start.lat, start.lon) || km(hike, start) > 20) errors.push(`Invalid or distant village: ${hike.slug} / ${start.name}`)

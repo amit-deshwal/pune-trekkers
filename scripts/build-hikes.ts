@@ -3,6 +3,7 @@
 // <rawDir> must contain osm.json, wd.json, towns.json and v*.json (see scripts/README-data.md).
 // Only facts (names, coordinates, elevation) are taken. No prose is copied from third-party sites.
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs'
+import { districtLabel, isDistrict } from '../lib/hike-labels.ts'
 import { join } from 'node:path'
 
 const raw = process.argv[2]
@@ -150,8 +151,10 @@ const hikes = linked.map(c => {
   }
   starts = starts.filter((s: Pt, i: number, all: Pt[]) => all.findIndex(o => o.name === s.name) === i)
   const ele = o?.elevationM ?? c.elevationM ?? (c.ts?.heightFt ? Math.round(c.ts.heightFt * 0.3048) : null)
+  // Trekshitiz's "taluka" field mostly holds a mountain range (Naneghat, Kalsubai), which visitors misread as the location.
+  // It stays searchable through `areas`; the shown region is the district, or the curated taluka · district override.
   const range = c.ts?.taluka && !/^(nil|none|-)$/i.test(c.ts.taluka) && c.ts.taluka !== c.ts.district ? c.ts.taluka : null
-  const region = o?.region ?? (c.ts ? [range, c.ts.district].filter(Boolean).join(' · ') : null)
+  const region = o?.region ?? districtLabel(c.ts?.district)
   return {
     slug, name: o?.name ?? titleCase(c.name), kind: o?.kind ?? c.kind, lat: +c.lat.toFixed(5), lon: +c.lon.toFixed(5),
     // OSM/Wikidata heights sometimes contain feet entered as metres. Values above Kalsubai (1646 m) are withheld.
@@ -160,7 +163,7 @@ const hikes = linked.map(c => {
     // Popular = well documented (official page, curated, or in both Trekshitiz and Wikidata). Curated "hidden" wins.
     popular: !(o?.hidden) && (!!o || c.sources.includes('Maharashtra Tourism') || (c.sources.includes('Trekshitiz') && c.sources.includes('Wikidata'))),
     approxLocation: !!c.approx, notes: o?.notes ?? null,
-    aliases: Array.from(new Set(c.alt.filter(a => a !== c.name && latin(a)))).slice(0, 4), starts, sources: c.sources, links: c.links,
+    aliases: Array.from(new Set(c.alt.filter(a => a !== c.name && latin(a)))).slice(0, 4), areas: range && !isDistrict(range) ? [range] : [], starts, sources: c.sources, links: c.links,
   }
 }).sort((a, b) => a.name.localeCompare(b.name))
 

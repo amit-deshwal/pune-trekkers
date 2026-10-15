@@ -8,7 +8,7 @@
       "approx": true,
       "elevationM": 823,
       "difficulty": "Challenging",
-      "region": "Karjat · Raigad",
+      "region": "Karjat · Raigad district",
       "starts": [
         {
           "name": "Sandshi",
@@ -25,7 +25,7 @@
   ],
   "lohagad-fort": {
     "difficulty": "Easy",
-    "region": "Maval · Pune",
+    "region": "Maval · Pune district",
     "starts": [
       {
         "name": "Lohagadwadi",
@@ -39,7 +39,7 @@
   },
   "visapur": {
     "difficulty": "Moderate",
-    "region": "Maval · Pune",
+    "region": "Maval · Pune district",
     "starts": [
       {
         "name": "Malavli",
@@ -69,11 +69,11 @@
   },
   "sinhagad": {
     "difficulty": "Moderate",
-    "region": "Haveli · Pune"
+    "region": "Haveli · Pune district"
   },
   "ratangad": {
     "difficulty": "Moderate",
-    "region": "Akole · Ahmednagar",
+    "region": "Akole · Ahilyanagar (Ahmednagar) district",
     "starts": [
       {
         "name": "Ratanwadi",
@@ -83,7 +83,7 @@
   },
   "harishchandragad-fort": {
     "difficulty": "Challenging",
-    "region": "Akole · Ahmednagar",
+    "region": "Akole · Ahilyanagar (Ahmednagar) district",
     "starts": [
       {
         "name": "Pachnai",
@@ -97,7 +97,7 @@
   },
   "irshalgad": {
     "difficulty": "Challenging",
-    "region": "Khalapur · Raigad",
+    "region": "Khalapur · Raigad district",
     "starts": [
       {
         "name": "Irshalwadi",
@@ -107,7 +107,7 @@
   },
   "kalavantin-durg": {
     "difficulty": "Challenging",
-    "region": "Panvel · Raigad",
+    "region": "Panvel · Raigad district",
     "starts": [
       {
         "name": "Prabalgad Machi",
@@ -117,7 +117,7 @@
   },
   "prabalgad": {
     "difficulty": "Moderate",
-    "region": "Panvel · Raigad",
+    "region": "Panvel · Raigad district",
     "starts": [
       {
         "name": "Prabalgad Machi",
@@ -127,7 +127,7 @@
   },
   "korigad": {
     "difficulty": "Easy",
-    "region": "Mulshi · Pune",
+    "region": "Mulshi · Pune district",
     "starts": [
       {
         "name": "Peth Shahpur",
@@ -139,7 +139,7 @@
     "name": "Tikona Fort",
     "kind": "fort",
     "difficulty": "Easy",
-    "region": "Maval · Pune",
+    "region": "Maval · Pune district",
     "starts": [
       {
         "name": "Tikona Peth",
@@ -149,7 +149,7 @@
   },
   "rajmachi-fort": {
     "difficulty": "Moderate",
-    "region": "Maval · Pune",
+    "region": "Maval · Pune district",
     "starts": [
       {
         "name": "Rajmachi village",
@@ -159,12 +159,12 @@
   },
   "ghoradeshwar": {
     "difficulty": "Easy",
-    "region": "Maval · Pune",
+    "region": "Maval · Pune district",
     "hidden": true
   },
   "salher": {
     "difficulty": "Challenging",
-    "region": "Baglan · Nashik",
+    "region": "Baglan · Nashik district",
     "starts": [
       {
         "name": "Waghambe",
@@ -174,12 +174,34 @@
   },
   "kalasubai-peak": {
     "name": "Kalsubai Peak",
-    "region": "Akole · Ahmednagar",
+    "region": "Akole · Ahilyanagar (Ahmednagar) district",
     "starts": [
       {
         "name": "Bari",
         "note": "Base village identified by Maharashtra Tourism for the main route."
       }
-    ]
+    ],
+    "kind": "peak"
+  },
+  "bhimashankar": {
+    "kind": "peak",
+    "region": "Khed · Pune district"
+  },
+  "murud-janjira": {
+    "kind": "fort",
+    "region": "Murud · Raigad district"
+  },
+  "ahmednagar-fort": {
+    "region": "Ahilyanagar (Ahmednagar) district"
+  },
+  "fort-bassein": {
+    "name": "Vasai Fort (Bassein)",
+    "region": "Vasai · Palghar district"
+  },
+  "kandhar-fort": {
+    "region": "Kandhar · Nanded district"
+  },
+  "panhala-fort": {
+    "region": "Panhala · Kolhapur district"
   }
 }
