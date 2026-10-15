@@ -9,10 +9,12 @@ import '../styles/about.css'
 import '../styles/hikes.css'
 import '../styles/admin.css'
 import '../styles/trail-buddy.css'
+import { useEffect } from 'react'
 import type { AppProps } from 'next/app'
 import BaseLayout from '../components/BaseLayout'
 import { Analytics } from '@vercel/analytics/react'
 import Loading from '../components/Loading'
 import TrekkingCompanion from '../components/TrekkingCompanion'
 import { site } from '../lib/site'
-export default function MyApp({ Component, pageProps }: AppProps) { return <BaseLayout><Loading/><Component {...pageProps}/><TrekkingCompanion/>{site.analytics && site.launchReady && <Analytics/>}</BaseLayout> }
+// iOS browsers restore the previous scroll position on a reload, so a fresh visit can open part-way down the page.
+export default function MyApp({ Component, pageProps }: AppProps) { useEffect(() => { if (!window.location.hash) window.scrollTo(0, 0) }, []); return <BaseLayout><Loading/><Component {...pageProps}/><TrekkingCompanion/>{site.analytics && site.launchReady && <Analytics/>}</BaseLayout> }
