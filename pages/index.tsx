@@ -32,12 +32,12 @@ export default function Home({content,preview,contentUnavailable}: {content:Site
     <Seo title="Free trekking group in Pune" fullTitle="Pune Trekkers: Free Trekking Group & Community in Pune" jsonLd={[organizationJsonLd(site),websiteJsonLd(site)]}/>
 
     <section className="hero2 container" aria-label="Introduction">
-      <h1 className="hero2-title"><span>Good trails.</span><span>Better company.</span></h1>
+      <h1 className="hero2-title"><span>Your first trek</span><span>starts here.</span></h1>
       <div className="hero2-left">
         <span className="eyebrow">Free Pune trekking group</span>
         <p className="hero2-lede">Pune Trekkers is a free, volunteer-run trekking group that helps people in Pune get outdoors together. Treks are planned openly, actual costs are shared and no one makes a profit. Beginners and solo trekkers are welcome.</p>
         <div className="hero2-actions">
-          <Link href="/join" className="cta-pill"><span className="cta-dot"><Icon name="arrow" size={20}/></span>Join the community</Link>
+          <Link href="/join" className="cta-pill"><span className="cta-dot"><Icon name="arrow" size={20}/></span>Join the free WhatsApp group</Link>
           <Link href="/treks" className="quiet-link">See upcoming treks</Link>
         </div>
       </div>

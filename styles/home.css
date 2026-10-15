@@ -1,6 +1,6 @@
 /* ---------- Home hero ---------- */
 .hero2{--r:44px;position:relative;display:grid;grid-template-columns:minmax(290px,.36fr) minmax(0,1fr);grid-template-rows:auto 1fr auto;padding-block:20px 8px}
-.hero2-title{grid-column:1/-1;grid-row:1;position:relative;z-index:6;display:flex;flex-direction:column;padding:26px 0 0;font-size:clamp(32px,4.6vw,64px);font-weight:800;line-height:.98;letter-spacing:-.025em;pointer-events:none}
+.hero2-title{grid-column:1/-1;grid-row:1;position:relative;z-index:6;display:flex;flex-direction:column;padding:26px 0 0;font-size:clamp(28px,3.3vw,46px);font-weight:800;line-height:1.02;letter-spacing:-.025em;pointer-events:none}
 .hero2-left{grid-column:1;grid-row:2;position:relative;z-index:6;display:flex;flex-direction:column;gap:26px;padding:22px 24px 0 0}
 .hero2-lede{font-size:18px;color:var(--text)}
 .hero2-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px}
