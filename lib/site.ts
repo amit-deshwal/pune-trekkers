@@ -16,3 +16,6 @@ export const routes = ['/', '/about', '/treks', '/treks-near-pune', '/past-treks
 export function formatDate(date: string) { return new Date(date + 'T12:00:00+05:30').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' }) }
 
 export function formatMonth(date: string) { return new Date(date + 'T12:00:00+05:30').toLocaleDateString('en-IN', { month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' }) }
+
+// "0" → "Free", "850" → "₹850"; anything else is shown as the organizer wrote it.
+export function costLabel(cost: string) { const text = cost.trim(); return /^(₹|rs\.?)?\s*0+$/i.test(text) ? 'Free' : /^\d[\d,]*$/.test(text) ? `₹${text}` : text }

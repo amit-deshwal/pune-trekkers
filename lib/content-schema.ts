@@ -13,6 +13,9 @@ export const photoSchema = z.object({
 export const videoSchema = z.object({
   id: z.string(), src: videoPath, caption: z.string(),
 })
+// "+91 98765 43210", "098765 43210" or "9876543210" → "919876543210". Ten-digit numbers are taken as Indian mobiles.
+export function whatsappDigits(raw: string) { const digits = raw.replace(/\D/g, '').replace(/^0+/, ''); return digits.length === 10 ? `91${digits}` : digits }
+const whatsapp = z.string().default('').transform(whatsappDigits).refine(value => value === '' || /^\d{11,15}$/.test(value), 'Use a WhatsApp number with country code, e.g. +91 98765 43210')
 export const trekSchema = z.object({
   slug: z.string().regex(/^[a-z0-9-]+$/), name: z.string().min(1), destination: z.string(),
   status: z.enum(['proposed', 'confirmed', 'completed', 'cancelled']),
@@ -24,6 +27,8 @@ export const trekSchema = z.object({
   inclusions: z.string(), exclusions: z.string(), cancellation: z.string(), route: z.string(),
   summary: z.string(), highlights: z.array(z.string()), participantCount: z.number().int().positive().nullable(),
   countVerified: z.boolean(), archiveYear: z.string().regex(/^\d{4}$/).nullable(), photos: z.array(photoSchema), videos: z.array(videoSchema).default([]),
+  // The number stays in the private content; public pages only learn that a chat link exists (see /api/organizer-chat).
+  organizerName: z.string().default(''), organizerWhatsapp: whatsapp, organizerChat: z.boolean().default(false),
 })
 export const contentSchema = z.object({
   treks: z.array(trekSchema),
@@ -53,6 +58,7 @@ export function publicContent(content: SiteContent): SiteContent {
       participantCount: trek.countVerified ? trek.participantCount : null,
       registrationUrl: trek.status === 'confirmed' && trek.organizerConfirmed && trek.dateVerified && trek.date && trek.registrationStatus === 'Open' ? trek.registrationUrl : null,
       registrationStatus: trek.status === 'confirmed' && trek.organizerConfirmed && trek.dateVerified && trek.date ? trek.registrationStatus : 'Not open',
+      organizerWhatsapp: '', organizerChat: trek.organizerChat || Boolean(trek.organizerWhatsapp),
     })),
   }
 }

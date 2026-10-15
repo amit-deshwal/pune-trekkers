@@ -54,6 +54,7 @@ export function trekEventJsonLd(trek: Trek, site: SiteInfo): JsonLd | null {
     organizer: { '@type': 'Organization', name: site.name, url: site.url },
     ...(trek.photos[0] ? { image: [absolute(site.url, trek.photos[0].src)] } : {}),
     ...(trek.capacity ? { maximumAttendeeCapacity: trek.capacity } : {}),
+    ...(price === 0 ? { isAccessibleForFree: true } : {}),
     ...(price !== null ? { offers: { '@type': 'Offer', price, priceCurrency: 'INR', availability: `https://schema.org/${availability}`, url } } : {}),
   }
 }

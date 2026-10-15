@@ -1,7 +1,10 @@
 import type { Trek } from './content-schema'
 
 // Placeholder text saved by older admin forms and the archive import; hide it from visitors.
-const placeholders=[/^location not recorded$/i,/^from the community.s original .+ photo archive\.?$/i,/^a day on the trail with pune trekkers\.?$/i]
+const placeholders=[/^location not recorded$/i,/^from the community.s original .+ photo archive\.?$/i,/^a day on the trail with pune trekkers\.?$/i,
+  /^to be confirmed( by the organizer)?\.?$/i,/^route details to be confirmed\.?$/i,/^details will be shared after organizer confirmation\.?$/i,
+  /^check the route details and speak with the organizer before registering\.?$/i,/^be comfortable walking on uneven ground for the stated duration\.?$/i,
+  /^personal gear and anything not listed in the trek briefing\.?$/i,/^the organizer will share the trek-specific cancellation and cost-adjustment terms\.?$/i]
 export function realText(value?: string | null) { const text = value?.trim() || ''; return placeholders.some(p => p.test(text)) ? '' : text }
 
 export type Place = { key: string; name: string; visits: Trek[] }

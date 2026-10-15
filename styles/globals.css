@@ -422,6 +422,8 @@ blockquote cite{display:block;margin-top:10px;font-style:normal;font-weight:800;
 .admin-photos{background:var(--bg)}
 .admin-photos>p{font-size:14px}
 .admin-checks label,.consent-check{display:flex!important;flex-direction:row;align-items:center;gap:10px;font-weight:600!important}
+.admin-trek-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.admin-trek-list li{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:10px 0;border-bottom:1px solid var(--line)}
 .admin-message{margin-top:16px;padding:14px 18px;background:var(--sun);border-radius:var(--radius);font-weight:700;color:var(--ink)}
 .admin-gallery-link{margin:0 0 18px;font-weight:800}
 .gallery-admin-item{display:grid;gap:10px;border-top:1px solid var(--line);padding:14px 0}
