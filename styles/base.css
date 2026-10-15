@@ -106,3 +106,9 @@ body .navigation>.nav-join{background:var(--surface);border:1px solid rgba(23,89
 .navigation>.nav-join{position:relative;overflow:hidden;transition:box-shadow .3s,transform .3s}
 .navigation>.nav-join:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(15,63,53,.22)}
 @media(prefers-reduced-motion:reduce){.nav-indicator{transition:none}}
+
+@media(min-width:1181px) and (max-width:1380px){
+  .nav-pill>a{padding:11px 13px;font-size:13px}
+  .navigation{gap:10px}
+  .navigation>.nav-join{padding-left:16px;font-size:13px}
+}

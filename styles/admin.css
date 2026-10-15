@@ -9,3 +9,18 @@
 .button.admin-danger:hover{background:#a3311d;color:#fff}
 @media (max-width:520px){.gallery-admin-item{grid-template-columns:1fr}.gallery-admin-thumb{width:100%}}
 
+
+/* Member plan review cards */
+.admin-trek-list .plan-review{display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch;justify-content:stretch;gap:14px;padding:20px 0;border-bottom:1px solid var(--line)}
+.admin-trek-list .plan-review:last-child{border-bottom:0}
+.plan-review header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.plan-review h3{font-size:20px;margin:0}
+.plan-badge{font-size:12px;font-weight:800;padding:5px 12px;border-radius:999px;background:var(--sun);color:var(--ink)}
+.plan-badge.is-approved{background:#d7ebdd;color:var(--green-dark)}
+.plan-badge.is-rejected{background:#f3d9d3;color:#a3311d}
+.plan-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px 20px;margin:0;padding:14px 16px;background:var(--bg);border-radius:var(--radius)}
+.plan-facts dt{font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.plan-facts dd{margin:2px 0 0;font-weight:600;color:var(--ink);overflow-wrap:anywhere}
+.plan-facts a{color:var(--green);text-decoration:underline}
+.plan-summary span{font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.plan-summary p{margin:4px 0 0;color:var(--ink);overflow-wrap:anywhere}
