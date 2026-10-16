@@ -8,12 +8,32 @@
 .about-milestones li{position:relative;display:grid;grid-template-columns:56px minmax(0,1fr);gap:24px;padding:0 0 48px}
 .about-milestones li:last-child{padding-bottom:0}
 .about-milestones li:not(:last-child):before{content:"";position:absolute;left:27px;top:28px;bottom:-28px;border-left:2px dashed var(--green);opacity:.55}
-.about-milestone-number{position:relative;z-index:1;display:grid;place-items:center;width:56px;height:56px;border:2px solid var(--green);border-radius:50%;background:var(--tint);color:var(--green);font-size:20px;font-weight:800;line-height:1}
+.about-milestone-number{position:relative;z-index:1;display:grid;place-items:center;width:56px;height:56px;border:2px solid var(--green);border-radius:50%;background:var(--sun);color:var(--green-dark);box-shadow:0 6px 14px rgba(23,89,76,.15);font-size:20px;font-weight:800;line-height:1}
 .about-milestones li>div{padding-top:3px}
 .about-milestone-label{display:block;margin-bottom:8px;color:var(--orange);font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .about-milestones h3{font-size:clamp(22px,2.5vw,30px)}
 .about-milestones p{max-width:65ch;margin-top:8px;font-size:17px}
-.about-story-links{display:flex;align-items:center;flex-wrap:wrap;gap:20px 28px;margin:40px 0 0 80px}
+.about-story-links{display:flex;align-items:center;flex-wrap:wrap;gap:16px 28px;margin-top:28px}
+
+.about-facts{display:flex;flex-wrap:wrap;gap:10px;list-style:none;padding:0;margin:26px 0 0}
+.about-facts li{padding:9px 16px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:15px;font-weight:700;color:var(--text)}
+.about-facts strong{color:var(--green);font-weight:800}
+.about-welcome{padding-block:clamp(48px,6vw,80px)}
+.about-welcome h2{font-size:clamp(30px,3.5vw,44px);margin-bottom:28px}
+.about-welcome-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.about-welcome-grid article{padding:28px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);transition:transform .25s,box-shadow .25s}
+.about-welcome-grid article:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(23,89,76,.12)}
+.about-welcome-grid article:nth-child(2) .about-welcome-icon{background:var(--orange-soft);color:var(--orange)}
+.about-welcome-icon{display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:var(--sun);color:var(--green-dark);margin-bottom:16px}
+.about-welcome-grid h3{font-size:21px;margin-bottom:6px}
+.about-welcome-grid p{font-size:16px}
+.about-cta{padding-block:clamp(48px,6vw,80px)}
+.about-cta-card{text-align:center;padding:clamp(32px,5vw,56px) clamp(22px,5vw,48px);border-radius:var(--radius-lg);color:#e8f3e6;background:radial-gradient(120% 140% at 15% 0%,rgba(88,179,111,.3),transparent 55%),linear-gradient(135deg,#0d3a31,#17594c 60%,#1d6b4f)}
+.about-cta-card h2{color:#fff;font-size:clamp(28px,3.6vw,42px)}
+.about-cta-card p{max-width:52ch;margin:14px auto 0;color:#d4e8d6;font-size:clamp(16px,1.8vw,19px)}
+.about-cta-card .about-story-links{justify-content:center}
+.about-cta-card .quiet-link{color:#f6e6b8}
+@media(max-width:900px){.about-welcome-grid{grid-template-columns:1fr}}
 @media(max-width:700px){
   .about-hero{grid-template-columns:1fr}
   .about-hero-visual{height:auto;aspect-ratio:1.15}
@@ -21,5 +41,4 @@
   .about-milestones li:not(:last-child):before{left:21px;top:22px;bottom:-22px}
   .about-milestone-number{width:44px;height:44px;font-size:16px}
   .about-milestones p{font-size:16px}
-  .about-story-links{margin-left:58px}
 }
