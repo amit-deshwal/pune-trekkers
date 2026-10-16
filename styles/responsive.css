@@ -26,7 +26,16 @@
   .nav-pill>a::after{content:"→";opacity:.45;font-weight:700}
   .nav-pill>a[aria-current=page]::after{opacity:.8}
   .navigation>.nav-join{box-shadow:0 12px 28px rgba(15,63,53,.22)}
-  .nav-pill::before{display:none}
+  /* forest theme: toggle, icon rows and a swaying vine along the bottom of the panel */
+  .menu-toggle{background:linear-gradient(135deg,#0d3a31,#17594c 60%,#1d6b4f);border:1px solid rgba(88,179,111,.55);color:#f6e6b8;box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 6px 16px rgba(15,63,53,.28)}
+  .menu-toggle[aria-expanded=true]{background:#f6e6b8;color:#0f3f35;border-color:#f6e6b8}
+  .nav-pill{padding:8px 8px 34px}
+  .nav-pill::before{left:auto;right:22px;bottom:6px;width:150px;height:41px;opacity:.95;transform-origin:right center}
+  .nav-pill>a{gap:14px;justify-content:flex-start;padding:12px 14px 12px 10px;z-index:1}
+  .nav-pill>a::after{margin-left:auto}
+  .nav-ico{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:50%;background:rgba(88,179,111,.22);color:#bfe3c3;transition:background .2s,color .2s}
+  .nav-pill>a:active{background:rgba(255,255,255,.1)}
+  .nav-pill>a[aria-current=page] .nav-ico{background:rgba(15,63,53,.14);color:#0f3f35}
   .nav-indicator{display:none}
   .nav-pill>a[aria-current=page]{background:#f6e6b8;color:#0f3f35}
   .navigation>.nav-join{justify-content:space-between}
