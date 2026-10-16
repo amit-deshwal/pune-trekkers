@@ -3,6 +3,7 @@ import Icon from './Icon'
 import { formatDate } from '../lib/site'
 import { realText, type Place } from '../lib/places'
 import type { Trek } from '../lib/content-schema'
+import { mediaSrc, mediaSrcSet } from '../lib/media'
 
 type Media = {id:string;kind:'photo'|'video';src:string;alt:string;caption:string;credit:string}
 
@@ -37,7 +38,7 @@ export default function TripModal({place,open,onClose,fallback}: {place:Place;op
       <button className="trip-modal-close" type="button" onClick={onClose} aria-label="Close"><Icon name="close" size={20}/></button>
       {place.visits.length>1&&<div className="trip-visits" role="tablist" aria-label={`Visits to ${place.name}`}>{place.visits.map((v,i)=><button key={v.slug} type="button" role="tab" aria-selected={i===visitIndex} className={i===visitIndex?'active':''} onClick={()=>selectVisit(i)}>{v.date?formatDate(v.date):'Earlier visit'}</button>)}</div>}
       <div className="trip-stage">
-        {!item?fallback?.(visit):item.kind==='photo'?<img key={item.id} src={item.src} alt={item.alt}/>:<video key={item.id} src={item.src} controls playsInline preload="metadata" aria-label={item.alt}/>}
+        {!item?fallback?.(visit):item.kind==='photo'?<img key={item.id} src={mediaSrc(item.src,1200)} srcSet={mediaSrcSet(item.src)} sizes="(max-width: 700px) 100vw, 960px" alt={item.alt}/>:<video key={item.id} src={item.src} controls playsInline preload="metadata" aria-label={item.alt}/>}
         {media.length>1&&<>
           <button className="trip-nav prev" type="button" onClick={()=>go(-1)} aria-label="Previous"><Icon name="arrow" size={20}/></button>
           <button className="trip-nav next" type="button" onClick={()=>go(1)} aria-label="Next"><Icon name="arrow" size={20}/></button>
@@ -45,7 +46,7 @@ export default function TripModal({place,open,onClose,fallback}: {place:Place;op
         </>}
       </div>
       {media.length>1&&<div className="trip-thumbs">{media.map((m,i)=><button key={m.id} type="button" className={i===index?'active':''} onClick={()=>setIndex(i)} aria-label={`Show ${m.kind} ${i+1}`} aria-current={i===index}>
-        {m.kind==='photo'?<img src={m.src} alt="" loading="lazy"/>:<span className="thumb-video">▶</span>}
+        {m.kind==='photo'?<img src={mediaSrc(m.src,240)} alt="" width={72} height={54} loading="lazy"/>:<span className="thumb-video">▶</span>}
       </button>)}</div>}
       <div className="trip-info">
         <h2 id={`trip-${place.visits[0].slug}`}>{visit.name}</h2>

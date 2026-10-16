@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { serverSupabase } from '../../../lib/supabase'
-import { createMediaResolver } from '../../../lib/media'
+import sharp from 'sharp'
+import { createMediaResolver, isResizable, mediaWidths } from '../../../lib/media'
 
 const resolveMedia = createMediaResolver({
   async loadPublished() {
@@ -26,6 +27,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const media = await resolveMedia(path)
     if (!media) return res.status(404).end()
+    const width = Number(req.query.w)
+    if (width && mediaWidths.includes(width) && isResizable(path)) {
+      // Resized copies are cached by the CDN and browsers, so Supabase serves each original only once per variant.
+      const source = await fetch(media.url, { signal: AbortSignal.timeout(10000) })
+      if (!source.ok) return res.status(404).end()
+      const image = await sharp(Buffer.from(await source.arrayBuffer()), { limitInputPixels: 80_000_000 })
+        .rotate().resize({ width, withoutEnlargement: true }).webp({ quality: 74 }).toBuffer()
+      res.setHeader('Content-Type', 'image/webp')
+      res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800')
+      return res.status(200).send(image)
+    }
     res.setHeader('Cache-Control', `public, max-age=${media.maxAge}, s-maxage=${media.maxAge}`)
     return res.redirect(307, media.url)
   } catch {

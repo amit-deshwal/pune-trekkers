@@ -5,6 +5,12 @@ export const signedMediaLifetime = 120
 
 export function isMediaPath(path: string) { return mediaPath.test(path) }
 
+// Widths the media API will resize photos to (originals can be several MB each).
+export const mediaWidths = [240, 480, 800, 1200, 1600]
+export const isResizable = (path: string) => /\.(webp|avif|jpg|jpeg|png)$/i.test(path)
+export const mediaSrc = (src: string, width: number) => src.startsWith(mediaPrefix) && isResizable(src) ? `${src}?w=${width}` : src
+export const mediaSrcSet = (src: string) => src.startsWith(mediaPrefix) && isResizable(src) ? mediaWidths.map(w => `${src}?w=${w} ${w}w`).join(', ') : undefined
+
 function publishedPaths(value: unknown, paths = new Set<string>()): Set<string> {
   if (typeof value === 'string' && value.startsWith(mediaPrefix)) {
     const path = value.slice(mediaPrefix.length)
