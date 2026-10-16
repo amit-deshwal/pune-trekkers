@@ -11,7 +11,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => ({ prop
 
 const milestones = [
   { label: 'The beginning', title: 'A conversation on Reddit', detail: 'People in Pune wanted company for a trek. That conversation brought the first group together.' },
-  { label: '2023 archive', title: 'More trails together', detail: 'Our original gallery has uploads from Rajgad, Ratangad and Jivdhan. We are still verifying the trek dates.' },
+  { label: 'Along the way', title: 'Grown by word of mouth', detail: 'We never did any marketing. Members told friends, and friends told friends. Along the way, many people found their best trail buddies and lifelong friends.' },
   { label: 'Today', title: 'A community of about 2,300', detail: 'Members connect across three WhatsApp groups. Joining is free, and community treks share actual costs without profit.' },
 ]
 
