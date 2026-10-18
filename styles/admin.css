@@ -24,3 +24,17 @@
 .plan-facts a{color:var(--green);text-decoration:underline}
 .plan-summary span{font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
 .plan-summary p{margin:4px 0 0;color:var(--ink);overflow-wrap:anywhere}
+
+/* Shared admin tab bar: scrolls sideways on phones, sticks under the site header, big tap targets */
+.admin-tabs{display:flex;gap:8px;align-items:center;overflow-x:auto;padding:8px 2px 12px;margin-bottom:8px;scrollbar-width:none}
+.admin-tabs::-webkit-scrollbar{display:none}
+.admin-tabs a,.admin-signout{flex:none;display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:800;font-size:15px;color:var(--ink);text-decoration:none;cursor:pointer;white-space:nowrap}
+.admin-tabs a[aria-current=page]{background:var(--green-dark);border-color:var(--green-dark);color:#fff}
+.admin-signout{margin-left:auto;color:#a3311d;border-color:transparent;background:transparent}
+@media (max-width:700px){
+  .admin-layout .button,.admin-layout .button-small{min-height:46px}
+  .admin-actions{flex-direction:column;align-items:stretch}
+  .admin-actions .button{width:100%;justify-content:center}
+  .admin-trek-list li{flex-wrap:wrap}
+  .plan-facts{grid-template-columns:1fr 1fr}
+}

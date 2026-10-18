@@ -29,13 +29,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!media) return res.status(404).end()
     const width = Number(req.query.w)
     if (width && mediaWidths.includes(width) && isResizable(path)) {
+      // A HEAD request (link checkers, some crawlers) doesn't need the image, so don't pull the original from Supabase for it.
+      if (req.method === 'HEAD') { res.setHeader('Content-Type', 'image/webp'); res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=86400'); return res.status(200).end() }
       // Resized copies are cached by the CDN and browsers, so Supabase serves each original only once per variant.
       const source = await fetch(media.url, { signal: AbortSignal.timeout(10000) })
       if (!source.ok) return res.status(404).end()
       const image = await sharp(Buffer.from(await source.arrayBuffer()), { limitInputPixels: 80_000_000 })
         .rotate().resize({ width, withoutEnlargement: true }).webp({ quality: 74 }).toBuffer()
       res.setHeader('Content-Type', 'image/webp')
-      res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800')
+      // An upload never changes, so the CDN keeps a resized copy for a week instead of re-downloading the original from Supabase
+      // every day. Kept short enough that a photo an admin removes (e.g. after a no-photo request) disappears within a week.
+      res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=604800')
       return res.status(200).send(image)
     }
     res.setHeader('Cache-Control', `public, max-age=${media.maxAge}, s-maxage=${media.maxAge}`)

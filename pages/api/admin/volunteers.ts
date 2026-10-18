@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { z } from 'zod'
 import { requireAdmin } from '../../../lib/admin'
+import { errorMessage } from '../../../lib/error-message'
 import { deleteVolunteer, listVolunteers, setVolunteerStatus } from '../../../lib/volunteers'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -14,6 +15,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await setVolunteerStatus(service, id, status)
     return res.status(200).json({ ok: true })
   } catch (error) {
-    return res.status(400).json({ error: error instanceof z.ZodError ? error.issues.map(issue => issue.message).join('; ') : error instanceof Error ? error.message : 'Could not update this application.' })
+    return res.status(400).json({ error: errorMessage(error, 'Could not update this application.') })
   }
 }
