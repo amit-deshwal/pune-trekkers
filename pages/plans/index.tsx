@@ -1,15 +1,14 @@
 import Link from 'next/link'
-import type { GetServerSideProps } from 'next'
+import type { GetStaticProps } from 'next'
 import Seo from '../../components/Seo'
 import { PageIntro, Note, ButtonLink } from '../../components/Shared'
 import { listApprovedPlans, type PublicPlan } from '../../lib/member-plans'
 import MemberPlanCard from '../../components/MemberPlanCard'
 
-export const getServerSideProps: GetServerSideProps<{ plans: PublicPlan[] }> = async ({ res }) => {
+export const getStaticProps: GetStaticProps<{ plans: PublicPlan[] }> = async () => {
   let plans: PublicPlan[] = []
   try { plans = await listApprovedPlans() } catch { /* Supabase not configured yet: show the empty state */ }
-  res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=600')
-  return { props: { plans } }
+  return { props: { plans }, revalidate: 60 }
 }
 
 export default function Plans({ plans }: { plans: PublicPlan[] }) {

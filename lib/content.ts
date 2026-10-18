@@ -1,4 +1,5 @@
 import type { ServerResponse } from 'node:http'
+import type { NextApiResponse } from 'next'
 import fallback from '../data/community.json'
 import { contentSchema, publicContent, type SiteContent } from './content-schema'
 
@@ -32,4 +33,18 @@ export async function getCachedContent(res: ServerResponse) {
   const result = await getContent()
   cachePage(res, result.contentUnavailable)
   return result
+}
+
+// Content pages are pre-built and refreshed in the background (ISR), so links can prefetch them and taps feel instant.
+// A failed read is retried sooner.
+export async function getStaticContent() {
+  const result = await getContent()
+  return { props: result, revalidate: result.contentUnavailable ? 10 : 60 }
+}
+
+// Rebuilds the public pages right after an admin edit instead of waiting for the next refresh. Best effort: content is already saved.
+export const contentPaths = ['/', '/about', '/contact', '/treks', '/past-treks', '/conservation']
+export async function revalidatePages(res: NextApiResponse, paths = contentPaths) {
+  const results = await Promise.allSettled(paths.map(path => res.revalidate(path)))
+  results.forEach((result, i) => { if (result.status === 'rejected') console.error('Could not refresh', paths[i], result.reason) })
 }

@@ -1,15 +1,15 @@
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import type { GetServerSideProps } from 'next'
+import type { GetStaticProps } from 'next'
 import Seo from '../../components/Seo'
-import { getCachedContent } from '../../lib/content'
+import { getStaticContent } from '../../lib/content'
 import type { SiteContent } from '../../lib/content-schema'
 import Icon, { type IconName } from '../../components/Icon'
 import { formatDate, site } from '../../lib/site'
 import { aboutPageJsonLd, organizationJsonLd } from '../../lib/seo'
 
 const HeroScene = dynamic(() => import('../../components/HeroScene'), { ssr: false })
-export const getServerSideProps: GetServerSideProps = async ({ res }) => ({ props: await getCachedContent(res) })
+export const getStaticProps:GetStaticProps=getStaticContent
 
 const milestones: { label: string; title: string; detail: string; icon: IconName }[] = [
   { icon: 'chat', label: 'The beginning', title: 'A conversation on Reddit', detail: 'People in Pune wanted company for a trek. That conversation brought the first group together.' },

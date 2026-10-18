@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { requireAdmin } from '../../../lib/admin'
 import { contentSchema, publicContent, trekSchema, photoSchema, videoSchema, type Trek } from '../../../lib/content-schema'
 import fallback from '../../../data/community.json'
+import { revalidatePages } from '../../../lib/content'
 import { z } from 'zod'
 
 const galleryInput = z.object({
@@ -35,6 +36,7 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
       if(saved.error)throw saved.error
       const published=await service.from('public_site_content').upsert({id:'main',data:publicContent(next),updated_at:updatedAt})
       if(published.error)throw published.error
+      await revalidatePages(res)
       // Delete files no trip uses any more. Best effort: content is already saved.
       const after=mediaPaths(next.treks),unused=before.filter(path=>!after.includes(path))
       if(unused.length){const {error}=await service.storage.from('trip-uploads').remove(unused);if(error)console.error('Could not delete unused media',error)}

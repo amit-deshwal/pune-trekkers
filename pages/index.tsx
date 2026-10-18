@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import type { GetServerSideProps } from 'next'
-import { getCachedContent } from '../lib/content'
+import type { GetStaticProps } from 'next'
+import { getStaticContent } from '../lib/content'
 import { upcomingTreks, type SiteContent } from '../lib/content-schema'
 import { maharashtraGuides } from '../lib/maharashtra-explorer'
 import Seo from '../components/Seo'
@@ -17,7 +17,7 @@ import { organizationJsonLd, websiteJsonLd, faqJsonLd } from '../lib/seo'
 const homeFaqCount=4
 const HeroScene=dynamic(()=>import('../components/HeroScene'),{ssr:false})
 
-export const getServerSideProps:GetServerSideProps=async({res})=>({props:await getCachedContent(res)})
+export const getStaticProps:GetStaticProps=getStaticContent
 
 export default function Home({content,preview,contentUnavailable}: {content:SiteContent;preview:boolean;contentUnavailable:boolean}) {
   // Scene follows the visitor's local time; the Morning/Day/Dusk/Night buttons let anyone preview the others.
