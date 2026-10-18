@@ -1,6 +1,6 @@
 export const site = {
   name: 'Pune Trekkers',
-  email: 'amit1.deshwal@gmail.com',
+  email: 'hello@punetrekkers.org',
   instagram: 'https://www.instagram.com/punetrekkersofficial',
   whatsappInvite: 'https://chat.whatsapp.com/Fw62cc25n9m7jGhKXogRs6',
   description: 'Free-to-join trekking community in Pune. Weekend treks near Pune at actual shared cost, with no markup or profit. Beginners, women and solo trekkers welcome.',
