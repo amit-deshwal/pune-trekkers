@@ -134,7 +134,7 @@ blockquote cite{display:block;margin-top:10px;font-style:normal;font-weight:800;
 .faq-list details[open]{box-shadow:inset 0 0 0 2px var(--green),var(--shadow)}
 .card-picture{border-radius:var(--radius-lg) var(--radius-lg) 0 0}
 .empty-state,.conserve,.join-banner{border-radius:var(--radius-lg)}
-.join-banner{background:var(--ink);border:0;color:#fff}
+.join-banner{background:var(--green);border:0;color:#fff}
 .join-banner h2,.join-banner p{color:#fff}
 .join-banner .join-icon{background:#fff}
 .join-banner .button{background:#fff;color:var(--ink);border-color:#fff}

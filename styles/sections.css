@@ -37,6 +37,7 @@
 .join-banner h2{font-size:clamp(26px,3.4vw,40px)}
 .join-banner p{margin-top:10px;color:var(--ink);font-size:18px}
 .join-icon{display:grid;place-items:center;width:84px;height:84px;border-radius:50%;background:var(--surface);color:var(--green);flex-shrink:0}
+.join-icon img{width:72%;height:auto}
 
 /* ---------- Footer ---------- */
 .site-footer{background:var(--green-dark);color:#e9eee3;margin-top:clamp(32px,5vw,72px);padding-top:clamp(40px,6vw,64px)}
