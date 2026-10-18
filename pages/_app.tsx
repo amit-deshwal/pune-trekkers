@@ -15,4 +15,4 @@ import { Analytics } from '@vercel/analytics/react'
 import Loading from '../components/Loading'
 import TrekkingCompanion from '../components/TrekkingCompanion'
 import { site } from '../lib/site'
-export default function MyApp({ Component, pageProps }: AppProps) { return <BaseLayout><Loading/><Component {...pageProps}/><TrekkingCompanion/>{site.analytics && site.launchReady && <Analytics/>}</BaseLayout> }
+export default function MyApp({ Component, pageProps }: AppProps) { return <BaseLayout><Loading/><Component {...pageProps}/><TrekkingCompanion treks={pageProps.content?.treks}/>{site.analytics && site.launchReady && <Analytics/>}</BaseLayout> }

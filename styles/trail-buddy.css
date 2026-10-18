@@ -1,5 +1,7 @@
 /* Trail companion: a live 3D trekker (components/CompanionScene.ts) perched where the rock meets the viewport edge. */
-.trail-buddy{position:fixed;right:24px;bottom:0;z-index:35;width:154px;pointer-events:none}
+.trail-buddy{position:fixed;right:24px;bottom:0;z-index:35;width:154px;pointer-events:none;transition:opacity .3s,transform .3s}
+.trail-buddy.is-tucked{opacity:0;transform:translateY(24px)}
+.trail-buddy.is-tucked button{pointer-events:none}
 .trail-buddy button,.trail-buddy-note{pointer-events:auto}
 .trail-buddy-perch{position:relative;transform:translateY(28px);transition:transform .65s cubic-bezier(.22,1,.36,1)}
 .trail-buddy-perch:hover,.trail-buddy-perch:focus-within,.trail-buddy.is-open .trail-buddy-perch{transform:translateY(8px)}

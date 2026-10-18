@@ -3,12 +3,14 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import type { Act, Companion } from './CompanionScene'
 import { useTrailMusic } from './TrailMusic'
+import { upcomingTreks, type Trek } from '../lib/content-schema'
+import { formatDate, site } from '../lib/site'
 
 // What the buddy says on each section of the site (first match wins).
 const LINES: [string, string][] = [
   ['/treks-near-pune', 'Close to Pune means more chai stops.'],
   ['/treks', 'Pick one, I’ll bring the snacks.'],
-  ['/past-treks', 'Remember that view? I do.'],
+  ['/past-treks', 'Trekked with us? Tap me to leave a review.'],
   ['/safety', 'Two litres of water, minimum!'],
   ['/join', 'Yay, a new trail buddy!'],
   ['/about', 'Nice to meet you properly.'],
@@ -17,16 +19,18 @@ const LINES: [string, string][] = [
   ['/conservation', 'Leave only footprints.'],
   ['/volunteer', 'Lead a trek with us someday?'],
 ]
-const lineFor = (path: string) => LINES.find(([prefix]) => path.startsWith(prefix))?.[1] ?? 'Taking the scenic route?'
+const lineFor = (path: string) => LINES.find(([prefix]) => path.startsWith(prefix))?.[1] ?? 'New here? Tap me for a head start.'
 const ACT_LINES: Partial<Record<Act, string>> = {
   enter: 'Hi! I’m your trail buddy.', wake: 'Huh? I’m up, I’m up!', dizzy: 'Whoa… the trail is spinning.',
   whoa: 'Easy on the scroll!', sleep: 'Zzz… poke me to wake me up.',
 }
 
-export default function TrekkingCompanion() {
+// `treks` comes from the current page's content when it has any, so the buddy can point to the next trek.
+export default function TrekkingCompanion({ treks }: { treks?: Trek[] }) {
   const { pathname } = useRouter()
   const [open, setOpen] = useState(false)
   const [minimized, setMinimized] = useState(false)
+  const [tucked, setTucked] = useState(false)
   const [mode, setMode] = useState<'loading' | 'live' | 'poster'>('loading')
   const [act, setAct] = useState<Act>('idle')
   const [say, setSay] = useState<string | null>(null)
@@ -40,6 +44,8 @@ export default function TrekkingCompanion() {
   const spoken = useRef(false)
   const excluded = pathname.startsWith('/admin')
   const music = useTrailMusic(!excluded)
+  const upcoming = treks ? upcomingTreks(treks) : []
+  const next = upcoming.find(t => t.status === 'confirmed') ?? upcoming[0]
 
   function speak(text: string, ms = 3200) {
     window.clearTimeout(sayTimer.current)
@@ -62,11 +68,26 @@ export default function TrekkingCompanion() {
     return () => document.removeEventListener('pointerdown', dismiss)
   }, [open])
 
-  // Load three.js and the character once the browser is idle; data-saver users and browsers without WebGL get the still portrait.
+  // Step aside while the join banner or footer is on screen, so the buddy never covers them.
+  useEffect(() => {
+    if (excluded) return
+    const targets = document.querySelectorAll('.join-banner, .site-footer')
+    if (!targets.length || !('IntersectionObserver' in window)) return
+    const visible = new Set<Element>()
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) visible.add(e.target); else visible.delete(e.target) })
+      setTucked(visible.size > 0)
+    })
+    targets.forEach(t => io.observe(t))
+    return () => { io.disconnect(); setTucked(false) }
+  }, [pathname, excluded])
+
+  // Load three.js and the character once the browser is idle. Phones, data-saver users and browsers without WebGL get the still portrait,
+  // which costs no script or battery.
   useEffect(() => {
     const el = stage.current
     if (excluded || minimized || !el) return
-    if ((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) { setMode('poster'); return }
+    if ((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData || window.matchMedia('(max-width: 600px)').matches) { setMode('poster'); return }
     let cancelled = false
     const onAct = (next: Act) => {
       setAct(next)
@@ -115,7 +136,7 @@ export default function TrekkingCompanion() {
   function close() { setOpen(false); trigger.current?.focus({ preventScroll: true }) }
 
   if (excluded) return null
-  return <aside ref={root} className={`trail-buddy${minimized ? ' is-minimized' : ''}${open ? ' is-open' : ''}${say && !open ? ' is-talking' : ''}`} data-act={act} aria-label="Trekking companion" onKeyDown={e => {
+  return <aside ref={root} className={`trail-buddy${minimized ? ' is-minimized' : ''}${open ? ' is-open' : ''}${say && !open ? ' is-talking' : ''}${tucked && !open ? ' is-tucked' : ''}`} data-act={act} aria-label="Trekking companion" onKeyDown={e => {
     if (e.key === 'Escape') { e.preventDefault(); close() }
   }}>
     <button className={`trail-buddy-music${music.on ? ' is-playing' : ''}`} data-music-toggle aria-pressed={music.on}
@@ -147,11 +168,16 @@ export default function TrekkingCompanion() {
         <button className="trail-buddy-minimize" onClick={() => minimize(true)} aria-label="Minimize trekking companion" title="Let me explore">−</button>
       </div>
       {open && <div className="trail-buddy-note" id="trail-buddy-note">
-        <span className="trail-buddy-eyebrow"><span aria-hidden="true">↟</span> A LITTLE TRAIL BREAK</span>
-        <h2>Good trails await.</h2>
-        <p>I’m just enjoying the view.<br/>Ready to find one of your own?</p>
-        <Link ref={firstLink} href="/treks" onClick={() => setOpen(false)}>Let’s find a trek <span aria-hidden="true">↗</span></Link>
-        <Link className="trail-buddy-secondary" href="/safety" onClick={() => setOpen(false)}>Help me pack for it</Link>
+        <span className="trail-buddy-eyebrow"><span aria-hidden="true">↟</span> A HEAD START</span>
+        <h2>Come trek with us.</h2>
+        <p>Joining is free and costs are shared.<br/>Beginners and solo trekkers welcome.</p>
+        {next
+          ? <Link ref={firstLink} href={`/treks/${next.slug}`} onClick={() => setOpen(false)}>Next: {next.name}{next.date ? ` · ${formatDate(next.date)}` : ''} <span aria-hidden="true">↗</span></Link>
+          : <Link ref={firstLink} href="/join" onClick={() => setOpen(false)}>Join free on WhatsApp <span aria-hidden="true">↗</span></Link>}
+        {next && <Link className="trail-buddy-secondary" href="/join" onClick={() => setOpen(false)}>Join free on WhatsApp</Link>}
+        <Link className="trail-buddy-secondary" href="/treks" onClick={() => setOpen(false)}>See all upcoming treks</Link>
+        <Link className="trail-buddy-secondary" href="/safety" onClick={() => setOpen(false)}>First trek? What to pack</Link>
+        <a className="trail-buddy-secondary" href={site.reviewLink} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>Trekked with us? Review us ⭐</a>
         <button className="trail-buddy-close" aria-label="Close companion message" onClick={close}>×</button>
       </div>}
     </>}
