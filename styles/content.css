@@ -151,3 +151,18 @@ blockquote cite{display:block;margin-top:10px;font-style:normal;font-weight:800;
 .conservation-next h2{margin-bottom:24px}
 .conservation-pillars{padding:0;margin-bottom:8px}
 .conservation-pillars+.prose{margin-top:32px}
+.role-picker{display:grid;gap:10px;border:0;padding:0;margin:0}
+.role-picker legend{margin-bottom:6px}
+.role-picker legend span{color:var(--orange)}
+.crew-section{padding-bottom:64px}
+.crew-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,340px));gap:24px}
+.crew-card{display:flex;flex-direction:column;overflow:hidden;background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow)}
+.crew-photo{aspect-ratio:4/5;background:var(--green-dark);overflow:hidden}
+.crew-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:center top}
+.crew-photo span{display:grid;place-items:center;height:100%;color:#fff;font-size:96px;font-weight:800}
+.crew-body{display:flex;flex-direction:column;gap:6px;padding:22px 24px 26px}
+.crew-body h2{font-size:24px;margin:0}
+.crew-body p{font-size:15px;margin:0}
+.crew-role{font-weight:800;color:var(--green-dark)}
+.crew-links{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:8px}
+.crew-join{margin-top:28px}

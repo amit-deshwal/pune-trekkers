@@ -7,6 +7,7 @@ import type { SiteContent } from '../../lib/content-schema'
 import Icon, { type IconName } from '../../components/Icon'
 import { formatDate, site } from '../../lib/site'
 import { aboutPageJsonLd, organizationJsonLd } from '../../lib/seo'
+import { crew } from '../../lib/crew'
 
 const HeroScene = dynamic(() => import('../../components/HeroScene'), { ssr: false })
 export const getStaticProps:GetStaticProps=getStaticContent
@@ -48,6 +49,13 @@ export default function About({ content }: { content: SiteContent }) {
         {content.timeline.map(item => <li key={item.date + item.title}><span className="about-milestone-number" aria-hidden="true"><Icon name="mountain" size={26} /></span><div><time className="about-milestone-label" dateTime={item.date}>{formatDate(item.date)}</time><h3>{item.title}</h3><p>{item.detail}</p></div></li>)}
       </ol>
     </div></section>
+
+    {crew.length>0&&<section className="container about-crew" aria-labelledby="crew-title">
+      <span className="eyebrow">Hall of fame</span>
+      <h2 id="crew-title">The volunteers behind it.</h2>
+      <ul className="about-crew-list">{crew.map(member=><li key={member.name}>{member.photo?<img src={member.photo} alt="" width={72} height={72} loading="lazy"/>:<span aria-hidden="true">{member.name.trim()[0]?.toUpperCase()}</span>}<div><strong>{member.name}</strong><small>{member.role}</small></div></li>)}</ul>
+      <Link href="/crew" className="text-link">Meet the crew<Icon name="arrow" size={18}/></Link>
+    </section>}
 
     <section className="container about-welcome" aria-labelledby="welcome-title">
       <span className="eyebrow">New here?</span>

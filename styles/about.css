@@ -42,3 +42,12 @@
   .about-milestone-number{width:44px;height:44px;font-size:16px}
   .about-milestones p{font-size:16px}
 }
+
+.about-crew{padding-block:clamp(40px,5vw,64px) 0}
+.about-crew h2{font-size:clamp(30px,3.5vw,44px);margin-bottom:24px}
+.about-crew-list{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-wrap:wrap;gap:16px}
+.about-crew-list li{display:flex;align-items:center;gap:14px;padding:12px 20px 12px 12px;background:var(--surface);border:1px solid var(--line);border-radius:999px}
+.about-crew-list img,.about-crew-list span{width:56px;height:56px;border-radius:50%;object-fit:cover;object-position:center 20%;flex:none}
+.about-crew-list span{display:grid;place-items:center;background:var(--green-dark);color:#fff;font-size:24px;font-weight:800}
+.about-crew-list strong{display:block;font-size:17px}
+.about-crew-list small{color:var(--muted);font-size:14px}

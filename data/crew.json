@@ -1,0 +1,24 @@
+[
+  {
+    "name": "Amit Deshwal",
+    "role": "Founder & admin",
+    "since": "",
+    "blurb": "Started Pune Trekkers. Organizes treks, coordinates the community and WhatsApp groups, and looks after this website.",
+    "instagram": "https://www.instagram.com/ontrailamit",
+    "website": "https://amitdeshwal.com",
+    "email": "hello@punetrekkers.org",
+    "photo": "/images/crew/amit-deshwal.webp",
+    "consent": true
+  },
+  {
+    "name": "Sahil Malik",
+    "role": "Admin & trek leader",
+    "since": "",
+    "blurb": "A steady helper from the early days. He led treks, handled trip bookings and welcomed new members into the groups, helping the community grow one trek at a time.",
+    "instagram": "https://www.instagram.com/sahil_0402",
+    "website": "",
+    "email": "",
+    "photo": "/images/crew/sahil-malik.webp",
+    "consent": true
+  }
+]
