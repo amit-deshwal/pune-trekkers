@@ -166,9 +166,3 @@ blockquote cite{display:block;margin-top:10px;font-style:normal;font-weight:800;
 .crew-role{font-weight:800;color:var(--green-dark)}
 .crew-links{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:8px}
 .crew-join{margin-top:28px}
-.event-hero{padding-bottom:12px}
-.event-hero img{display:block;width:100%;height:auto;border-radius:var(--radius-lg);box-shadow:var(--shadow)}
-.event-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px 20px;margin:26px 0 34px;padding:20px 22px;background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow)}
-.event-facts dt{font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
-.event-facts dd{margin:3px 0 0;font-weight:700;color:var(--ink)}
-.event-bring{margin:10px 0 24px;padding-left:22px;display:grid;gap:8px}
