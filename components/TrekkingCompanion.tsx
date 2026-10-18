@@ -82,12 +82,11 @@ export default function TrekkingCompanion({ treks }: { treks?: Trek[] }) {
     return () => { io.disconnect(); setTucked(false) }
   }, [pathname, excluded])
 
-  // Load three.js and the character once the browser is idle. Phones, data-saver users and browsers without WebGL get the still portrait,
-  // which costs no script or battery.
+  // Load three.js and the character once the browser is idle; data-saver users and browsers without WebGL get the still portrait.
   useEffect(() => {
     const el = stage.current
     if (excluded || minimized || !el) return
-    if ((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData || window.matchMedia('(max-width: 600px)').matches) { setMode('poster'); return }
+    if ((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) { setMode('poster'); return }
     let cancelled = false
     const onAct = (next: Act) => {
       setAct(next)
