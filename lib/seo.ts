@@ -2,7 +2,7 @@ import type { Trek } from './content-schema'
 
 // Structured data (schema.org JSON-LD) builders. Kept free of runtime imports so tests can load them directly.
 export type JsonLd = Record<string, unknown>
-type SiteInfo = { name: string; url: string; description: string; email: string; instagram: string }
+type SiteInfo = { name: string; url: string; description: string; email: string; instagram: string; googleProfile?: string }
 
 const context = 'https://schema.org'
 const absolute = (base: string, src: string) => /^https?:\/\//.test(src) ? src : base + src
@@ -12,7 +12,7 @@ export function organizationJsonLd(site: SiteInfo): JsonLd {
     '@context': context, '@type': 'Organization', '@id': `${site.url}/#organization`,
     name: site.name, alternateName: ['Pune Trekkers Community', 'Pune Trekking Group', 'punetrekkers.org'], slogan: 'Community over commerce',
     url: site.url, logo: `${site.url}/android-chrome-512x512.png`,
-    description: site.description, email: site.email, sameAs: [site.instagram],
+    description: site.description, email: site.email, sameAs: [site.instagram, ...(site.googleProfile ? [site.googleProfile] : [])],
     areaServed: { '@type': 'City', name: 'Pune', containedInPlace: { '@type': 'State', name: 'Maharashtra' } },
     knowsAbout: ['Trekking', 'Hiking', 'Sahyadri forts', 'Treks near Pune', 'Free trekking group in Pune'],
     foundingLocation: { '@type': 'City', name: 'Pune' },

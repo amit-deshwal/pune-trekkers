@@ -2,6 +2,9 @@ export const site = {
   name: 'Pune Trekkers',
   email: 'hello@punetrekkers.org',
   instagram: 'https://www.instagram.com/punetrekkersofficial',
+  // Google Business Profile, by its permanent Maps id; reviewLink is the profile's "Ask for reviews" link.
+  googleProfile: 'https://maps.google.com/?cid=18151031984770549544',
+  reviewLink: 'https://g.page/r/CSiHAP9ra-X7EBM/review',
   whatsappInvite: 'https://chat.whatsapp.com/Fw62cc25n9m7jGhKXogRs6',
   description: 'Free-to-join trekking community in Pune. Weekend treks near Pune at actual shared cost, with no markup or profit. Beginners, women and solo trekkers welcome.',
   url: (process.env.NEXT_PUBLIC_SITE_URL || 'https://punetrekkers.org').replace(/\/$/, ''),
