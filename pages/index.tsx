@@ -9,11 +9,12 @@ import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 import { phaseAt, phases, type Phase } from '../lib/phase'
 import PuneWeather from '../components/PuneWeather'
-import { ButtonLink, SectionHeading, TrekCard, PlaceCard, Value, JoinBanner, FAQList, PhotoImage } from '../components/Shared'
+import { ButtonLink, SectionHeading, TrekCard, PlaceCard, Value, JoinBanner, FAQList, PhotoImage, faqs } from '../components/Shared'
 import { groupPlaces } from '../lib/places'
 import { site } from '../lib/site'
-import { organizationJsonLd, websiteJsonLd } from '../lib/seo'
+import { organizationJsonLd, websiteJsonLd, faqJsonLd } from '../lib/seo'
 
+const homeFaqCount=4
 const HeroScene=dynamic(()=>import('../components/HeroScene'),{ssr:false})
 
 export const getServerSideProps:GetServerSideProps=async({res})=>({props:await getCachedContent(res)})
@@ -29,7 +30,7 @@ export default function Home({content,preview,contentUnavailable}: {content:Site
   const diary=groupPlaces(past).sort((a,b)=>Number(b.visits.some(v=>v.photos.length))-Number(a.visits.some(v=>v.photos.length))).slice(0,3)
   const guides=maharashtraGuides.slice(0,5)
   return <>
-    <Seo title="Free trekking group in Pune" fullTitle="Pune Trekkers: Free Trekking Group & Community in Pune" jsonLd={[organizationJsonLd(site),websiteJsonLd(site)]}/>
+    <Seo title="Free trekking group in Pune" fullTitle="Pune Trekkers: Free Trekking Group & Community in Pune" jsonLd={[organizationJsonLd(site),websiteJsonLd(site),faqJsonLd(faqs.slice(0,homeFaqCount))]}/>
 
     <section className="hero2 container" aria-label="Introduction">
       <h1 className="hero2-title"><span>Your first trek</span><span>starts here.</span></h1>
@@ -156,7 +157,7 @@ export default function Home({content,preview,contentUnavailable}: {content:Site
 
     <section className="container faq-home">
       <div><span className="eyebrow">Questions</span><h2>Things people often ask.</h2><Link href="/faq" className="text-link">See all questions <Icon name="arrow" size={18}/></Link></div>
-      <FAQList limit={4}/>
+      <FAQList limit={homeFaqCount}/>
     </section>
 
     <JoinBanner/>

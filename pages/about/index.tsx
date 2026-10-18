@@ -5,7 +5,8 @@ import Seo from '../../components/Seo'
 import { getCachedContent } from '../../lib/content'
 import type { SiteContent } from '../../lib/content-schema'
 import Icon, { type IconName } from '../../components/Icon'
-import { formatDate } from '../../lib/site'
+import { formatDate, site } from '../../lib/site'
+import { aboutPageJsonLd, organizationJsonLd } from '../../lib/seo'
 
 const HeroScene = dynamic(() => import('../../components/HeroScene'), { ssr: false })
 export const getServerSideProps: GetServerSideProps = async ({ res }) => ({ props: await getCachedContent(res) })
@@ -24,7 +25,7 @@ const welcome: { icon: IconName; title: string; text: string }[] = [
 
 export default function About({ content }: { content: SiteContent }) {
   return <>
-    <Seo title="Our story: from Reddit to the trail" description="How Pune Trekkers grew from a Reddit conversation into a free trekking community of about 2,300 people." />
+    <Seo title="Our story: from Reddit to the trail" description="How Pune Trekkers grew from a Reddit conversation into a free trekking community of about 2,300 people." jsonLd={[aboutPageJsonLd(site),organizationJsonLd(site)]} />
     <section className="about-hero container" aria-labelledby="about-title">
       <div className="about-hero-copy">
         <span className="eyebrow">Our story</span>

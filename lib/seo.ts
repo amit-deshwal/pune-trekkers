@@ -10,11 +10,12 @@ const absolute = (base: string, src: string) => /^https?:\/\//.test(src) ? src :
 export function organizationJsonLd(site: SiteInfo): JsonLd {
   return {
     '@context': context, '@type': 'Organization', '@id': `${site.url}/#organization`,
-    name: site.name, alternateName: ['Pune Trekkers Community', 'Pune Trekking Group'],
+    name: site.name, alternateName: ['Pune Trekkers Community', 'Pune Trekking Group', 'punetrekkers.org'], slogan: 'Community over commerce',
     url: site.url, logo: `${site.url}/android-chrome-512x512.png`,
     description: site.description, email: site.email, sameAs: [site.instagram],
     areaServed: { '@type': 'City', name: 'Pune', containedInPlace: { '@type': 'State', name: 'Maharashtra' } },
-    knowsAbout: ['Trekking', 'Hiking', 'Sahyadri forts', 'Treks near Pune'],
+    knowsAbout: ['Trekking', 'Hiking', 'Sahyadri forts', 'Treks near Pune', 'Free trekking group in Pune'],
+    foundingLocation: { '@type': 'City', name: 'Pune' },
   }
 }
 
@@ -24,6 +25,10 @@ export function websiteJsonLd(site: SiteInfo): JsonLd {
 
 export function faqJsonLd(items: string[][]): JsonLd {
   return { '@context': context, '@type': 'FAQPage', mainEntity: items.map(([question, answer]) => ({ '@type': 'Question', name: question, acceptedAnswer: { '@type': 'Answer', text: answer } })) }
+}
+
+export function aboutPageJsonLd(site: SiteInfo): JsonLd {
+  return { '@context': context, '@type': 'AboutPage', url: `${site.url}/about`, name: `About ${site.name}`, about: { '@id': `${site.url}/#organization` }, isPartOf: { '@id': `${site.url}/#website` } }
 }
 
 // Crumbs are [label, path] pairs, starting from the home page.
