@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Illustrated treasure map: a dotted trail winds over green hills to a red X, with a compass rose in the corner">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7ecc3"/><stop offset="1" stop-color="#fbf6e4"/></linearGradient>
+    <linearGradient id="far" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9cc3a8"/><stop offset="1" stop-color="#7fae93"/></linearGradient>
+    <linearGradient id="mid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4f8f73"/><stop offset="1" stop-color="#3b7660"/></linearGradient>
+    <linearGradient id="near" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a6150"/><stop offset="1" stop-color="#1d4a3f"/></linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffd978"/><stop offset="1" stop-color="#ffd978" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#sky)"/>
+  <circle cx="930" cy="150" r="150" fill="url(#sun)"/>
+  <circle cx="930" cy="150" r="54" fill="#ffd36b"/>
+  <path d="M0 360 140 270 260 330 420 200 560 310 700 230 860 330 1010 250 1200 340V630H0Z" fill="url(#far)"/>
+  <path d="M0 430C140 360 240 390 380 350S620 320 760 380 1040 360 1200 400V630H0Z" fill="url(#mid)"/>
+  <path d="M0 520C160 470 300 500 460 470S760 450 900 490 1100 500 1200 480V630H0Z" fill="url(#near)"/>
+  <!-- the trail -->
+  <path d="M130 600C230 560 250 510 360 505S520 540 600 500 680 430 770 440 900 420 960 340 1010 270 1040 245" fill="none" stroke="#fbf6e4" stroke-width="7" stroke-linecap="round" stroke-dasharray="2 16"/>
+  <!-- clue pins -->
+  <g fill="#fbf6e4" stroke="#1d4a3f" stroke-width="3"><circle cx="360" cy="505" r="11"/><circle cx="600" cy="500" r="11"/><circle cx="770" cy="440" r="11"/><circle cx="960" cy="340" r="11"/></g>
+  <!-- the X -->
+  <g stroke="#c8461e" stroke-width="16" stroke-linecap="round"><path d="M1012 217 1068 273"/><path d="M1068 217 1012 273"/></g>
+  <!-- start flag -->
+  <path d="M130 600V540" stroke="#fbf6e4" stroke-width="5" stroke-linecap="round"/><path d="M132 542 178 556 132 572Z" fill="#f2a33a"/>
+  <!-- pines -->
+  <g fill="#1d4a3f"><path d="M70 520 100 580H40Z"/><path d="M70 490 104 548H36Z"/><path d="M1130 470 1160 530H1100Z"/><path d="M1130 440 1164 498H1096Z"/><path d="M520 540 545 590H495Z"/></g>
+  <!-- compass rose -->
+  <g transform="translate(170 150)">
+    <circle r="92" fill="#fbf6e4" fill-opacity=".92" stroke="#1d4a3f" stroke-width="5"/>
+    <circle r="74" fill="none" stroke="#1d4a3f" stroke-width="2" stroke-dasharray="3 7"/>
+    <path d="M0-78 16 0 0 78-16 0Z" fill="#fbf6e4" stroke="#1d4a3f" stroke-width="3"/>
+    <path d="M-78 0 0-16 78 0 0 16Z" fill="#fbf6e4" stroke="#1d4a3f" stroke-width="3"/>
+    <path d="M0-78 16 0-16 0Z" fill="#c8461e"/>
+    <path d="M0 78 16 0-16 0Z" fill="#1d4a3f"/>
+    <circle r="7" fill="#f2a33a" stroke="#1d4a3f" stroke-width="3"/>
+    <text y="-100" text-anchor="middle" font-family="Georgia,serif" font-size="30" font-weight="700" fill="#1d4a3f">N</text>
+  </g>
+</svg>

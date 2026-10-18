@@ -1,4 +1,5 @@
 import type { Trek } from './content-schema'
+import type { CommunityEvent } from './events'
 
 // Structured data (schema.org JSON-LD) builders. Kept free of runtime imports so tests can load them directly.
 export type JsonLd = Record<string, unknown>
@@ -61,5 +62,19 @@ export function trekEventJsonLd(trek: Trek, site: SiteInfo): JsonLd | null {
     ...(trek.capacity ? { maximumAttendeeCapacity: trek.capacity } : {}),
     ...(price === 0 ? { isAccessibleForFree: true } : {}),
     ...(price !== null ? { offers: { '@type': 'Offer', price, priceCurrency: 'INR', availability: `https://schema.org/${availability}`, url } } : {}),
+  }
+}
+
+// A free community event. The exact place is kept back until sign-up, so the location is only "near Pune".
+export function communityEventJsonLd(event: CommunityEvent, site: SiteInfo): JsonLd {
+  const url = `${site.url}/events/${event.slug}`
+  return {
+    '@context': context, '@type': 'Event', name: event.title, description: event.description, url,
+    startDate: `${event.date}T${event.startTime}:00+05:30`, endDate: `${event.date}T${event.endTime}:00+05:30`,
+    eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: { '@type': 'Place', name: 'Near Pune (meeting point shared with registered participants)', address: { '@type': 'PostalAddress', addressLocality: 'Pune', addressRegion: 'Maharashtra', addressCountry: 'IN' } },
+    organizer: { '@type': 'Organization', name: site.name, url: site.url },
+    image: [absolute(site.url, event.image)], maximumAttendeeCapacity: event.capacity, isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: 0, priceCurrency: 'INR', availability: 'https://schema.org/InStock', url },
   }
 }
