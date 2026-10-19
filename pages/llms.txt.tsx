@@ -18,6 +18,7 @@ Past community treks include Rajgad, Sinhagad (K2S), Harishchandragad, Kalsubai,
 - [Treks near Pune](${site.url}/treks-near-pune): forts and trails by distance and difficulty
 - [Our story](${site.url}/about)
 - [FAQ](${site.url}/faq)
+- [Where the money goes](${site.url}/where-the-money-goes): real cost sheets from past treks, with no organiser fee or markup
 - [Safety & inclusion](${site.url}/safety)
 - [Past treks & gallery](${site.url}/past-treks)
 

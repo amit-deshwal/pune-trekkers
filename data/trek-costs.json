@@ -1,0 +1,39 @@
+[
+  {
+    "trek": "Alang, Madan and Kulang (AMK)",
+    "date": "2026-10-10",
+    "people": 16,
+    "perPerson": 2101,
+    "expenses": [
+      { "label": "Tempo traveller", "amount": 15200 },
+      { "label": "Local guide and rope team", "amount": 17600 },
+      { "label": "Lemon water and tea breaks", "amount": 1100 }
+    ],
+    "shares": [
+      { "label": "15 participants × ₹2,101", "amount": 31515 },
+      { "label": "Organiser’s share (₹723 less than everyone else)", "amount": 1378 },
+      { "label": "A last-minute dropout’s share of the booked tempo", "amount": 1000 }
+    ],
+    "settlement": "₹2,100 per person was collected before the trek. It covered the final cost, so nobody paid or got back anything extra.",
+    "note": "The organiser paid less to cover the planning, bookings and coordination they did. That cost each participant about ₹45. We show it because this page is meant to show every rupee."
+  },
+  {
+    "trek": "Aadrai Jungle Trek",
+    "date": "2026-07-25",
+    "people": 17,
+    "perPerson": 858,
+    "expenses": [
+      { "label": "Traveller bus", "amount": 7000 },
+      { "label": "Breakfast", "amount": 1394 },
+      { "label": "Local guide", "amount": 1000 },
+      { "label": "Lunch", "amount": 3400 },
+      { "label": "Snacks at the waterfall", "amount": 1300 },
+      { "label": "ORS and water bottles", "amount": 490 }
+    ],
+    "shares": [
+      { "label": "17 participants × ₹858", "amount": 14586 }
+    ],
+    "settlement": "₹750 per person was collected in advance. The ₹108 balance was collected after the trek.",
+    "note": ""
+  }
+]

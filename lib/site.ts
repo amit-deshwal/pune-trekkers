@@ -14,7 +14,7 @@ export const site = {
   // Token from Google Search Console's HTML-tag verification method.
   googleVerification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
 }
-export const routes = ['/', '/about', '/treks', '/plans', '/treks-near-pune', '/past-treks', '/safety', '/join', '/conservation', '/volunteer', '/contact', '/faq', '/privacy', '/terms']
+export const routes = ['/', '/about', '/treks', '/plans', '/treks-near-pune', '/past-treks', '/safety', '/join', '/conservation', '/volunteer', '/contact', '/faq', '/where-the-money-goes', '/privacy', '/terms']
 export function formatTime(time: string) { if (!time) return ''; const [h, m] = time.split(':').map(Number); return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}` }
 export function formatDate(date: string) { return new Date(date + 'T12:00:00+05:30').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' }) }
 

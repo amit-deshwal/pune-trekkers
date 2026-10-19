@@ -82,6 +82,10 @@
 .difficulty-table tr:last-child td{border-bottom:0}
 .difficulty-table th{font-weight:800;background:var(--tint);color:var(--ink)}
 .difficulty-table td:first-child{font-weight:800;color:var(--ink)}
+.cost-table{min-width:0}
+.cost-table td:last-child,.cost-table th:last-child{text-align:right;white-space:nowrap}
+.cost-table tfoot th,.cost-table tfoot td{font-weight:800;color:var(--ink);background:var(--tint);border-bottom:0}
+.cost-sheet h3{margin-block:20px 6px;font-size:20px}
 .role-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-block:22px 30px}
 blockquote{margin-block:20px;padding:6px 0 6px 22px;border-left:4px solid var(--orange);max-width:60ch}
 blockquote p{font-size:20px;line-height:1.5;color:var(--ink);font-weight:600}
