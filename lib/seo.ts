@@ -7,10 +7,13 @@ type SiteInfo = { name: string; url: string; description: string; email: string;
 const context = 'https://schema.org'
 const absolute = (base: string, src: string) => /^https?:\/\//.test(src) ? src : base + src
 
+// Spellings people search for, so they all resolve to this community.
+const brandNames = ['Punetrekkers', 'Pune Trekkers Community', 'Pune Trekkers Club', 'Pune Trekking Community', 'Pune Trekking Group', 'punetrekkers.org']
+
 export function organizationJsonLd(site: SiteInfo): JsonLd {
   return {
     '@context': context, '@type': 'Organization', '@id': `${site.url}/#organization`,
-    name: site.name, alternateName: ['Pune Trekkers Community', 'Pune Trekking Group', 'punetrekkers.org'], slogan: 'Community over commerce',
+    name: site.name, alternateName: brandNames, slogan: 'Community over commerce',
     url: site.url, logo: `${site.url}/android-chrome-512x512.png`,
     description: site.description, email: site.email, sameAs: [site.instagram, ...(site.googleProfile ? [site.googleProfile] : [])],
     areaServed: { '@type': 'City', name: 'Pune', containedInPlace: { '@type': 'State', name: 'Maharashtra' } },
@@ -20,7 +23,7 @@ export function organizationJsonLd(site: SiteInfo): JsonLd {
 }
 
 export function websiteJsonLd(site: SiteInfo): JsonLd {
-  return { '@context': context, '@type': 'WebSite', '@id': `${site.url}/#website`, name: site.name, alternateName: 'Pune Trekkers Community', url: site.url, inLanguage: 'en-IN', publisher: { '@id': `${site.url}/#organization` } }
+  return { '@context': context, '@type': 'WebSite', '@id': `${site.url}/#website`, name: site.name, alternateName: brandNames, url: site.url, inLanguage: 'en-IN', publisher: { '@id': `${site.url}/#organization` } }
 }
 
 export function faqJsonLd(items: string[][]): JsonLd {

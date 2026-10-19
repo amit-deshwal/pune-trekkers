@@ -33,9 +33,8 @@ export default function Home({content,preview,contentUnavailable}: {content:Site
     <Seo title="Free trekking group in Pune" fullTitle="Pune Trekkers: Free Trekking Group & Community in Pune" jsonLd={[organizationJsonLd(site),websiteJsonLd(site),faqJsonLd(faqs.slice(0,homeFaqCount))]}/>
 
     <section className="hero2 container" aria-label="Introduction">
-      <h1 className="hero2-title"><span>Your first trek</span><span>starts here.</span></h1>
+      <h1 className="hero2-title"><span className="eyebrow">Free Pune trekking group</span><span>Your first trek</span><span>starts here.</span></h1>
       <div className="hero2-left">
-        <span className="eyebrow">Free Pune trekking group</span>
         <p className="hero2-lede">Pune Trekkers is a free, volunteer-run trekking group that helps people in Pune get outdoors together. Treks are planned openly, actual costs are shared and no one makes a profit. Beginners and solo trekkers are welcome.</p>
         <div className="hero2-actions">
           <Link href="/join" className="cta-pill"><span className="cta-dot"><Icon name="arrow" size={20}/></span>Join the free WhatsApp group</Link>
@@ -136,7 +135,7 @@ export default function Home({content,preview,contentUnavailable}: {content:Site
         <Value icon="shield" title="Safety and consent">Preparation and respect are part of every trek. Gallery uploads are managed by admins.</Value>
         <Value icon="leaf" title="Leave it better">Carry back your waste, respect local communities and care for the places we walk.</Value>
       </div>
-      <p style={{marginTop:24}}><Link href="/safety" className="text-link">Read our safety and community guidelines <Icon name="arrow" size={18}/></Link></p>
+      <p style={{marginTop:24,display:'flex',flexWrap:'wrap',gap:'12px 28px'}}><Link href="/where-the-money-goes" className="text-link">See real cost sheets from our treks <Icon name="arrow" size={18}/></Link><Link href="/safety" className="text-link">Read our safety and community guidelines <Icon name="arrow" size={18}/></Link></p>
     </section>
 
     <section className="container" style={{paddingBottom:'clamp(32px,5vw,64px)'}}>
