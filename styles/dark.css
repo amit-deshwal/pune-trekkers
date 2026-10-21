@@ -1,0 +1,86 @@
+/* Dark theme: <html data-theme=dark>, set before first paint (lib/theme.ts). A forest at night: deep green-black
+   surfaces, moonlit text, and a lighter green/orange so accents keep their contrast. Loaded last, so it overrides
+   the light colours hardcoded in the files before it. Text on --green now needs dark ink (--on-green), not white. */
+
+/* ---------- Header toggle (both themes) ---------- */
+.theme-toggle{display:grid;place-items:center;flex:none;width:48px;height:48px;padding:0;border:1px solid rgba(23,89,76,.35);border-radius:50%;background:var(--surface);color:var(--green);box-shadow:var(--shadow);transition:background .2s,color .2s,transform .3s}
+.theme-toggle:hover{color:var(--orange);transform:rotate(-20deg)}
+.navigation{margin-left:auto}
+@media(max-width:1180px){.theme-toggle{margin-left:auto}.menu-toggle{order:2}}
+@media(min-width:1181px) and (max-width:1380px){.theme-toggle{width:44px;height:44px}}
+
+:root[data-theme=dark]{
+  color-scheme:dark;
+  --bg:#0e1512;--surface:#17211d;--tint:#1e2b26;--sun:#3b3420;--sky:#16242c;
+  --ink:#eef3ef;--text:#c3cec8;--muted:#9aa8a1;
+  --green:#5cc4a6;--green-dark:#123a31;--orange:#e8834a;--orange-soft:#3a2618;--teal:#4fc4ac;
+  --on-green:#0e1512;--field:#111a16;--danger:#ff8a7a;
+  --line:#2a3832;
+  --shadow:inset 0 1px 0 rgba(255,255,255,.05),0 14px 34px rgba(0,0,0,.35);
+  --focus:#f0a070;
+}
+:root[data-theme=dark] body{transition:background-color .3s,color .3s}
+
+/* Buttons, pills and anything that put white text on --ink or --green */
+:root[data-theme=dark] .button,:root[data-theme=dark] .button:hover,:root[data-theme=dark] .cta-dot,:root[data-theme=dark] .nav-join-arrow,
+:root[data-theme=dark] .chip.on,:root[data-theme=dark] .steps li:before,:root[data-theme=dark] .step-row li:before,
+:root[data-theme=dark] .card-bottom a:hover,:root[data-theme=dark] .trip-visits button.active{color:var(--on-green)}
+:root[data-theme=dark] .button-outline{color:var(--ink)}
+:root[data-theme=dark] .button-outline:hover{background:var(--surface);color:var(--ink)}
+:root[data-theme=dark] .nav-join:hover .nav-join-arrow{background:var(--ink)}
+:root[data-theme=dark] .chip.on span{color:var(--on-green);opacity:.75}
+:root[data-theme=dark] .cta-pill:hover,:root[data-theme=dark] .hero2-pills a:hover{background:var(--tint)}
+:root[data-theme=dark] .text-link:hover,:root[data-theme=dark] .crew-role,:root[data-theme=dark] .chip-row.small .chip.on,
+:root[data-theme=dark] .trail-buddy-whisper,:root[data-theme=dark] .about-milestone-number,:root[data-theme=dark] .about-welcome-icon{color:var(--green)}
+:root[data-theme=dark] .theme-toggle{border-color:var(--line)}
+
+/* Header: the jungle pill is already dark; just sink it into the night */
+:root[data-theme=dark] .nav-pill{border-color:rgba(88,179,111,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 6px 16px rgba(0,0,0,.4)}
+:root[data-theme=dark] .navigation>.nav-join{border-color:var(--line)}
+:root[data-theme=dark] .nav-backdrop{background:rgba(0,0,0,.6)}
+
+/* Home scene */
+:root[data-theme=dark] .scene-panel{background:#0c1d2e}
+:root[data-theme=dark] .scene-phases button[aria-pressed=true]{color:#141916}
+
+/* Banners and footer: white text stays on deep green */
+:root[data-theme=dark] .join-banner{background:var(--green-dark);box-shadow:inset 0 0 0 1px rgba(92,196,166,.25)}
+:root[data-theme=dark] .join-banner .button{color:#141916}
+:root[data-theme=dark] .conserve{box-shadow:inset 0 0 0 1px rgba(92,196,166,.2)}
+:root[data-theme=dark] .conserve .button:hover,:root[data-theme=dark] .join-banner .button:hover{background:#f6e6b8;border-color:#f6e6b8}
+:root[data-theme=dark] .site-footer{background:#0a1a15;border-top:1px solid var(--line)}
+:root[data-theme=dark] .site-footer h3{color:#f6e6b8}
+:root[data-theme=dark] .conserve .eyebrow:before,:root[data-theme=dark] .join-banner .eyebrow:before{background:#f6e6b8}
+:root[data-theme=dark] .note{border-color:#5a4e2a}
+
+/* Form fields, search and listings that were white boxes */
+:root[data-theme=dark] .filter-bar select,:root[data-theme=dark] .filter-bar input,
+:root[data-theme=dark] .interest-form input:not([type=checkbox]):not([type=file]),:root[data-theme=dark] .interest-form select,:root[data-theme=dark] .interest-form textarea,
+:root[data-theme=dark] .fort-search-field,:root[data-theme=dark] .hike-field,:root[data-theme=dark] .starts li{background:var(--field);border-color:#3a4a43;color:var(--ink)}
+:root[data-theme=dark] .suggest{background:var(--surface);box-shadow:0 12px 28px rgba(0,0,0,.45)}
+:root[data-theme=dark] .empty-state{border-color:#3a4a43}
+:root[data-theme=dark] .tag{background:var(--tint)}
+:root[data-theme=dark] .difficulty-easy{background:#1f3a26!important}
+:root[data-theme=dark] .difficulty-moderate{background:#3d3418!important}
+:root[data-theme=dark] .difficulty-challenging{background:#43281b!important}
+:root[data-theme=dark] .form-error{color:var(--danger)}
+:root[data-theme=dark] .trek-card:hover,:root[data-theme=dark] .involve-card:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 18px 40px rgba(0,0,0,.5)}
+
+/* Photo viewers: light round controls keep dark icons */
+:root[data-theme=dark] .lightbox>button{background:var(--surface);color:var(--ink)}
+:root[data-theme=dark] .trip-modal-close,:root[data-theme=dark] .trip-nav{color:#141916}
+:root[data-theme=dark] .trip-modal{box-shadow:0 30px 80px rgba(0,0,0,.6)}
+
+/* Admin */
+:root[data-theme=dark] .admin-remove,:root[data-theme=dark] .admin-signout,:root[data-theme=dark] .button.admin-danger{color:var(--danger)}
+:root[data-theme=dark] .admin-remove:hover{border-color:var(--danger);background:#3a1d18}
+:root[data-theme=dark] .button.admin-danger{border-color:var(--danger);background:transparent}
+:root[data-theme=dark] .button.admin-danger:hover{background:var(--danger);color:#141916}
+:root[data-theme=dark] .plan-badge.is-approved{background:#1f3a2c;color:var(--green)}
+:root[data-theme=dark] .plan-badge.is-rejected{background:#3a1d18;color:var(--danger)}
+
+/* Trail buddy: soft shadows were tuned for a pale page */
+:root[data-theme=dark] .trail-buddy-note{box-shadow:0 16px 50px rgba(0,0,0,.55)}
+:root[data-theme=dark] .trail-buddy-note a{background:var(--green);color:var(--on-green)}
+:root[data-theme=dark] .trail-buddy-portrait{filter:drop-shadow(-6px 10px 9px rgba(0,0,0,.5)) brightness(.82)}
+:root[data-theme=dark] .fx-star{color:#f2c75c}

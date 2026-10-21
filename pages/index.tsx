@@ -6,8 +6,9 @@ import { maharashtraGuides } from '../lib/maharashtra-explorer'
 import Seo from '../components/Seo'
 import Icon from '../components/Icon'
 import dynamic from 'next/dynamic'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { phaseAt, phases, type Phase } from '../lib/phase'
+import { useTheme } from '../lib/theme'
 import PuneWeather from '../components/PuneWeather'
 import { ButtonLink, SectionHeading, TrekCard, PlaceCard, Value, JoinBanner, FAQList, PhotoImage, faqs } from '../components/Shared'
 import { groupPlaces } from '../lib/places'
@@ -22,8 +23,14 @@ export const getStaticProps:GetStaticProps=getStaticContent
 export default function Home({content,preview,contentUnavailable}: {content:SiteContent;preview:boolean;contentUnavailable:boolean}) {
   // Scene follows the visitor's local time; the Morning/Day/Dusk/Night buttons let anyone preview the others.
   const [phase,setPhase]=useState<Phase>('morning');const [manual,setManual]=useState(false)
-  useEffect(()=>{if(manual)return;const sync=()=>setPhase(phaseAt());sync();const timer=setInterval(sync,60000);return()=>clearInterval(timer)},[manual])
-  useEffect(()=>{document.documentElement.dataset.phase=phase},[phase])
+  // Dark theme shows the night scene; switching theme drops any time of day previewed with the buttons.
+  const theme=useTheme()
+  useEffect(()=>{setManual(false)},[theme])
+  // Reads the theme off <html> (set before paint) rather than `theme`, which is still 'light' on the first pass.
+  useEffect(()=>{if(manual)return;const sync=()=>setPhase(document.documentElement.dataset.theme==='dark'?'night':phaseAt());sync();const timer=setInterval(sync,60000);return()=>clearInterval(timer)},[manual,theme])
+  // Skip the first pass: <html data-phase> is already right from the boot script, and the initial 'morning' would flash.
+  const mounted=useRef(false)
+  useEffect(()=>{if(mounted.current)document.documentElement.dataset.phase=phase;mounted.current=true},[phase])
   const upcoming=contentUnavailable?[]:upcomingTreks(content.treks)
   const past=content.treks.filter(t=>t.status==='completed')
   // Places with uploaded photos first, then the most recent.

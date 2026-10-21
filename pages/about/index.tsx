@@ -8,6 +8,7 @@ import Icon, { type IconName } from '../../components/Icon'
 import { formatDate, site } from '../../lib/site'
 import { aboutPageJsonLd, organizationJsonLd } from '../../lib/seo'
 import { crew } from '../../lib/crew'
+import { useTheme } from '../../lib/theme'
 
 const HeroScene = dynamic(() => import('../../components/HeroScene'), { ssr: false })
 export const getStaticProps:GetStaticProps=getStaticContent
@@ -25,6 +26,7 @@ const welcome: { icon: IconName; title: string; text: string }[] = [
 ]
 
 export default function About({ content }: { content: SiteContent }) {
+  const theme = useTheme()
   return <>
     <Seo title="Our story: from Reddit to the trail" description="How Pune Trekkers grew from a Reddit conversation into a free trekking community of about 2,300 people." jsonLd={[aboutPageJsonLd(site),organizationJsonLd(site)]} />
     <section className="about-hero container" aria-labelledby="about-title">
@@ -37,7 +39,7 @@ export default function About({ content }: { content: SiteContent }) {
       <div className="about-hero-visual">
         <div className="scene-bg">
           <svg className="scene-poster" viewBox="0 0 800 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="M0 420 160 300l90 70 150-190 140 170 90-60 170 150v200H0Z" className="ridge-far"/><path d="M0 500c140-90 260-60 380-120s250-20 420 70v190H0Z" className="ridge-mid"/><path d="M0 590c180-60 300-20 440-60s240-10 360 30v80H0Z" className="ridge-near"/></svg>
-          <HeroScene phase="morning" />
+          <HeroScene phase={theme === 'dark' ? 'night' : 'morning'} />
         </div>
       </div>
     </section>

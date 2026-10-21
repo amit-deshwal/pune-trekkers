@@ -40,12 +40,12 @@ export function buildCompanion(THREE: Three, host: HTMLElement, onAct: (act: Act
   const scene = new THREE.Scene()
   const camera = new THREE.PerspectiveCamera(21, 1, 0.1, 40)
   camera.position.set(0, 2.3, 10.5)
-  scene.add(new THREE.HemisphereLight(0xfff4e8, 0x5d6f63, 1.5))
+  const hemi = new THREE.HemisphereLight(0xfff4e8, 0x5d6f63, 1.5)
   const key = new THREE.DirectionalLight(0xfff0dc, 2.1)
   key.position.set(-4, 6, 6)
   const rim = new THREE.DirectionalLight(0xd2ecff, 1.1)
   rim.position.set(4, 3, -5)
-  scene.add(key, rim)
+  scene.add(hemi, key, rim)
 
   // ---------- Construction helpers ----------
   const materials = new Map<string, InstanceType<Three['MeshStandardMaterial']>>()
@@ -159,7 +159,16 @@ export function buildCompanion(THREE: Three, host: HTMLElement, onAct: (act: Act
   add(lamp, new THREE.CircleGeometry(0.045, 16), new THREE.MeshBasicMaterial({ color: 0xfff6d0 }), [0, 0.61, 0.505]).rotation.x = -0.2
   const glow = add(lamp, new THREE.CircleGeometry(0.11, 24), new THREE.MeshBasicMaterial({ color: 0xffe9a0, transparent: true, opacity: 0.3, blending: THREE.AdditiveBlending, depthWrite: false }), [0, 0.61, 0.52])
   glow.rotation.x = -0.2
-  lamp.visible = document.documentElement.dataset.phase === 'night'
+  // Night (the clock, or the dark theme) swaps warm daylight for cool moonlight with a stronger rim, so the figure
+  // still reads against a dark page, and switches the headlamp on. Follows <html data-phase> as it changes.
+  const light = () => {
+    const night = document.documentElement.dataset.phase === 'night'
+    lamp.visible = night
+    hemi.color.set(night ? 0xa9bbe6 : 0xfff4e8); hemi.groundColor.set(night ? 0x1f2b3a : 0x5d6f63); hemi.intensity = night ? 1.05 : 1.5
+    key.color.set(night ? 0xc6d4ff : 0xfff0dc); key.intensity = night ? 1.25 : 2.1
+    rim.color.set(night ? 0x9cc0ff : 0xd2ecff); rim.intensity = night ? 1.9 : 1.1
+  }
+  light()
 
   // Arms: shoulder → elbow → hand, with a water bottle in the right hand for sipping.
   const arm = (sx: number) => {
@@ -331,6 +340,8 @@ export function buildCompanion(THREE: Three, host: HTMLElement, onAct: (act: Act
   if (!reduce) onAct(act)
   const ro = new ResizeObserver(() => { resize(); if (reduce) frame(performance.now()) })
   ro.observe(host)
+  const mo = new MutationObserver(() => { light(); if (reduce) frame(performance.now()) })
+  mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-phase'] })
 
   let raf = 0, drawn = 0
   const tick = (ms: number) => {
@@ -372,7 +383,7 @@ export function buildCompanion(THREE: Three, host: HTMLElement, onAct: (act: Act
       music = on
     },
     dispose() {
-      cancelAnimationFrame(raf); ro.disconnect()
+      cancelAnimationFrame(raf); ro.disconnect(); mo.disconnect()
       window.removeEventListener('pointermove', onMove); window.removeEventListener('pointerdown', onMove)
       window.removeEventListener('scroll', onScroll); window.removeEventListener('keydown', activity)
       document.removeEventListener('visibilitychange', wake)
