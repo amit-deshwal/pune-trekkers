@@ -62,5 +62,5 @@ export function hikeMessage(hike: WeekendHike) {
 
 // What a member sends when they share one hike with friends.
 export function shareMessage(hike: WeekendHike) {
-  return `Fancy coming along? 🥾\n\n${hikeBlock(hike)}`
+  return `Who’s coming? 🥾\n\n${hikeBlock(hike)}`
 }

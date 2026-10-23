@@ -32,5 +32,5 @@ test('one hike can be sent on its own, and an empty weekend still gives a useful
 })
 test('a member can share a single trek, even before its date is verified', () => {
   const message = shareMessage(trekHike(site, { ...trek, date: null, meetingPoint: 'To be confirmed' }))
-  assert.equal(message, 'Fancy coming along? 🥾\n\n*Rajgad sunrise trek*\n📅 6:30 AM\n⛰️ Moderate · ₹850 shared cost\n👉 Details and sign-up: https://punetrekkers.org/treks/rajgad')
+  assert.equal(message, 'Who’s coming? 🥾\n\n*Rajgad sunrise trek*\n📅 6:30 AM\n⛰️ Moderate · ₹850 shared cost\n👉 Details and sign-up: https://punetrekkers.org/treks/rajgad')
 })
