@@ -3,6 +3,7 @@ import AdminChrome from '../../components/AdminChrome'
 import { useAdminSession } from '../../lib/admin-session'
 import { formatDate, formatTime, site } from '../../lib/site'
 import { copyText } from '../../lib/clipboard'
+import { drawStory } from '../../lib/story-card'
 import { hikeMessage, weekendHikes, weekendMessage, weekendOf, type SharePlan, type ShareTrek } from '../../lib/weekend-share'
 
 const todayIST = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' })
@@ -25,6 +26,20 @@ export default function AdminWeekend() {
   const weekend = useMemo(() => weekendOf(todayIST(), weeksAhead), [weeksAhead])
   const hikes = useMemo(() => weekendHikes(site.url, treks, plans, weekend), [treks, plans, weekend])
   const text = useMemo(() => weekendMessage(site.url, hikes, weekend, site.whatsappInvite), [hikes, weekend])
+  const [story, setStory] = useState<{ blob: Blob; url: string } | null>(null)
+  useEffect(() => {
+    if (!loaded) return
+    let url = ''; let live = true
+    drawStory(hikes, weekend, new URL(site.url).host).then(blob => { if (!live) return; url = URL.createObjectURL(blob); setStory({ blob, url }) }).catch(() => setMessage('Could not draw the story image.'))
+    return () => { live = false; if (url) URL.revokeObjectURL(url) }
+  }, [loaded, hikes, weekend])
+  // Phones can hand the image straight to Instagram through the share sheet; computers download it instead.
+  async function shareStory() {
+    if (!story) return
+    const file = new File([story.blob], `pune-trekkers-weekend-${weekend.saturday}.png`, { type: 'image/png' })
+    if (navigator.canShare?.({ files: [file] })) { try { await navigator.share({ files: [file] }) } catch { /* closed the share sheet */ } return }
+    const link = document.createElement('a'); link.href = story.url; link.download = file.name; link.click()
+  }
   const unverified = treks.filter(trek => !trek.dateVerified && hikes.some(hike => hike.url.endsWith(`/treks/${trek.slug}`)))
   async function copy(value: string, key: string) {
     if (!await copyText(value)) { setMessage('Could not copy. Select the text and copy it by hand.'); return }
@@ -41,6 +56,16 @@ export default function AdminWeekend() {
           <a className="button button-outline" href={`https://wa.me/?text=${encodeURIComponent(text)}`} target="_blank" rel="noopener noreferrer">Open in WhatsApp</a>
         </div>
         {unverified.length > 0 && <p className="small">Heads up: {unverified.map(trek => trek.name).join(', ')} {unverified.length === 1 ? 'has' : 'have'} an unverified date, so the public page won’t show it yet. Tick “Date has been verified” on the Treks tab first.</p>}
+      </div>
+      <div className="interest-form admin-form"><h2>Instagram story</h2>
+        <p className="small">Post the image to your story, then add a <strong>Link</strong> sticker over the “Tap the link to join” line and paste the link below.</p>
+        <div className="story-share">
+          {story ? <img src={story.url} alt="Instagram story listing this weekend’s hikes" className="story-preview"/> : <div className="story-preview" aria-hidden="true"/>}
+          <div className="admin-actions">
+            <button type="button" className="button" disabled={!story} onClick={shareStory}>Share or download image</button>
+            <button type="button" className="button button-outline" onClick={() => copy(`${site.url}/treks`, 'sticker')}>{copied === 'sticker' ? 'Copied ✓' : 'Copy sticker link'}</button>
+          </div>
+        </div>
       </div>
       {hikes.length > 0 && <div className="interest-form admin-form"><h2>Send one hike on its own ({hikes.length})</h2>
         <ul className="admin-trek-list">{hikes.map(hike => <li key={hike.url}>
