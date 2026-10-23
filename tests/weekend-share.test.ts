@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { hikeMessage, weekendHikes, weekendMessage, weekendOf } from '../lib/weekend-share.ts'
+import { hikeMessage, shareMessage, trekHike, weekendHikes, weekendMessage, weekendOf } from '../lib/weekend-share.ts'
 
 const site = 'https://punetrekkers.org'
 const trek = { slug: 'rajgad', name: 'Rajgad sunrise trek', destination: 'Velhe', date: '2026-10-25', startTime: '06:30', difficulty: 'Moderate', status: 'confirmed', meetingPoint: 'Swargate', approximateCost: '850' }
@@ -29,4 +29,8 @@ test('one hike can be sent on its own, and an empty weekend still gives a useful
   const weekend = weekendOf('2026-10-23')
   assert.match(hikeMessage(weekendHikes(site, [trek], [], weekend)[0]), /^🥾 Pune Trekkers trek this weekend – come along!\n\n\*Rajgad sunrise trek\*/)
   assert.match(weekendMessage(site, [], weekend), /Nothing is listed for this weekend.*\n\nHeading out yourself\?.*\/plans\/new/)
+})
+test('a member can share a single trek, even before its date is verified', () => {
+  const message = shareMessage(trekHike(site, { ...trek, date: null, meetingPoint: 'To be confirmed' }))
+  assert.equal(message, 'Fancy coming along? 🥾\n\n*Rajgad sunrise trek*\n📅 6:30 AM\n⛰️ Moderate · ₹850 shared cost\n👉 Details and sign-up: https://punetrekkers.org/treks/rajgad')
 })

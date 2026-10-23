@@ -1,5 +1,7 @@
 import Icon from './Icon'
-import { formatDate, formatTime } from '../lib/site'
+import { formatDate, formatTime, site } from '../lib/site'
+import { planHike, shareMessage } from '../lib/weekend-share'
+import ShareButton from './ShareButton'
 import type { PublicPlan } from '../lib/member-plans'
 
 export default function MemberPlanCard({ plan }: { plan: PublicPlan }) {
@@ -12,6 +14,7 @@ export default function MemberPlanCard({ plan }: { plan: PublicPlan }) {
       {plan.meetingPoint && <p className="small"><strong>Meeting point:</strong> {plan.meetingPoint}</p>}
       <div className="card-bottom"><span>Posted by {plan.name}{plan.maxPeople ? ` · up to ${plan.maxPeople} people` : ''}</span></div>
       <a className="button" href={`/api/plans/chat/${plan.id}`} target="_blank" rel="nofollow noopener noreferrer">Message {plan.name} on WhatsApp <Icon name="chat" size={17}/></a>
+      <ShareButton title={`${plan.destination} hike`} text={shareMessage(planHike(site.url, { ...plan, status: 'approved' }))}/>
     </div>
   </article>
 }
