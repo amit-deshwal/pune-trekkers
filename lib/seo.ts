@@ -49,17 +49,28 @@ export function parseRupees(cost: string): number | null {
   return match ? Number(match[0]) : null
 }
 
+// "2 days", "2D/1N" → the last calendar day; anything else (incl. blank) is a day hike ending the same day.
+export function trekEndDate(date: string, duration: string): string {
+  const days = Number(duration.match(/(\d+)\s*d/i)?.[1] ?? 1)
+  if (days <= 1) return date
+  const end = new Date(`${date}T00:00:00Z`)
+  end.setUTCDate(end.getUTCDate() + days - 1)
+  return end.toISOString().slice(0, 10)
+}
+
 // Only organizer-confirmed treks with a verified date are events; proposals must not appear in event search results.
 export function trekEventJsonLd(trek: Trek, site: SiteInfo): JsonLd | null {
   if (trek.status !== 'confirmed' || !trek.date) return null
   const url = `${site.url}/treks/${trek.slug}`
   const price = parseRupees(trek.approximateCost)
+  const organizer = { '@type': 'Organization', name: site.name, url: site.url }
   const availability = { Open: 'InStock', Full: 'SoldOut', Closed: 'SoldOut', 'Not open': 'PreOrder' }[trek.registrationStatus]
   return {
     '@context': context, '@type': 'Event', name: trek.name, description: trek.summary, url,
-    startDate: trek.startTime ? `${trek.date}T${trek.startTime}:00+05:30` : trek.date, eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    startDate: trek.startTime ? `${trek.date}T${trek.startTime}:00+05:30` : trek.date, endDate: trekEndDate(trek.date, trek.duration), eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     location: { '@type': 'Place', name: trek.destination, address: { '@type': 'PostalAddress', addressRegion: 'Maharashtra', addressCountry: 'IN' } },
-    organizer: { '@type': 'Organization', name: site.name, url: site.url },
+    // Community-led hikes have no billed act, so the community itself is the performer.
+    organizer, performer: organizer,
     ...(trek.photos[0] ? { image: [absolute(site.url, trek.photos[0].src)] } : {}),
     ...(trek.capacity ? { maximumAttendeeCapacity: trek.capacity } : {}),
     ...(price === 0 ? { isAccessibleForFree: true } : {}),

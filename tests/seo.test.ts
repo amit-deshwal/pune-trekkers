@@ -1,7 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
-import { breadcrumbJsonLd, faqJsonLd, parseRupees, trekEventJsonLd, organizationJsonLd } from '../lib/seo.ts'
+import { breadcrumbJsonLd, faqJsonLd, parseRupees, trekEndDate, trekEventJsonLd, organizationJsonLd } from '../lib/seo.ts'
 import { km, nearbyHikes, PUNE, type HikeRecord } from '../lib/hikes.ts'
 import type { Trek } from '../lib/content-schema.ts'
 
@@ -15,6 +15,15 @@ test('confirmed, dated treks become events with an INR offer', () => {
   assert.equal(event.url, 'https://example.org/treks/rajgad')
   assert.deepEqual(event.offers, { '@type': 'Offer', price: 1250, priceCurrency: 'INR', availability: 'https://schema.org/InStock', url: 'https://example.org/treks/rajgad' })
   assert.equal(event.location.address.addressCountry, 'IN')
+  assert.equal(event.endDate, '2026-11-08')
+  assert.equal(event.performer.name, site.name)
+})
+
+test('multi-day treks end on their last calendar day', () => {
+  assert.equal(trekEndDate('2026-11-08', '2 days'), '2026-11-09')
+  assert.equal(trekEndDate('2026-12-31', '2D/1N'), '2027-01-01')
+  assert.equal(trekEndDate('2026-11-08', ''), '2026-11-08')
+  assert.equal(trekEndDate('2026-11-08', '6 hours'), '2026-11-08')
 })
 
 test('proposed or undated treks are never marked up as events', () => {
