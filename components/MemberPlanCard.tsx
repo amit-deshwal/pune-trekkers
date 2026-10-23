@@ -3,7 +3,7 @@ import { formatDate, formatTime } from '../lib/site'
 import type { PublicPlan } from '../lib/member-plans'
 
 export default function MemberPlanCard({ plan }: { plan: PublicPlan }) {
-  return <article className="trek-card">
+  return <article className="trek-card" id={`plan-${plan.id}`}>
     <div className="card-body">
       <span className="status-chip">{plan.difficulty.toUpperCase()} · MEMBER HIKE</span>
       <span className="card-meta"><Icon name="pin" size={14}/>{plan.destination}</span>

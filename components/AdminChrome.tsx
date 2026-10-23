@@ -4,7 +4,7 @@ import Seo from './Seo'
 import { Note, PageIntro } from './Shared'
 import type { AdminSession } from '../lib/admin-session'
 
-const tabs = [['treks', '/admin', 'Treks'], ['gallery', '/admin/gallery', 'Gallery'], ['plans', '/admin/plans', 'Member plans'], ['volunteers', '/admin/volunteers', 'Volunteers']] as const
+const tabs = [['treks', '/admin', 'Treks'], ['weekend', '/admin/weekend', 'This weekend'], ['gallery', '/admin/gallery', 'Gallery'], ['plans', '/admin/plans', 'Member plans'], ['volunteers', '/admin/volunteers', 'Volunteers']] as const
 export type AdminTab = (typeof tabs)[number][0]
 
 // Shared frame for every admin page: sign in once, switch sections from the tab bar, and sign out from anywhere.
