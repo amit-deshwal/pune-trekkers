@@ -1,17 +1,22 @@
 import Link from 'next/link'
 import Seo from '../components/Seo'
 import { PageIntro, Note, ButtonLink } from '../components/Shared'
-import { site } from '../lib/site'
+import { rupees, site } from '../lib/site'
 import { breadcrumbJsonLd, faqJsonLd } from '../lib/seo'
-import { trekCosts, total, rupees } from '../lib/trek-costs'
+import { trekCosts, type TrekCost } from '../lib/trek-costs'
+
+// Read at build time, so the browser never loads the cost-sheet validator.
+export const getStaticProps = () => ({ props: { trekCosts } })
 
 const dateLabel = (date: string) => new Date(`${date}T12:00:00+05:30`).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' })
-const questions = [
+const total = (lines: { amount: number }[]) => lines.reduce((sum, line) => sum + line.amount, 0)
+const moneyQuestions = (trekCosts: TrekCost[]) => [
   ['Does Pune Trekkers make a profit on treks?', 'No. There is no membership fee, organiser fee or commission. Participants split the actual cost of transport, guides, food and entry fees, and this page publishes the real cost sheets from past treks.'],
   ['How much does a trek from Pune cost with Pune Trekkers?', `It depends on the transport, the guide and the group size. Recent examples: ${trekCosts.map(c => `${c.trek} came to ${rupees(c.perPerson)} per person`).join('; ')}.`],
 ]
 
-export default function WhereTheMoneyGoes() {
+export default function WhereTheMoneyGoes({ trekCosts }: { trekCosts: TrekCost[] }) {
+  const questions = moneyQuestions(trekCosts)
   return <>
     <Seo title="Where the money goes: real trek costs, no profit" description="Real cost sheets from Pune Trekkers treks: transport, guides and food split among participants, with no organiser fee, no markup and no profit." jsonLd={[breadcrumbJsonLd(site.url, [['Home', '/'], ['Where the money goes', '/where-the-money-goes']]), faqJsonLd(questions)]}/>
     <PageIntro eyebrow="EVERY RUPEE, IN THE OPEN" title="Where the money goes.">We say there is no markup and no profit. These are the real cost sheets from our treks, so you can check for yourself.</PageIntro>

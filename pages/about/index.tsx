@@ -4,14 +4,16 @@ import type { GetStaticProps } from 'next'
 import Seo from '../../components/Seo'
 import { getStaticContent } from '../../lib/content'
 import type { SiteContent } from '../../lib/content-schema'
+import { upcomingTreks } from '../../lib/upcoming-treks'
 import Icon, { type IconName } from '../../components/Icon'
 import { formatDate, site } from '../../lib/site'
 import { aboutPageJsonLd, organizationJsonLd } from '../../lib/seo'
 import { crew } from '../../lib/crew'
+import type { CrewMember } from '../../lib/crew-schema'
 import { useTheme } from '../../lib/theme'
 
 const HeroScene = dynamic(() => import('../../components/HeroScene'), { ssr: false })
-export const getStaticProps:GetStaticProps=getStaticContent
+export const getStaticProps:GetStaticProps=async()=>{const {props,revalidate}=await getStaticContent(upcomingTreks);return {props:{...props,crew},revalidate}}
 
 const milestones: { label: string; title: string; detail: string; icon: IconName }[] = [
   { icon: 'chat', label: 'The beginning', title: 'A conversation on Reddit', detail: 'People in Pune wanted company for a trek. That conversation brought the first group together.' },
@@ -25,7 +27,7 @@ const welcome: { icon: IconName; title: string; text: string }[] = [
   { icon: 'rupee', title: 'Free and shared', text: 'Joining costs nothing. On treks we split the actual expenses, and nobody makes a profit.' },
 ]
 
-export default function About({ content }: { content: SiteContent }) {
+export default function About({ content, crew }: { content: SiteContent; crew: CrewMember[] }) {
   const theme = useTheme()
   return <>
     <Seo title="Our story: from Reddit to the trail" description="How Pune Trekkers grew from a Reddit conversation into a free trekking community of about 2,300 people." jsonLd={[aboutPageJsonLd(site),organizationJsonLd(site)]} />

@@ -1,7 +1,7 @@
 import type { ServerResponse } from 'node:http'
 import type { NextApiResponse } from 'next'
 import fallback from '../data/community.json'
-import { contentSchema, publicContent, type SiteContent } from './content-schema'
+import { contentSchema, publicContent, type SiteContent, type Trek } from './content-schema'
 
 export async function getContent(): Promise<{ content: SiteContent; contentUnavailable: boolean; preview: boolean }> {
   let raw: unknown = fallback
@@ -36,10 +36,11 @@ export async function getCachedContent(res: ServerResponse) {
 }
 
 // Content pages are pre-built and refreshed in the background (ISR), so links can prefetch them and taps feel instant.
-// A failed read is retried sooner.
-export async function getStaticContent() {
+// A failed read is retried sooner. `pickTreks` keeps only the treks a page renders (past-trek photos are most of the
+// content), so its HTML and prefetch data stay small; pages should keep the upcoming ones for the trail buddy.
+export async function getStaticContent(pickTreks: (treks: Trek[]) => Trek[] = treks => treks) {
   const result = await getContent()
-  return { props: result, revalidate: result.contentUnavailable ? 10 : 60 }
+  return { props: { ...result, content: { ...result.content, treks: pickTreks(result.content.treks) } }, revalidate: result.contentUnavailable ? 10 : 60 }
 }
 
 // Rebuilds the public pages right after an admin edit instead of waiting for the next refresh. Best effort: content is already saved.

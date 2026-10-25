@@ -1,7 +1,8 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
-import { contentSchema, publicContent, upcomingTreks, type SiteContent } from '../lib/content-schema.ts'
+import { contentSchema, publicContent, type SiteContent } from '../lib/content-schema.ts'
+import { upcomingTreks } from '../lib/upcoming-treks.ts'
 const baseline = contentSchema.parse(JSON.parse(readFileSync(new URL('../data/community.json',import.meta.url),'utf8')))
 // Fixture treks: the fallback file no longer ships archive trips, so tests bring their own.
 const fixtureTrek=(i:number):SiteContent['treks'][number]=>({slug:`fixture-${i}`,name:`Fixture trek ${i}`,destination:'Rajgad Fort',status:'completed',kind:'trek',organizerConfirmed:false,date:null,dateVerified:false,difficulty:'To be confirmed',duration:'',approximateCost:'',capacity:null,registrationStatus:'Not open',registrationUrl:null,beginnerGuidance:'',fitness:'',transport:'',meetingPoint:'',inclusions:'',exclusions:'',cancellation:'',route:'',summary:'',highlights:[],participantCount:null,countVerified:false,archiveYear:null,photos:[],videos:[],organizerName:'',organizerWhatsapp:'',organizerChat:false,startTime:'',whatsappGroupUrl:''})

@@ -1,6 +1,6 @@
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import { getStaticContent } from '../../lib/content'
-import { upcomingTreks } from '../../lib/content-schema'
+import { upcomingTreks } from '../../lib/upcoming-treks'
 export { default } from '../../components/TrekDetail'
 // Trek pages are built on first visit, then refreshed like the other content pages.
 export const getStaticPaths:GetStaticPaths=async()=>({paths:[],fallback:'blocking'})

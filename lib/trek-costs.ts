@@ -17,6 +17,4 @@ export const trekCostSchema = z.object({
 })
 export type TrekCost = z.infer<typeof trekCostSchema>
 
-export const total = (lines: { amount: number }[]) => lines.reduce((sum, line) => sum + line.amount, 0)
-export const rupees = (amount: number) => `₹${amount.toLocaleString('en-IN')}`
 export const trekCosts = z.array(trekCostSchema).parse(costData).sort((a, b) => b.date.localeCompare(a.date))

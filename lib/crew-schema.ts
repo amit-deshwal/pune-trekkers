@@ -18,4 +18,3 @@ export const crewMemberSchema = z.object({
 export type CrewMember = z.infer<typeof crewMemberSchema>
 
 export const parseCrew = (data: unknown) => z.array(crewMemberSchema).parse(data).filter(member => member.consent).sort((a, b) => a.since.localeCompare(b.since) || a.name.localeCompare(b.name))
-export const sinceLabel = (since: string) => new Date(`${since}-15T12:00:00+05:30`).toLocaleDateString('en-IN', { month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' })

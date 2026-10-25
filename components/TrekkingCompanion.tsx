@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import type { Act, Companion } from './CompanionScene'
 import { useTrailMusic } from './TrailMusic'
-import { upcomingTreks, type Trek } from '../lib/content-schema'
+import type { Trek } from '../lib/content-schema'
+import { upcomingTreks } from '../lib/upcoming-treks'
 import { formatDate, site } from '../lib/site'
 
 // What the buddy says on each section of the site (first match wins).

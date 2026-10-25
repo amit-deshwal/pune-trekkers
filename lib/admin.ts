@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
-import { contentSchema, publicContent, upcomingTreks, type Trek } from './content-schema'
+import { contentSchema, publicContent, type Trek } from './content-schema'
+import { upcomingTreks } from './upcoming-treks'
 import fallback from '../data/community.json'
 import { serverSupabase, supabasePublicKey, supabasePublicUrl } from './supabase'
 

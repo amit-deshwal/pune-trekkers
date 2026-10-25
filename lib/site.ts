@@ -19,6 +19,9 @@ export function formatTime(time: string) { if (!time) return ''; const [h, m] = 
 export function formatDate(date: string) { return new Date(date + 'T12:00:00+05:30').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' }) }
 
 export function formatMonth(date: string) { return new Date(date + 'T12:00:00+05:30').toLocaleDateString('en-IN', { month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' }) }
+// A crew member's start month, "2026-10" → "Oct 2026".
+export const sinceLabel = (since: string) => new Date(`${since}-15T12:00:00+05:30`).toLocaleDateString('en-IN', { month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' })
 
 // "0" → "Free", "850" → "₹850"; anything else is shown as the organizer wrote it.
+export const rupees = (amount: number) => `₹${amount.toLocaleString('en-IN')}`
 export function costLabel(cost: string) { const text = cost.trim(); return /^(₹|rs\.?)?\s*0+$/i.test(text) ? 'Free' : /^\d[\d,]*$/.test(text) ? `₹${text}` : text }

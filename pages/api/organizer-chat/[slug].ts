@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { contentSchema, upcomingTreks } from '../../../lib/content-schema'
+import { contentSchema } from '../../../lib/content-schema'
+import { upcomingTreks } from '../../../lib/upcoming-treks'
 import { serverSupabase } from '../../../lib/supabase'
 import { formatDate, site } from '../../../lib/site'
 

@@ -64,7 +64,3 @@ export function publicContent(content: SiteContent): SiteContent {
     })),
   }
 }
-export function upcomingTreks(treks: Trek[], today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' })) {
-  return treks.filter(trek => (trek.status === 'confirmed' || trek.status === 'proposed') && (!trek.date || trek.date >= today))
-    .sort((a, b) => (a.date || '9999').localeCompare(b.date || '9999'))
-}

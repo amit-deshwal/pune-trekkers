@@ -1,6 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { parseCrew, sinceLabel } from '../lib/crew-schema.ts'
+import { parseCrew } from '../lib/crew-schema.ts'
+import { sinceLabel } from '../lib/site.ts'
 
 const member = { name: 'Asha', role: 'Trek post writer', since: '2026-10', blurb: 'Writes the trail reports.', instagram: '', consent: true }
 

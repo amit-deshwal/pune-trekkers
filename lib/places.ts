@@ -26,3 +26,9 @@ export function groupPlaces(treks: Trek[]): Place[] {
   list.forEach(place => place.visits.sort(newestFirst))
   return list.sort((a, b) => newestFirst(a.visits[0], b.visits[0]))
 }
+
+// The home page diary: places with uploaded photos first, then the most recent.
+export function diaryPlaces(treks: Trek[], count = 3) {
+  return groupPlaces(treks.filter(t => t.status === 'completed'))
+    .sort((a, b) => Number(b.visits.some(v => v.photos.length)) - Number(a.visits.some(v => v.photos.length))).slice(0, count)
+}

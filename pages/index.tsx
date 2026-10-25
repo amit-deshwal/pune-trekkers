@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import type { GetStaticProps } from 'next'
 import { getStaticContent } from '../lib/content'
-import { upcomingTreks, type SiteContent } from '../lib/content-schema'
+import type { SiteContent } from '../lib/content-schema'
+import { upcomingTreks } from '../lib/upcoming-treks'
 import { maharashtraGuides } from '../lib/maharashtra-explorer'
 import Seo from '../components/Seo'
 import Icon from '../components/Icon'
@@ -11,14 +12,14 @@ import { phaseAt, phases, type Phase } from '../lib/phase'
 import { useTheme } from '../lib/theme'
 import PuneWeather from '../components/PuneWeather'
 import { ButtonLink, SectionHeading, TrekCard, PlaceCard, Value, JoinBanner, FAQList, PhotoImage, faqs } from '../components/Shared'
-import { groupPlaces } from '../lib/places'
+import { diaryPlaces } from '../lib/places'
 import { site } from '../lib/site'
 import { organizationJsonLd, websiteJsonLd, faqJsonLd } from '../lib/seo'
 
 const homeFaqCount=4
 const HeroScene=dynamic(()=>import('../components/HeroScene'),{ssr:false})
 
-export const getStaticProps:GetStaticProps=getStaticContent
+export const getStaticProps:GetStaticProps=()=>getStaticContent(treks=>[...upcomingTreks(treks),...diaryPlaces(treks).flatMap(p=>p.visits)])
 
 export default function Home({content,preview,contentUnavailable}: {content:SiteContent;preview:boolean;contentUnavailable:boolean}) {
   // Scene follows the visitor's local time; the Morning/Day/Dusk/Night buttons let anyone preview the others.
@@ -32,9 +33,7 @@ export default function Home({content,preview,contentUnavailable}: {content:Site
   const mounted=useRef(false)
   useEffect(()=>{if(mounted.current)document.documentElement.dataset.phase=phase;mounted.current=true},[phase])
   const upcoming=contentUnavailable?[]:upcomingTreks(content.treks)
-  const past=content.treks.filter(t=>t.status==='completed')
-  // Places with uploaded photos first, then the most recent.
-  const diary=groupPlaces(past).sort((a,b)=>Number(b.visits.some(v=>v.photos.length))-Number(a.visits.some(v=>v.photos.length))).slice(0,3)
+  const diary=diaryPlaces(content.treks)
   const guides=maharashtraGuides.slice(0,5)
   return <>
     <Seo title="Free trekking group in Pune" fullTitle="Pune Trekkers: Free Trekking Group & Community in Pune" jsonLd={[organizationJsonLd(site),websiteJsonLd(site),faqJsonLd(faqs.slice(0,homeFaqCount))]}/>

@@ -3,9 +3,13 @@ import Seo from '../components/Seo'
 import Icon from '../components/Icon'
 import { PageIntro, ButtonLink } from '../components/Shared'
 import { crew } from '../lib/crew'
-import { sinceLabel } from '../lib/crew-schema'
+import type { CrewMember } from '../lib/crew-schema'
+import { sinceLabel } from '../lib/site'
 
-export default function Crew() {
+// Read at build time, so the browser never loads the crew.json validator.
+export const getStaticProps = () => ({ props: { crew } })
+
+export default function Crew({ crew }: { crew: CrewMember[] }) {
   return <>
     {/* An empty page would be thin content, so it stays out of search until the first volunteer is added. */}
     <Seo title="The crew behind Pune Trekkers" description="Meet the volunteers who run Pune Trekkers: the writers, photographers, trek leads and social handlers behind a free trekking community in Pune." noindex={crew.length === 0}/>
