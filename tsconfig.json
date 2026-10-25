@@ -31,6 +31,7 @@
     "scripts/reorder-photos.ts",
     "scripts/set-kind.ts",
     "scripts/import-legacy-gallery.ts",
-    "scripts/set-date.ts"
+    "scripts/set-date.ts",
+    "scripts/build-photo-sizes.ts"
   ]
 }

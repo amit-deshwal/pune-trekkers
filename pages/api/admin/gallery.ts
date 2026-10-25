@@ -3,6 +3,7 @@ import { requireAdmin } from '../../../lib/admin'
 import { contentSchema, publicContent, trekSchema, photoSchema, videoSchema, type Trek } from '../../../lib/content-schema'
 import fallback from '../../../data/community.json'
 import { revalidatePages } from '../../../lib/content'
+import { removePhotoSizes, saveAllPhotoSizes } from '../../../lib/photo-sizes'
 import { z } from 'zod'
 
 const galleryInput = z.object({
@@ -31,6 +32,8 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
     const before=mediaPaths(content.treks)
     const publish=async()=>{
       const next=contentSchema.parse(content)
+      // Resize new photos before publishing, so the site never links to a size that doesn't exist yet.
+      await saveAllPhotoSizes(service,mediaPaths(next.treks).filter(path=>!before.includes(path)))
       const updatedAt=new Date().toISOString()
       const saved=await service.from('site_content').upsert({id:'main',data:next,updated_at:updatedAt})
       if(saved.error)throw saved.error
@@ -39,7 +42,10 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
       await revalidatePages(res)
       // Delete files no trip uses any more. Best effort: content is already saved.
       const after=mediaPaths(next.treks),unused=before.filter(path=>!after.includes(path))
-      if(unused.length){const {error}=await service.storage.from('trip-uploads').remove(unused);if(error)console.error('Could not delete unused media',error)}
+      if(unused.length){
+        const {error}=await service.storage.from('trip-uploads').remove(unused);if(error)console.error('Could not delete unused media',error)
+        await removePhotoSizes(service,unused).catch(error=>console.error('Could not delete unused photo sizes',error))
+      }
     }
     if(req.method==='DELETE'){
       const slug=z.string().regex(/^[a-z0-9-]+$/).parse(req.query.slug)

@@ -3,6 +3,7 @@ import { contentSchema, publicContent, type Trek } from './content-schema'
 import { upcomingTreks } from './upcoming-treks'
 import fallback from '../data/community.json'
 import { serverSupabase, supabasePublicKey, supabasePublicUrl } from './supabase'
+import { saveAllPhotoSizes } from './photo-sizes'
 
 export async function requireAdmin(authorization:string|undefined){
   if(!authorization?.startsWith('Bearer ')||!supabasePublicUrl||!supabasePublicKey)throw new Error('Please sign in as an administrator.')
@@ -32,6 +33,9 @@ export async function saveTrek(authorization:string|undefined,trek:Trek,replace=
   if(!old&&replace)throw new Error('That trek no longer exists. Reload the page and try again.')
   const treks=old?content.treks.map(item=>item===old?{...trek,photos:[...old.photos,...trek.photos],videos:old.videos,highlights:old.highlights}:item):[trek,...content.treks]
   const next=contentSchema.parse({...content,treks})
+  // Resize new photos before publishing, so the site never links to a size that doesn't exist yet.
+  const known=new Set((old?.photos||[]).map(photo=>photo.src))
+  await saveAllPhotoSizes(service,trek.photos.map(photo=>photo.src).filter(src=>src.startsWith('/api/media/')&&!known.has(src)).map(src=>src.slice('/api/media/'.length)))
   const saved=await service.from('site_content').upsert({id:'main',data:next,updated_at:new Date().toISOString()})
   if(saved.error)throw saved.error
   const published=await service.from('public_site_content').upsert({id:'main',data:publicContent(next),updated_at:new Date().toISOString()})

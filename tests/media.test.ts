@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { createMediaResolver, signedMediaLifetime } from '../lib/media.ts'
+import { createMediaResolver, mediaSrc, mediaSrcSet, signedMediaLifetime } from '../lib/media.ts'
 
 const a = 'trip-uploads/abc/def.jpg'
 const b = 'trip-uploads/abc/aaa.webp'
@@ -66,4 +66,14 @@ test('publication and signing failures are retried instead of cached', async () 
   assert.equal((await resolve(a))?.url, 'https://storage.example/signed')
   assert.equal(reads, 2)
   assert.equal(signs, 2)
+})
+
+test('uploaded photos are served from their stored resized copies', () => {
+  const src = '/api/media/trip-uploads/abc-1/def-2.jpg'
+  assert.equal(mediaSrc(src, 800), '/photos/abc-1/def-2-800.webp')
+  assert.equal(mediaSrcSet(src)?.split(', ')[0], '/photos/abc-1/def-2-240.webp 240w')
+  // Videos and bundled images are left alone.
+  assert.equal(mediaSrc('/api/media/trip-uploads/abc/def.mp4', 800), '/api/media/trip-uploads/abc/def.mp4')
+  assert.equal(mediaSrc('/images/brand/logo.webp', 800), '/images/brand/logo.webp')
+  assert.equal(mediaSrcSet('/images/brand/logo.webp'), undefined)
 })

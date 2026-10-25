@@ -3,7 +3,7 @@
 The site works without Supabase (it falls back to `data/community.json`). Supabase adds a private admin page at `/admin` for adding treks and photos without a deploy.
 
 1. **Create a project** at supabase.com → New project. Pick the Mumbai (`ap-south-1`) region.
-2. **Run the migrations in order.** Dashboard → SQL Editor → run `supabase/migrations/20261014_admin_content.sql`, then `supabase/migrations/20261015_gallery_video.sql`. For member plans and volunteer applications also run `20261016_member_plans.sql` and `20261019_volunteer_applications.sql`. They create the private `trip-uploads` bucket, allow video uploads, and set up the admin allow-list and content tables.
+2. **Run the migrations in order.** Dashboard → SQL Editor → run `supabase/migrations/20261014_admin_content.sql`, then `supabase/migrations/20261015_gallery_video.sql`. For member plans and volunteer applications also run `20261016_member_plans.sql` and `20261019_volunteer_applications.sql`. Then run `20261026_photo_sizes.sql` for the public bucket of resized photos. They create the private `trip-uploads` bucket, allow video uploads, and set up the admin allow-list and content tables.
 3. **Create the admin account.** Authentication → Users → Add user (email + password, tick "Auto confirm"). Copy that user's UUID, then in the SQL Editor run:
    ```sql
    insert into public.admin_users (user_id) values ('PASTE_USER_UUID_HERE');

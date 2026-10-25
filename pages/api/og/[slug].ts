@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import sharp from 'sharp'
 import { getContent } from '../../../lib/content'
+import { mediaSrc } from '../../../lib/media'
 
 // A 1200x630 JPEG of a trek's cover photo for link previews. Uploaded photos can be several MB, and WhatsApp drops
 // previews whose image is too large, so this resizes and compresses them. Falls back to the default card.
@@ -12,7 +13,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const src = content.treks.find(trek => trek.slug === slug)?.photos[0]?.src
     if (!src) return fallback()
     const origin = `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`
-    const response = await fetch(src.startsWith('http') ? src : origin + src, { signal: AbortSignal.timeout(8000) })
+    const photo = mediaSrc(src, 1200)
+    const response = await fetch(photo.startsWith('http') ? photo : origin + photo, { signal: AbortSignal.timeout(8000) })
     if (!response.ok) return fallback()
     const image = await sharp(Buffer.from(await response.arrayBuffer()), { limitInputPixels: 60_000_000 })
       .rotate().resize(1200, 630, { fit: 'cover', position: 'attention' }).jpeg({ quality: 76, mozjpeg: true }).toBuffer()

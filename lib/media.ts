@@ -5,11 +5,16 @@ export const signedMediaLifetime = 120
 
 export function isMediaPath(path: string) { return mediaPath.test(path) }
 
-// Widths the media API will resize photos to (originals can be several MB each).
+// Widths every uploaded photo is resized to once, when it is added (originals can be several MB each).
 export const mediaWidths = [240, 480, 800, 1200, 1600]
 export const isResizable = (path: string) => /\.(webp|avif|jpg|jpeg|png)$/i.test(path)
-export const mediaSrc = (src: string, width: number) => src.startsWith(mediaPrefix) && isResizable(src) ? `${src}?w=${width}` : src
-export const mediaSrcSet = (src: string) => src.startsWith(mediaPrefix) && isResizable(src) ? mediaWidths.map(w => `${src}?w=${w} ${w}w`).join(', ') : undefined
+// Resized copies live in the public photo-sizes bucket as <folder>/<name>-<width>.webp and are served from /photos/
+// (a rewrite in next.config.js), so a visitor never waits for a photo to be resized.
+export const photoSizesBucket = 'trip-photos'
+export const photoSizePath = (path: string, width: number) => path.replace(/^trip-uploads\//, '').replace(/\.[a-z0-9]+$/i, `-${width}.webp`)
+const sized = (src: string, width: number) => `/photos/${photoSizePath(src.slice(mediaPrefix.length), width)}`
+export const mediaSrc = (src: string, width: number) => src.startsWith(mediaPrefix) && isResizable(src) ? sized(src, width) : src
+export const mediaSrcSet = (src: string) => src.startsWith(mediaPrefix) && isResizable(src) ? mediaWidths.map(w => `${sized(src, w)} ${w}w`).join(', ') : undefined
 
 function publishedPaths(value: unknown, paths = new Set<string>()): Set<string> {
   if (typeof value === 'string' && value.startsWith(mediaPrefix)) {
