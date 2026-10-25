@@ -2,6 +2,16 @@ import type { Trek } from './content-schema'
 
 // Structured data (schema.org JSON-LD) builders. Kept free of runtime imports so tests can load them directly.
 export type JsonLd = Record<string, unknown>
+
+// Google cuts search snippets at about 160 characters. Keep whole sentences that fit; otherwise cut at a word.
+export function metaDescription(text: string, max = 160): string {
+  const flat = text.replace(/\s+/g, ' ').trim()
+  if (flat.length <= max) return flat
+  const sentences = flat.match(/[^.!?]+[.!?]+(\s|$)/g) || []
+  let out = ''
+  for (const sentence of sentences) { if ((out + sentence).trim().length > max) break; out += sentence }
+  return out.trim() || flat.slice(0, max - 1).replace(/\s+\S*$/, '') + '…'
+}
 type SiteInfo = { name: string; url: string; description: string; email: string; instagram: string; googleProfile?: string }
 
 const context = 'https://schema.org'

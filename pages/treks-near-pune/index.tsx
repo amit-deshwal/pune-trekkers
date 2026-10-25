@@ -5,15 +5,13 @@ import Seo from '../../components/Seo'
 import Icon from '../../components/Icon'
 import HikeFinder, { type Hike } from '../../components/HikeFinder'
 import { PageIntro, FAQList, JoinBanner, SectionHeading } from '../../components/Shared'
-import { maharashtraGuides } from '../../lib/maharashtra-explorer'
+import { maharashtraGuides, placeKey as key } from '../../lib/maharashtra-explorer'
 import { nearbyHikes, type NearbyHike } from '../../lib/hikes'
 import { breadcrumbJsonLd, faqJsonLd, itemListJsonLd } from '../../lib/seo'
 import { site } from '../../lib/site'
 import hikeReview from '../../data/hike-review.json'
 
 // Matches "Harishchandragad Fort" to the "Harishchandragad" guide, "Sinhagad" to "Sinhagad Fort", and so on.
-const key = (name: string) => name.toLowerCase().replace(/\b(fort|peak)\b/g, '').replace(/[^a-z]/g, '')
-
 // The featured destinations are rendered into the page; the finder loads the wider sourced listings in the browser.
 export async function getStaticProps() {
   const hikes: Hike[] = JSON.parse(readFileSync(path.join(process.cwd(), 'public/data/hikes.json'), 'utf8'))

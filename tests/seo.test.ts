@@ -1,7 +1,8 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
-import { breadcrumbJsonLd, faqJsonLd, parseRupees, trekEndDate, trekEventJsonLd, organizationJsonLd } from '../lib/seo.ts'
+import { breadcrumbJsonLd, faqJsonLd, metaDescription, parseRupees, trekEndDate, trekEventJsonLd, organizationJsonLd } from '../lib/seo.ts'
+import { guideForTrek } from '../lib/maharashtra-explorer.ts'
 import { km, nearbyHikes, PUNE, type HikeRecord } from '../lib/hikes.ts'
 import type { Trek } from '../lib/content-schema.ts'
 
@@ -68,4 +69,19 @@ test('every featured hike resolves in the shipped dataset', () => {
   const hikes: HikeRecord[] = JSON.parse(readFileSync(new URL('../public/data/hikes.json', import.meta.url), 'utf8'))
   const featured = JSON.parse(readFileSync(new URL('../data/hike-review.json', import.meta.url), 'utf8')).featured.map((h: { slug: string }) => h.slug)
   assert.equal(nearbyHikes(hikes, featured).length, featured.length)
+})
+
+test('long trek summaries become whole-sentence meta descriptions under 160 characters', () => {
+  const torna = 'Climb Torna (Prachandagad), the highest fort in the Pune district.\n\nThe trail starts at Velhe village and climbs steadily through forest and rocky stretches. Two bastions are along the way, and the summit has wide views.'
+  const out = metaDescription(torna)
+  assert.ok(out.length <= 160)
+  assert.equal(out, 'Climb Torna (Prachandagad), the highest fort in the Pune district. The trail starts at Velhe village and climbs steadily through forest and rocky stretches.')
+  assert.equal(metaDescription('Short and sweet.'), 'Short and sweet.')
+  const runOn = metaDescription('word '.repeat(60))
+  assert.ok(runOn.length <= 160 && runOn.endsWith('word…'))
+})
+test('finished treks find their fort guide by destination or name', () => {
+  assert.equal(guideForTrek({ destination: 'Torna Fort', name: 'Torna monsoon trek' })?.slug, 'torna-fort')
+  assert.equal(guideForTrek({ destination: '', name: 'Kalsubai Peak sunrise' })?.slug, 'kalsubai-peak')
+  assert.equal(guideForTrek({ destination: 'Ghoradeshwar', name: 'Ghoradeshwar morning hike' }), undefined)
 })
