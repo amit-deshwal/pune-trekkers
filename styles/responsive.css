@@ -44,7 +44,7 @@
 @media(max-width:700px){
   .container{width:calc(100% - 32px)}
   .desktop-break{display:none}
-  .brand{font-size:15px;padding-right:16px}.brand small{display:none}
+  .brand{font-size:15px}.brand small{display:none}
   .involve-grid,.card-grid,.step-row,.three-columns,.values-grid,.role-grid,.form-row,.gallery-grid,.footer-grid{grid-template-columns:1fr}
   .detail-meta{grid-template-columns:1fr 1fr}
   .detail-hero{aspect-ratio:1.4}
@@ -57,6 +57,12 @@
   .scene-phases{top:10px;right:auto;left:10px}.scene-phases button{padding:6px 9px;font-size:11px}
   .weather{left:10px;bottom:12px;padding:7px 12px;gap:6px}.weather span{display:none}
   .scene-panel{aspect-ratio:.95}.scene-chips li{font-size:12px}.chip-icon{width:32px;height:32px}.scene-stat{padding-left:20px}.stat-faces i{width:36px;height:36px}
+}
+/* 320px phones: a smaller logo keeps the brand and both header buttons on screen */
+@media(max-width:359px){
+  .site-header .nav-wrap,.site-header .brand{gap:8px}
+  .site-header .brand{font-size:14px}
+  .site-header .brand-symbol,.site-header .brand-symbol img{width:40px;height:40px}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}

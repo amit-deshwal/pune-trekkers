@@ -101,6 +101,7 @@ blockquote cite{display:block;margin-top:10px;font-style:normal;font-weight:800;
 .interest-form label>input:not([type=checkbox]),.interest-form label>select,.interest-form label>textarea{display:block;margin-top:6px}
 .interest-form label:not(.checkbox-label)>span{color:var(--orange)}
 .interest-form input:not([type=checkbox]):not([type=file]),.interest-form select,.interest-form textarea{width:100%;padding:12px 14px;border:1px solid #b8b7a8;border-radius:8px;background:#fff;font-size:16px;font-weight:500}
+.interest-form input[type=file]{width:100%}
 .interest-form textarea{resize:vertical;min-height:110px}
 .interest-form input:focus,.interest-form select:focus,.interest-form textarea:focus{outline:3px solid var(--focus);outline-offset:1px}
 .checkbox-label,.interest-form .checkbox-label{display:flex!important;flex-direction:row;align-items:flex-start;gap:12px;font-weight:500!important;font-size:15px!important;color:var(--text)!important}
@@ -109,7 +110,7 @@ blockquote cite{display:block;margin-top:10px;font-style:normal;font-weight:800;
 .form-error{color:#9d2d20;font-weight:700;font-size:15px}
 .draft-result{background:var(--tint);border:1px solid var(--line);padding:20px;border-radius:var(--radius)}
 .draft-result p{font-size:15px;margin-block:8px}
-.admin-layout{padding-bottom:clamp(48px,7vw,88px);display:grid;gap:24px;align-content:start}
+.admin-layout{padding-bottom:clamp(48px,7vw,88px);display:grid;gap:24px;align-content:start;overflow-wrap:break-word}
 .admin-layout>*{max-width:900px;width:100%;min-width:0}
 .admin-layout>.admin-gallery-link{margin:0}
 .page-intro:has(+ .admin-layout) h1{font-size:clamp(26px,3.2vw,38px);max-width:none}
@@ -119,6 +120,7 @@ blockquote cite{display:block;margin-top:10px;font-style:normal;font-weight:800;
 .admin-layout input,.admin-layout select,.admin-layout textarea{padding:10px 14px;font-size:15px}
 .admin-layout .admin-heading h2{font-size:22px}
 .admin-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.admin-heading>div{min-width:0;overflow-wrap:anywhere}
 .admin-heading h2{font-size:28px}
 .admin-heading>span{font-size:13px;font-weight:800;background:var(--tint);border-radius:999px;padding:5px 12px}
 .admin-form fieldset{border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;display:grid;gap:12px;margin:0}
@@ -127,6 +129,7 @@ blockquote cite{display:block;margin-top:10px;font-style:normal;font-weight:800;
 .admin-checks label:has(>input[type=checkbox]),.consent-check{display:flex!important;flex-direction:row;align-items:center;gap:10px;font-weight:600!important}
 .admin-trek-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
 .admin-trek-list li{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:10px 0;border-bottom:1px solid var(--line)}
+.admin-trek-list li>span{min-width:0;overflow-wrap:anywhere}
 .admin-message{margin-top:16px;padding:14px 18px;background:var(--sun);border-radius:var(--radius);font-weight:700;color:var(--ink)}
 .admin-gallery-link{margin:0 0 18px;font-weight:800}
 .gallery-admin-item{display:grid;gap:10px;border-top:1px solid var(--line);padding:14px 0}
