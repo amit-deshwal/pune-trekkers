@@ -8,11 +8,12 @@ export function isMediaPath(path: string) { return mediaPath.test(path) }
 // Widths every uploaded photo is resized to once, when it is added (originals can be several MB each).
 export const mediaWidths = [240, 480, 800, 1200, 1600]
 export const isResizable = (path: string) => /\.(webp|avif|jpg|jpeg|png)$/i.test(path)
-// Resized copies live in the public photo-sizes bucket as <folder>/<name>-<width>.webp and are served from /photos/
-// (a rewrite in next.config.js), so a visitor never waits for a photo to be resized.
+// Resized copies live in the public photo-sizes bucket as <folder>/<name>-<width>.webp, so a visitor never waits for a
+// photo to be resized. Browsers load them straight from Supabase's CDN: proxying through the site was 2–4x slower.
 export const photoSizesBucket = 'trip-photos'
 export const photoSizePath = (path: string, width: number) => path.replace(/^trip-uploads\//, '').replace(/\.[a-z0-9]+$/i, `-${width}.webp`)
-const sized = (src: string, width: number) => `/photos/${photoSizePath(src.slice(mediaPrefix.length), width)}`
+export const photoSizesUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL || ''}/storage/v1/object/public/${photoSizesBucket}/`
+const sized = (src: string, width: number) => photoSizesUrl + photoSizePath(src.slice(mediaPrefix.length), width)
 export const mediaSrc = (src: string, width: number) => src.startsWith(mediaPrefix) && isResizable(src) ? sized(src, width) : src
 export const mediaSrcSet = (src: string) => src.startsWith(mediaPrefix) && isResizable(src) ? mediaWidths.map(w => `${sized(src, w)} ${w}w`).join(', ') : undefined
 

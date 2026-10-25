@@ -70,8 +70,8 @@ test('publication and signing failures are retried instead of cached', async () 
 
 test('uploaded photos are served from their stored resized copies', () => {
   const src = '/api/media/trip-uploads/abc-1/def-2.jpg'
-  assert.equal(mediaSrc(src, 800), '/photos/abc-1/def-2-800.webp')
-  assert.equal(mediaSrcSet(src)?.split(', ')[0], '/photos/abc-1/def-2-240.webp 240w')
+  assert.equal(mediaSrc(src, 800), '/storage/v1/object/public/trip-photos/abc-1/def-2-800.webp')
+  assert.equal(mediaSrcSet(src)?.split(', ')[0], '/storage/v1/object/public/trip-photos/abc-1/def-2-240.webp 240w')
   // Videos and bundled images are left alone.
   assert.equal(mediaSrc('/api/media/trip-uploads/abc/def.mp4', 800), '/api/media/trip-uploads/abc/def.mp4')
   assert.equal(mediaSrc('/images/brand/logo.webp', 800), '/images/brand/logo.webp')
