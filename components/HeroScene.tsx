@@ -59,11 +59,31 @@ const MOODS: Record<Phase, { sky: number; ground: number; hemi: number; sun: num
   night: { sky: 0x4a63a8, ground: 0x0c1c2e, hemi: 0.6, sun: 0x9db8ff, sunI: 1.0, pos: [-4, 7, 4], fog: 0x1a2d4d, tint: 0xa6b9e0 },
 }
 
-function build(THREE: Three, host: HTMLElement, getPhase: () => Phase, onReady: () => void) {
+// Hands the main thread back between chunks of setup work, so a tap during load still gets an instant response.
+const yieldToMain = () => new Promise<void>(resolve => setTimeout(resolve, 0))
+const ROWS_PER_TASK = 10
+
+async function build(THREE: Three, host: HTMLElement, getPhase: () => Phase, onReady: () => void, cancelled: () => boolean) {
+  // Terrain, coloured by height and slope (teal valleys, pale summits, grey rock on steep faces).
+  // Heights take ~50k noise samples, so they are computed a few rows per task instead of in one long freeze.
+  const W = 44, D = 40, SX = 240, SZ = 220
+  const geometry = new THREE.PlaneGeometry(W, D, SX, SZ)
+  geometry.rotateX(-Math.PI / 2)
+  const pos = geometry.attributes.position
+  let maxH = 0
+  for (let row = 0; row <= SZ; row += ROWS_PER_TASK) {
+    await yieldToMain()
+    if (cancelled()) { geometry.dispose(); return null }
+    const end = Math.min(SZ + 1, row + ROWS_PER_TASK) * (SX + 1)
+    for (let i = row * (SX + 1); i < end; i++) { const y = height(pos.getX(i), pos.getZ(i)); pos.setY(i, y); if (y > maxH) maxH = y }
+  }
+  await yieldToMain()
+  if (cancelled()) { geometry.dispose(); return null }
+
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const canvas = document.createElement('canvas')
   let renderer: InstanceType<Three['WebGLRenderer']>
-  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: window.devicePixelRatio < 2, alpha: true, powerPreference: 'low-power' }) } catch { return { dispose: () => {}, redraw: () => {}, reduce: true } }
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: window.devicePixelRatio < 2, alpha: true, powerPreference: 'low-power' }) } catch { geometry.dispose(); return { dispose: () => {}, redraw: () => {}, reduce: true } }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
   host.appendChild(canvas)
 
@@ -71,13 +91,6 @@ function build(THREE: Three, host: HTMLElement, getPhase: () => Phase, onReady: 
   scene.fog = new THREE.Fog(0xcfe3dc, 24, 52)
   const camera = new THREE.PerspectiveCamera(25, 1, 0.1, 80)
 
-  // Terrain, coloured by height and slope (teal valleys, pale summits, grey rock on steep faces).
-  const W = 44, D = 40, SX = 240, SZ = 220
-  const geometry = new THREE.PlaneGeometry(W, D, SX, SZ)
-  geometry.rotateX(-Math.PI / 2)
-  const pos = geometry.attributes.position
-  let maxH = 0
-  for (let i = 0; i < pos.count; i++) { const y = height(pos.getX(i), pos.getZ(i)); pos.setY(i, y); if (y > maxH) maxH = y }
   geometry.computeVertexNormals()
   const colors = new Float32Array(pos.count * 3)
   const normal = geometry.attributes.normal
@@ -167,14 +180,7 @@ function build(THREE: Three, host: HTMLElement, getPhase: () => Phase, onReady: 
     renderer.render(scene, camera)
   }
 
-  resize()
-  ease(1)
-  draw(0)
-  requestAnimationFrame(onReady)
-  const ro = new ResizeObserver(() => { resize(); if (reduce) draw(0) })
-  ro.observe(host)
-
-  let raf = 0, visible = true, last = 0
+  let raf = 0, visible = true, last = 0, disposed = false
   const tick = (now: number) => {
     raf = 0
     if (!visible || document.hidden) return
@@ -182,13 +188,24 @@ function build(THREE: Three, host: HTMLElement, getPhase: () => Phase, onReady: 
     raf = requestAnimationFrame(tick)
   }
   const wake = () => { if (!reduce && visible && !document.hidden && !raf) raf = requestAnimationFrame(tick) }
+  const ro = new ResizeObserver(() => { resize(); if (reduce) draw(0) })
   const io = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; wake() })
-  io.observe(host)
-  document.addEventListener('visibilitychange', wake)
-  wake()
+  // Shaders compile in the background (where the GPU driver allows) before the first frame, instead of stalling it.
+  renderer.compileAsync(scene, camera).catch(() => {}).then(() => {
+    if (disposed) return
+    resize()
+    ease(1)
+    draw(0)
+    requestAnimationFrame(onReady)
+    ro.observe(host)
+    io.observe(host)
+    document.addEventListener('visibilitychange', wake)
+    wake()
+  })
 
   const redraw = () => { ease(1); draw(0) }
   const dispose = () => {
+    disposed = true
     cancelAnimationFrame(raf); io.disconnect(); ro.disconnect()
     document.removeEventListener('visibilitychange', wake); window.removeEventListener('pointermove', onMove)
     scene.traverse(obj => { const mesh = obj as InstanceType<Three['Mesh']>; mesh.geometry?.dispose(); const mat = mesh.material; if (Array.isArray(mat)) mat.forEach(x => x.dispose()); else mat?.dispose() })
@@ -200,7 +217,7 @@ function build(THREE: Three, host: HTMLElement, getPhase: () => Phase, onReady: 
 export default function HeroScene({ phase }: { phase: Phase }) {
   const host = useRef<HTMLDivElement>(null)
   const phaseRef = useRef(phase)
-  const handle = useRef<ReturnType<typeof build> | null>(null)
+  const handle = useRef<Awaited<ReturnType<typeof build>>>(null)
   const [ready, setReady] = useState(false)
   useEffect(() => { phaseRef.current = phase; if (handle.current?.reduce) handle.current.redraw() }, [phase])
   useEffect(() => {
@@ -208,7 +225,7 @@ export default function HeroScene({ phase }: { phase: Phase }) {
     const saver = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData
     if (!el || saver) return
     let cancelled = false
-    const start = () => { import('three').then(THREE => { if (!cancelled) handle.current = build(THREE, el, () => phaseRef.current, () => setReady(true)) }).catch(() => {}) }
+    const start = () => { import('three').then(THREE => build(THREE, el, () => phaseRef.current, () => setReady(true), () => cancelled)).then(h => { if (h && cancelled) h.dispose(); else handle.current = h }).catch(() => {}) }
     const w = window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number; cancelIdleCallback?: (h: number) => void }
     const idle = w.requestIdleCallback ? w.requestIdleCallback(start, { timeout: 1500 }) : window.setTimeout(start, 400)
     return () => { cancelled = true; if (w.requestIdleCallback) w.cancelIdleCallback?.(idle); else clearTimeout(idle); handle.current?.dispose(); handle.current = null }

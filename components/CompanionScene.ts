@@ -334,16 +334,10 @@ export function buildCompanion(THREE: Three, host: HTMLElement, onAct: (act: Act
     renderer.render(scene, camera)
   }
 
-  resize()
-  frame(performance.now())
-  requestAnimationFrame(onReady)
-  if (!reduce) onAct(act)
   const ro = new ResizeObserver(() => { resize(); if (reduce) frame(performance.now()) })
-  ro.observe(host)
   const mo = new MutationObserver(() => { light(); if (reduce) frame(performance.now()) })
-  mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-phase'] })
 
-  let raf = 0, drawn = 0
+  let raf = 0, drawn = 0, disposed = false
   const tick = (ms: number) => {
     raf = 0
     if (document.hidden) return
@@ -351,14 +345,24 @@ export function buildCompanion(THREE: Three, host: HTMLElement, onAct: (act: Act
     raf = requestAnimationFrame(tick)
   }
   const wake = () => { if (!reduce && !document.hidden && !raf) { last = 0; raf = requestAnimationFrame(tick) } }
-  if (!reduce) {
-    window.addEventListener('pointermove', onMove, { passive: true })
-    window.addEventListener('pointerdown', onMove, { passive: true })
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('keydown', activity)
-    document.addEventListener('visibilitychange', wake)
-    wake()
-  }
+  // Shaders compile in the background (where the GPU driver allows) before the first frame, instead of stalling it.
+  renderer.compileAsync(scene, camera).catch(() => {}).then(() => {
+    if (disposed) return
+    resize()
+    frame(performance.now())
+    requestAnimationFrame(onReady)
+    if (!reduce) onAct(act)
+    ro.observe(host)
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-phase'] })
+    if (!reduce) {
+      window.addEventListener('pointermove', onMove, { passive: true })
+      window.addEventListener('pointerdown', onMove, { passive: true })
+      window.addEventListener('scroll', onScroll, { passive: true })
+      window.addEventListener('keydown', activity)
+      document.addEventListener('visibilitychange', wake)
+      wake()
+    }
+  })
 
   return {
     poke() {
@@ -383,6 +387,7 @@ export function buildCompanion(THREE: Three, host: HTMLElement, onAct: (act: Act
       music = on
     },
     dispose() {
+      disposed = true
       cancelAnimationFrame(raf); ro.disconnect(); mo.disconnect()
       window.removeEventListener('pointermove', onMove); window.removeEventListener('pointerdown', onMove)
       window.removeEventListener('scroll', onScroll); window.removeEventListener('keydown', activity)

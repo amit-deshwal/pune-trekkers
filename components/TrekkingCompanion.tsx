@@ -98,7 +98,8 @@ export default function TrekkingCompanion({ treks }: { treks?: Trek[] }) {
       else if (next === 'wake' || next === 'idle') setSay(s => (s === ACT_LINES.sleep ? null : s))
     }
     const start = () => {
-      Promise.all([import('three'), import('./CompanionScene')]).then(([THREE, { buildCompanion }]) => {
+      // The extra task between loading three.js and building the character keeps the two from becoming one long freeze.
+      Promise.all([import('three'), import('./CompanionScene')]).then(mods => new Promise<typeof mods>(resolve => setTimeout(() => resolve(mods), 0))).then(([THREE, { buildCompanion }]) => {
         if (cancelled) return
         buddy.current = buildCompanion(THREE, el, onAct, () => setMode('live'))
         if (!buddy.current) setMode('poster')

@@ -2,7 +2,8 @@
    Principles: mission first, one primary action, plain language, real photos when approved,
    high contrast, no decorative motion. Palette is taken from the community's own logo. */
 
-@font-face{font-family:Manrope;src:url('/fonts/manrope.ttf') format('truetype');font-weight:200 800;font-style:normal;font-display:swap}
+/* Latin subset of manrope.ttf (the full source font), made with: pyftsubset manrope.ttf --unicodes="U+0000-017F,U+0192,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0300-0301,U+2000-206F,U+20AC,U+20B9,U+2122,U+2190-2199,U+2212,U+2215" --layout-features='*' --flavor=woff2 */
+@font-face{font-family:Manrope;src:url('/fonts/manrope.woff2') format('woff2');font-weight:200 800;font-style:normal;font-display:swap;unicode-range:U+0000-017F,U+0192,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0300-0301,U+2000-206F,U+20AC,U+20B9,U+2122,U+2190-2199,U+2212,U+2215}
 
 :root{
   --bg:#e3e9e5;--surface:#f2f6f3;--tint:#d6e0da;--sun:#f6e6b8;--sky:#d4e7ea;
