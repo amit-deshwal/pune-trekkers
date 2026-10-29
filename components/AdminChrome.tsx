@@ -30,7 +30,7 @@ export default function AdminChrome({ session, active, seoTitle, title, intro, c
           <label>Email<input required type="email" autoComplete="email" inputMode="email" value={email} onChange={e => setEmail(e.target.value)}/></label>
           <label>Password<input required type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)}/></label>
           {error && <p className="form-error" role="alert">{error}</p>}
-          <button className="button" type="submit" disabled={busy}>{busy ? 'Signing in…' : 'Sign in'}</button></form>
+          <button className="button" type="submit" disabled={busy} aria-busy={busy}>{busy ? 'Signing in…' : 'Sign in'}</button></form>
       : children}
     </section>
   </>

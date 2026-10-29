@@ -43,3 +43,9 @@
 .weekend-message{width:100%;font:500 14px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;resize:vertical}
 .story-share{display:flex;gap:24px;align-items:flex-end;flex-wrap:wrap}
 .story-preview{width:216px;aspect-ratio:9/16;border-radius:16px;background:#0f3f35;box-shadow:var(--shadow)}
+
+/* Busy buttons: a spinner shows the action is still running, so nobody clicks twice or leaves early */
+.button[aria-busy=true]{cursor:progress}
+.button[aria-busy=true]::before{content:'';flex:none;width:16px;height:16px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:admin-spin .7s linear infinite}
+@keyframes admin-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.button[aria-busy=true]::before{animation-duration:2s}}
